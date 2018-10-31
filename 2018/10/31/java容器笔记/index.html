@@ -7,7 +7,7 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>java容器笔记 | 胡思旺</title>
+  <title>胡思旺</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,12 +15,12 @@
     <meta name="keywords" content="全栈,微服务,Java,Netty,Vue,机器学习,Python">
   
 
-  <meta name="description" content="Java容器 Java中常用的存储容器是数组与容器，但是两者有重大区别：    数组是固定长度的，容器的长度是可变的   数组可以存储基本数据类型，以可以存储引用数据类型；容器只能存储引用数据类型，基本数据类型要转成对应的包装类中才能放入容器  1.容器框架       Java 容器框架主要分为Collection和Map两种。其中，Collection又分为List、Set 、Queue">
+  <meta name="description" content="title: java容器笔记date: 2018-10-31 16:43:32 tags: Java中常用的存储容器是数组与容器，但是两者有重大区别：    数组是固定长度的，容器的长度是可变的   数组可以存储基本数据类型，以可以存储引用数据类型；容器只能存储引用数据类型，基本数据类型要转成对应的包装类中才能放入容器     1.容器框架       Java 容器框架主要分为Collect">
 <meta property="og:type" content="article">
-<meta property="og:title" content="java容器笔记">
+<meta property="og:title" content="胡思旺">
 <meta property="og:url" content="http://yoursite.com/2018/10/31/java容器笔记/index.html">
 <meta property="og:site_name" content="胡思旺">
-<meta property="og:description" content="Java容器 Java中常用的存储容器是数组与容器，但是两者有重大区别：    数组是固定长度的，容器的长度是可变的   数组可以存储基本数据类型，以可以存储引用数据类型；容器只能存储引用数据类型，基本数据类型要转成对应的包装类中才能放入容器  1.容器框架       Java 容器框架主要分为Collection和Map两种。其中，Collection又分为List、Set 、Queue">
+<meta property="og:description" content="title: java容器笔记date: 2018-10-31 16:43:32 tags: Java中常用的存储容器是数组与容器，但是两者有重大区别：    数组是固定长度的，容器的长度是可变的   数组可以存储基本数据类型，以可以存储引用数据类型；容器只能存储引用数据类型，基本数据类型要转成对应的包装类中才能放入容器     1.容器框架       Java 容器框架主要分为Collect">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2018/10/31/java容器笔记/container-structure.png">
 <meta property="og:image" content="http://yoursite.com/2018/10/31/java容器笔记/cc.PNG">
@@ -28,10 +28,10 @@
 <meta property="og:image" content="http://yoursite.com/2018/10/31/java容器笔记/case1.PNG">
 <meta property="og:image" content="http://yoursite.com/2018/10/31/java容器笔记/case2.PNG">
 <meta property="og:image" content="http://yoursite.com/2018/10/31/java容器笔记/case3.PNG">
-<meta property="og:updated_time" content="2018-10-31T08:43:48.033Z">
+<meta property="og:updated_time" content="2018-10-31T08:53:03.428Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="java容器笔记">
-<meta name="twitter:description" content="Java容器 Java中常用的存储容器是数组与容器，但是两者有重大区别：    数组是固定长度的，容器的长度是可变的   数组可以存储基本数据类型，以可以存储引用数据类型；容器只能存储引用数据类型，基本数据类型要转成对应的包装类中才能放入容器  1.容器框架       Java 容器框架主要分为Collection和Map两种。其中，Collection又分为List、Set 、Queue">
+<meta name="twitter:title" content="胡思旺">
+<meta name="twitter:description" content="title: java容器笔记date: 2018-10-31 16:43:32 tags: Java中常用的存储容器是数组与容器，但是两者有重大区别：    数组是固定长度的，容器的长度是可变的   数组可以存储基本数据类型，以可以存储引用数据类型；容器只能存储引用数据类型，基本数据类型要转成对应的包装类中才能放入容器     1.容器框架       Java 容器框架主要分为Collect">
 <meta name="twitter:image" content="http://yoursite.com/2018/10/31/java容器笔记/container-structure.png">
 
   
@@ -127,15 +127,15 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java容器"><span class="toc-text">Java容器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-容器框架"><span class="toc-text">1.容器框架</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#set"><span class="toc-text">set</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Map"><span class="toc-text">Map</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#List"><span class="toc-text">List</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#String、StringBuilder、StringBuffer"><span class="toc-text">String、StringBuilder、StringBuffer</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#同步容器"><span class="toc-text">同步容器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#并发容器"><span class="toc-text">并发容器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#同步容器与并发容器的区别"><span class="toc-text">同步容器与并发容器的区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CopyOnWriteArrayList"><span class="toc-text">CopyOnWriteArrayList</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ConcurrentHashMap"><span class="toc-text">ConcurrentHashMap</span></a></li></ol>
-  </div>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#tags"><span class="toc-text">tags:</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#1-容器框架"><span class="toc-text">1.容器框架</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#set"><span class="toc-text">set</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Map"><span class="toc-text">Map</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#List"><span class="toc-text">List</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#String、StringBuilder、StringBuffer"><span class="toc-text">String、StringBuilder、StringBuffer</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#同步容器"><span class="toc-text">同步容器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#并发容器"><span class="toc-text">并发容器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#同步容器与并发容器的区别"><span class="toc-text">同步容器与并发容器的区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CopyOnWriteArrayList"><span class="toc-text">CopyOnWriteArrayList</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ConcurrentHashMap"><span class="toc-text">ConcurrentHashMap</span></a>
+  </li></div>
 
 
 
 <div class="content content-post CENTER">
    <article id="post-java容器笔记" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">java容器笔记</h1>
+    <h1 class="post-title">(no title)</h1>
 
     <div class="article-meta">
       <span>
@@ -167,12 +167,17 @@
 
   <div class="article-content">
     
-      <h1 id="Java容器"><a href="#Java容器" class="headerlink" title="Java容器"></a>Java容器</h1><blockquote>
+      <hr>
+<p>title: java容器笔记<br>date: 2018-10-31 16:43:32</p>
+<h2 id="tags"><a href="#tags" class="headerlink" title="tags:"></a>tags:</h2><blockquote>
 <p>Java中常用的存储容器是数组与容器，但是两者有重大区别：  </p>
 <ul>
 <li>数组是固定长度的，容器的长度是可变的  </li>
-<li>数组可以存储基本数据类型，以可以存储引用数据类型；容器只能存储引用数据类型，基本数据类型要转成对应的包装类中才能放入容器  <h2 id="1-容器框架"><a href="#1-容器框架" class="headerlink" title="1.容器框架"></a><strong>1.容器框架</strong></h2><img src="container-structure.png" alt="图片">  </li>
+<li>数组可以存储基本数据类型，以可以存储引用数据类型；容器只能存储引用数据类型，基本数据类型要转成对应的包装类中才能放入容器  </li>
 </ul>
+</blockquote>
+<h1 id="1-容器框架"><a href="#1-容器框架" class="headerlink" title="1.容器框架"></a><strong>1.容器框架</strong></h1><blockquote>
+<p><img src="container-structure.png" alt="图片">  </p>
 <p><img src="cc.PNG" alt="图片">  </p>
 <p>Java 容器框架主要分为Collection和Map两种。其中，Collection又分为List、Set 、Queue    </p>
 <ul>
