@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/10/31/netty笔记/netty7.PNG">
 <meta property="og:image" content="http://yoursite.com/2018/10/31/netty笔记/netty8.PNG">
 <meta property="og:image" content="http://yoursite.com/2018/10/31/netty笔记/netty5.PNG">
-<meta property="og:updated_time" content="2018-10-31T08:34:18.615Z">
+<meta property="og:updated_time" content="2018-10-31T08:36:39.627Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="netty笔记">
 <meta name="twitter:description" content="netty笔记  netty由JBOSS提供的一个Java开源框架    提供异步的、事件驱动的网络应用程序框架和工具    快速开发高性能、高可靠性的网络服务器和客户端程序    Netty是一个基于NIO的客户、服务器端编程框架    提供了多种协议的编解码包括HTTP、二进制和Google Protobuf等等，它们通过Codec Framework进行整合    demo例程    学习网">
@@ -129,7 +129,7 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#netty笔记"><span class="toc-text">netty笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#NIO"><span class="toc-text">NIO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Channel"><span class="toc-text">Channel</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ChannelPipeline和ChannelHandler"><span class="toc-text">ChannelPipeline和ChannelHandler</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ChannelHandlerContext"><span class="toc-text">ChannelHandlerContext</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ByteBuffer"><span class="toc-text">ByteBuffer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EventLoop和EventLoopGroup"><span class="toc-text">EventLoop和EventLoopGroup</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#业务代码"><span class="toc-text">业务代码</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#netty笔记"><span class="toc-text">netty笔记</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NIO"><span class="toc-text">NIO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Channel"><span class="toc-text">Channel</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ChannelPipeline和ChannelHandler"><span class="toc-text">ChannelPipeline和ChannelHandler</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ChannelHandlerContext"><span class="toc-text">ChannelHandlerContext</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ByteBuffer"><span class="toc-text">ByteBuffer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EventLoop和EventLoopGroup"><span class="toc-text">EventLoop和EventLoopGroup</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#业务代码"><span class="toc-text">业务代码</span></a></li></ol>
   </div>
 
 
@@ -169,7 +169,7 @@
 
   <div class="article-content">
     
-      <h1 id="netty笔记"><a href="#netty笔记" class="headerlink" title="netty笔记"></a>netty笔记</h1><blockquote>
+      <h2 id="netty笔记"><a href="#netty笔记" class="headerlink" title="netty笔记"></a>netty笔记</h2><blockquote>
 <ul>
 <li><p>netty由JBOSS提供的一个Java开源框架  </p>
 </li>
