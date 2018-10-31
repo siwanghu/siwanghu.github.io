@@ -7,7 +7,7 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>胡思旺</title>
+  <title>jvm-gc笔记 | 胡思旺</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,17 +15,17 @@
     <meta name="keywords" content="全栈,微服务,Java,Netty,Vue,机器学习,Python">
   
 
-  <meta name="description" content="内存申请过程  JVM会试图判别对象大小，如果是大对象则会优先在老年代中分配，如果这个时候老年代的空间不够，则会触发full GC；如果是小对象，则会在Eden空间中分配内存    当Edge空间足够时，内存申请结束    JVM试图释放在Eden中所有不活跃的对象（触发minor GC），释放后若Eden空间仍然不足以放入新对象，则试图将部分Eden中活跃对象放入Survivor区    Sur">
+  <meta name="description" content="Jvm GC笔记 内存申请过程 JVM会试图判别对象大小，如果是大对象则会优先在老年代中分配，如果这个时候老年代的空间不够，则会触发full GC；如果是小对象，则会在Eden空间中分配内存    当Edge空间足够时，内存申请结束    JVM试图释放在Eden中所有不活跃的对象（触发minor GC），释放后若Eden空间仍然不足以放入新对象，则试图将部分Eden中活跃对象放入Survivor">
 <meta property="og:type" content="article">
-<meta property="og:title" content="胡思旺">
+<meta property="og:title" content="jvm-gc笔记">
 <meta property="og:url" content="http://yoursite.com/2018/10/31/jvm-gc笔记/index.html">
 <meta property="og:site_name" content="胡思旺">
-<meta property="og:description" content="内存申请过程  JVM会试图判别对象大小，如果是大对象则会优先在老年代中分配，如果这个时候老年代的空间不够，则会触发full GC；如果是小对象，则会在Eden空间中分配内存    当Edge空间足够时，内存申请结束    JVM试图释放在Eden中所有不活跃的对象（触发minor GC），释放后若Eden空间仍然不足以放入新对象，则试图将部分Eden中活跃对象放入Survivor区    Sur">
+<meta property="og:description" content="Jvm GC笔记 内存申请过程 JVM会试图判别对象大小，如果是大对象则会优先在老年代中分配，如果这个时候老年代的空间不够，则会触发full GC；如果是小对象，则会在Eden空间中分配内存    当Edge空间足够时，内存申请结束    JVM试图释放在Eden中所有不活跃的对象（触发minor GC），释放后若Eden空间仍然不足以放入新对象，则试图将部分Eden中活跃对象放入Survivor">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-10-31T09:02:41.808Z">
+<meta property="og:updated_time" content="2018-10-31T09:05:03.867Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="胡思旺">
-<meta name="twitter:description" content="内存申请过程  JVM会试图判别对象大小，如果是大对象则会优先在老年代中分配，如果这个时候老年代的空间不够，则会触发full GC；如果是小对象，则会在Eden空间中分配内存    当Edge空间足够时，内存申请结束    JVM试图释放在Eden中所有不活跃的对象（触发minor GC），释放后若Eden空间仍然不足以放入新对象，则试图将部分Eden中活跃对象放入Survivor区    Sur">
+<meta name="twitter:title" content="jvm-gc笔记">
+<meta name="twitter:description" content="Jvm GC笔记 内存申请过程 JVM会试图判别对象大小，如果是大对象则会优先在老年代中分配，如果这个时候老年代的空间不够，则会触发full GC；如果是小对象，则会在Eden空间中分配内存    当Edge空间足够时，内存申请结束    JVM试图释放在Eden中所有不活跃的对象（触发minor GC），释放后若Eden空间仍然不足以放入新对象，则试图将部分Eden中活跃对象放入Survivor">
 
   
 
@@ -120,7 +120,7 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#内存申请过程"><span class="toc-text">内存申请过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对象衰老过程"><span class="toc-text">对象衰老过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM参数"><span class="toc-text">JVM参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#年轻代大小选择"><span class="toc-text">年轻代大小选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#年老代大小选择"><span class="toc-text">年老代大小选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#大型网站服务器JVM参数配置举例"><span class="toc-text">大型网站服务器JVM参数配置举例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#命令"><span class="toc-text">命令</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Jvm-GC笔记"><span class="toc-text">Jvm GC笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#内存申请过程"><span class="toc-text">内存申请过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对象衰老过程"><span class="toc-text">对象衰老过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM参数"><span class="toc-text">JVM参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#年轻代大小选择"><span class="toc-text">年轻代大小选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#年老代大小选择"><span class="toc-text">年老代大小选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#大型网站服务器JVM参数配置举例"><span class="toc-text">大型网站服务器JVM参数配置举例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#命令"><span class="toc-text">命令</span></a></li></ol></li></ol>
   </div>
 
 
@@ -128,7 +128,7 @@
 <div class="content content-post CENTER">
    <article id="post-jvm-gc笔记" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">(no title)</h1>
+    <h1 class="post-title">jvm-gc笔记</h1>
 
     <div class="article-meta">
       <span>
@@ -160,8 +160,8 @@
 
   <div class="article-content">
     
-      <h2 id="内存申请过程"><a href="#内存申请过程" class="headerlink" title="内存申请过程"></a>内存申请过程</h2><blockquote>
-<ul>
+      <h1 id="Jvm-GC笔记"><a href="#Jvm-GC笔记" class="headerlink" title="Jvm GC笔记"></a>Jvm GC笔记</h1><blockquote>
+<h2 id="内存申请过程"><a href="#内存申请过程" class="headerlink" title="内存申请过程"></a>内存申请过程</h2><ul>
 <li><p>JVM会试图判别对象大小，如果是大对象则会优先在老年代中分配，如果这个时候老年代的空间不够，则会触发full GC；如果是小对象，则会在Eden空间中分配内存  </p>
 </li>
 <li><p>当Edge空间足够时，内存申请结束  </p>
@@ -175,9 +175,7 @@
 <li><p>完全垃圾收集后，若Survivor及old区仍然无法存放从Eden复制过来的部分对象，导致JVM无法在Eden区为新对象创建内存区域，则出现Out of memory错误  </p>
 </li>
 </ul>
-</blockquote>
-<h2 id="对象衰老过程"><a href="#对象衰老过程" class="headerlink" title="对象衰老过程"></a>对象衰老过程</h2><blockquote>
-<p>新创建的对象的内存分配自eden区。Minor GC的过程就是将eden和survivor中的活对象copy到空闲survivor 空间中。对象在young generation里经历了一定次数(可以通过参数配置)的minor GC后，就会被移到old generation中，称为tenuring  </p>
+<h2 id="对象衰老过程"><a href="#对象衰老过程" class="headerlink" title="对象衰老过程"></a>对象衰老过程</h2><p>新创建的对象的内存分配自eden区。Minor GC的过程就是将eden和survivor中的活对象copy到空闲survivor 空间中。对象在young generation里经历了一定次数(可以通过参数配置)的minor GC后，就会被移到old generation中，称为tenuring  </p>
 <h2 id="JVM参数"><a href="#JVM参数" class="headerlink" title="JVM参数"></a>JVM参数</h2><p><a href="https://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html" target="_blank" rel="noopener">官方参数说明</a>  </p>
 <p><strong>-Xms</strong>    初始堆大小  </p>
 <hr>
@@ -208,9 +206,7 @@
 <p><strong>-XX:+CollectGen0First</strong>    FullGC时是否先YGC  </p>
 <hr>
 <p><strong>吞吐量throughput（工作时间不算gc的时间占总的时间比）和暂停pause（gc发生时app对外显示的无法响应）</strong>  </p>
-</blockquote>
-<h2 id="年轻代大小选择"><a href="#年轻代大小选择" class="headerlink" title="年轻代大小选择"></a>年轻代大小选择</h2><blockquote>
-<ul>
+<h2 id="年轻代大小选择"><a href="#年轻代大小选择" class="headerlink" title="年轻代大小选择"></a>年轻代大小选择</h2><ul>
 <li><p>响应时间优先的应用:尽可能设大,直到接近系统的最低响应时间限制(根据实际情况选择).在此种情况下,年轻代收集发生的频率也是最小的.同时,减少到达年老代的对象  </p>
 </li>
 <li><p>吞吐量优先的应用:尽可能的设置大,可能到达Gbit的程度.因为对响应时间没有要求,垃圾收集可以并行进行,一般适合8CPU以上的应用  </p>
@@ -218,17 +214,13 @@
 <li><p>避免设置过小.当新生代设置过小时会导致:1.YGC次数更加频繁 2.可能导致YGC对象直接进入老年代,如果此时老年代满了,会触发FGC  </p>
 </li>
 </ul>
-</blockquote>
-<h2 id="年老代大小选择"><a href="#年老代大小选择" class="headerlink" title="年老代大小选择"></a>年老代大小选择</h2><blockquote>
-<ul>
+<h2 id="年老代大小选择"><a href="#年老代大小选择" class="headerlink" title="年老代大小选择"></a>年老代大小选择</h2><ul>
 <li><p>响应时间优先的应用:年老代使用并发收集器,所以其大小需要小心设置,一般要考虑并发会话率和会话持续时间等一些参数.如果堆设置小了,可以会造成内存碎 片,高回收频率以及应用暂停而使用传统的标记清除方式;如果堆大了,则需要较长的收集时间.最优化的方案,一般需要参考以下数据获得:<br>并发垃圾收集信息、持久代并发收集次数、传统GC信息、花在年轻代和年老代回收上的时间比例  </p>
 </li>
 <li><p>吞吐量优先的应用:一般吞吐量优先的应用都有一个很大的年轻代和一个较小的年老代.原因是,这样可以尽可能回收掉大部分短期对象,减少中期的对象,而年老代尽存放长期存活对象.  </p>
 </li>
 </ul>
-</blockquote>
-<h2 id="大型网站服务器JVM参数配置举例"><a href="#大型网站服务器JVM参数配置举例" class="headerlink" title="大型网站服务器JVM参数配置举例"></a>大型网站服务器JVM参数配置举例</h2><blockquote>
-<p><strong>-server -Xmx3550m -Xms3550m -Xmn1256m -Xss128k -XX:SurvivorRatio=6 -XX:MaxPermSize=256m -XX:ParallelGCThreads=8 -XX:MaxTenuringThreshold=0 -XX:+UseConcMarkSweepGC</strong>  </p>
+<h2 id="大型网站服务器JVM参数配置举例"><a href="#大型网站服务器JVM参数配置举例" class="headerlink" title="大型网站服务器JVM参数配置举例"></a>大型网站服务器JVM参数配置举例</h2><p><strong>-server -Xmx3550m -Xms3550m -Xmn1256m -Xss128k -XX:SurvivorRatio=6 -XX:MaxPermSize=256m -XX:ParallelGCThreads=8 -XX:MaxTenuringThreshold=0 -XX:+UseConcMarkSweepGC</strong>  </p>
 <ul>
 <li><p>-Xmx 与 -Xms 相同以避免JVM反复重新申请内存。-Xmx 的大小约等于系统内存大小的一半，即充分利用系统资源，又给予系统安全运行的空间  </p>
 </li>
@@ -243,9 +235,7 @@
 <li><p>-XX:+UseConcMarkSweepGC 设置年老代为并发收集。CMS（ConcMarkSweepGC）收集的目标是尽量减少应用的暂停时间，减少Full GC发生的几率，利用和应用程序线程并发的垃圾回收线程来标记清除年老代内存，适用于应用中存在比较多的长生命周期对象的情况  </p>
 </li>
 </ul>
-</blockquote>
-<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><blockquote>
-<p>查看heap使用情况与jvm采用的gc策略<br><strong>jmap -heap pid</strong>  </p>
+<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><p>查看heap使用情况与jvm采用的gc策略<br><strong>jmap -heap pid</strong>  </p>
 <hr>
 <p>查看jvm程序工具<br>jconsole或jvisualvm或jprofiler  </p>
 </blockquote>
@@ -289,7 +279,7 @@
     <a class="show pull-left" href="/2018/10/31/ros笔记/">
         <i class="icon icon-angle-left"></i>
     </a>
-    <a class="hide pull-right" href="/">
+    <a class="show pull-right" href="/2018/10/31/java容器笔记/">
         <i class="icon icon-angle-right"></i>
     </a>
   </div>
