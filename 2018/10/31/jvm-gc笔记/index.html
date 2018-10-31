@@ -15,17 +15,17 @@
     <meta name="keywords" content="全栈,微服务,Java,Netty,Vue,机器学习,Python">
   
 
-  <meta name="description" content="title: jvm-gc笔记date: 2018-10-31 16:48:06 tags:内存申请过程  JVM会试图判别对象大小，如果是大对象则会优先在老年代中分配，如果这个时候老年代的空间不够，则会触发full GC；如果是小对象，则会在Eden空间中分配内存    当Edge空间足够时，内存申请结束    JVM试图释放在Eden中所有不活跃的对象（触发minor GC），释放后若Ede">
+  <meta name="description" content="title: jvm-gc笔记date: 2018-10-31 16:48:06 tags: 内存申请过程  JVM会试图判别对象大小，如果是大对象则会优先在老年代中分配，如果这个时候老年代的空间不够，则会触发full GC；如果是小对象，则会在Eden空间中分配内存    当Edge空间足够时，内存申请结束    JVM试图释放在Eden中所有不活跃的对象（触发minor GC），释放后若Ed">
 <meta property="og:type" content="article">
 <meta property="og:title" content="胡思旺">
 <meta property="og:url" content="http://yoursite.com/2018/10/31/jvm-gc笔记/index.html">
 <meta property="og:site_name" content="胡思旺">
-<meta property="og:description" content="title: jvm-gc笔记date: 2018-10-31 16:48:06 tags:内存申请过程  JVM会试图判别对象大小，如果是大对象则会优先在老年代中分配，如果这个时候老年代的空间不够，则会触发full GC；如果是小对象，则会在Eden空间中分配内存    当Edge空间足够时，内存申请结束    JVM试图释放在Eden中所有不活跃的对象（触发minor GC），释放后若Ede">
+<meta property="og:description" content="title: jvm-gc笔记date: 2018-10-31 16:48:06 tags: 内存申请过程  JVM会试图判别对象大小，如果是大对象则会优先在老年代中分配，如果这个时候老年代的空间不够，则会触发full GC；如果是小对象，则会在Eden空间中分配内存    当Edge空间足够时，内存申请结束    JVM试图释放在Eden中所有不活跃的对象（触发minor GC），释放后若Ed">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-10-31T08:53:41.112Z">
+<meta property="og:updated_time" content="2018-10-31T08:58:30.374Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="胡思旺">
-<meta name="twitter:description" content="title: jvm-gc笔记date: 2018-10-31 16:48:06 tags:内存申请过程  JVM会试图判别对象大小，如果是大对象则会优先在老年代中分配，如果这个时候老年代的空间不够，则会触发full GC；如果是小对象，则会在Eden空间中分配内存    当Edge空间足够时，内存申请结束    JVM试图释放在Eden中所有不活跃的对象（触发minor GC），释放后若Ede">
+<meta name="twitter:description" content="title: jvm-gc笔记date: 2018-10-31 16:48:06 tags: 内存申请过程  JVM会试图判别对象大小，如果是大对象则会优先在老年代中分配，如果这个时候老年代的空间不够，则会触发full GC；如果是小对象，则会在Eden空间中分配内存    当Edge空间足够时，内存申请结束    JVM试图释放在Eden中所有不活跃的对象（触发minor GC），释放后若Ed">
 
   
 
@@ -120,7 +120,7 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#tags"><span class="toc-text">tags:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内存申请过程"><span class="toc-text">内存申请过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对象衰老过程"><span class="toc-text">对象衰老过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM参数"><span class="toc-text">JVM参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#年轻代大小选择"><span class="toc-text">年轻代大小选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#年老代大小选择"><span class="toc-text">年老代大小选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#大型网站服务器JVM参数配置举例"><span class="toc-text">大型网站服务器JVM参数配置举例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#命令"><span class="toc-text">命令</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#tags"><span class="toc-text">tags: </span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内存申请过程"><span class="toc-text">内存申请过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对象衰老过程"><span class="toc-text">对象衰老过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM参数"><span class="toc-text">JVM参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#年轻代大小选择"><span class="toc-text">年轻代大小选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#年老代大小选择"><span class="toc-text">年老代大小选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#大型网站服务器JVM参数配置举例"><span class="toc-text">大型网站服务器JVM参数配置举例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#命令"><span class="toc-text">命令</span></a></li></ol>
   </div>
 
 
@@ -162,7 +162,7 @@
     
       <hr>
 <p>title: jvm-gc笔记<br>date: 2018-10-31 16:48:06</p>
-<h2 id="tags"><a href="#tags" class="headerlink" title="tags:"></a>tags:</h2><h2 id="内存申请过程"><a href="#内存申请过程" class="headerlink" title="内存申请过程"></a>内存申请过程</h2><blockquote>
+<h2 id="tags"><a href="#tags" class="headerlink" title="tags: "></a>tags: </h2><h2 id="内存申请过程"><a href="#内存申请过程" class="headerlink" title="内存申请过程"></a>内存申请过程</h2><blockquote>
 <ul>
 <li><p>JVM会试图判别对象大小，如果是大对象则会优先在老年代中分配，如果这个时候老年代的空间不够，则会触发full GC；如果是小对象，则会在Eden空间中分配内存  </p>
 </li>
