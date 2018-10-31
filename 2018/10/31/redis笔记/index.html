@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>redis笔记 | 胡思旺</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="全栈,微服务,Java,Netty,Vue,机器学习,Python">
+  
+
+  <meta name="description" content="Redis远程字典服务器 Redis是速度非常快的非关系型（NoSQL）内存键值数据库    Redis优点  性能极高，Redis 能读的速度是110000 次/s，写的速度是81000 次/s    Redis 的所有操作都是原子性的。单个操作是原子性的。多个操作也支持事务，即原子性，通过 MULTI 和 EXEC 指令包起来    Redis 支持数据的持久化（RDB快照和AOF日志）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis笔记">
+<meta property="og:url" content="http://yoursite.com/2018/10/31/redis笔记/index.html">
+<meta property="og:site_name" content="胡思旺">
+<meta property="og:description" content="Redis远程字典服务器 Redis是速度非常快的非关系型（NoSQL）内存键值数据库    Redis优点  性能极高，Redis 能读的速度是110000 次/s，写的速度是81000 次/s    Redis 的所有操作都是原子性的。单个操作是原子性的。多个操作也支持事务，即原子性，通过 MULTI 和 EXEC 指令包起来    Redis 支持数据的持久化（RDB快照和AOF日志）">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-10-31T08:43:07.729Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="redis笔记">
+<meta name="twitter:description" content="Redis远程字典服务器 Redis是速度非常快的非关系型（NoSQL）内存键值数据库    Redis优点  性能极高，Redis 能读的速度是110000 次/s，写的速度是81000 次/s    Redis 的所有操作都是原子性的。单个操作是原子性的。多个操作也支持事务，即原子性，通过 MULTI 和 EXEC 指令包起来    Redis 支持数据的持久化（RDB快照和AOF日志）">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cben" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+
+</head>
+</html>
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/project/" rel="noopener noreferrer" target="_self">
+            项目
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/about/" rel="noopener noreferrer" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis远程字典服务器"><span class="toc-text">Redis远程字典服务器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis优点"><span class="toc-text">Redis优点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis启动"><span class="toc-text">Redis启动</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数据类型"><span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#有关键的命令"><span class="toc-text">有关键的命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#字符串类型命令"><span class="toc-text">字符串类型命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#位操作命令"><span class="toc-text">位操作命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#散列类型命令"><span class="toc-text">散列类型命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#列表类型命令"><span class="toc-text">列表类型命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#集合类型命令"><span class="toc-text">集合类型命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#有序集合类型命令"><span class="toc-text">有序集合类型命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#事务"><span class="toc-text">事务</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#命令规范"><span class="toc-text">命令规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#错误处理"><span class="toc-text">错误处理</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#watch命令"><span class="toc-text">watch命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#过期时间命令"><span class="toc-text">过期时间命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#排序命令"><span class="toc-text">排序命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#任务队列"><span class="toc-text">任务队列</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#优先级队列"><span class="toc-text">优先级队列</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#发布-订阅模式"><span class="toc-text">发布/订阅模式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#管道"><span class="toc-text">管道</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#持久化"><span class="toc-text">持久化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#缓存设计常见问题"><span class="toc-text">缓存设计常见问题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis集群"><span class="toc-text">Redis集群</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#复制"><span class="toc-text">复制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis配置"><span class="toc-text">Redis配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#哨兵"><span class="toc-text">哨兵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集群"><span class="toc-text">集群</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-redis笔记" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">redis笔记</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.10.31</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>siwang.hu</span>
+        </span>
+      
+
+      
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://www.github.com/siwanghu/2018/10/31/redis笔记/#disqus_thread"></a>
+        </span>
+      
+
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1 id="Redis远程字典服务器"><a href="#Redis远程字典服务器" class="headerlink" title="Redis远程字典服务器"></a>Redis远程字典服务器</h1><blockquote>
+<p>Redis是速度非常快的非关系型（NoSQL）内存键值数据库  </p>
+</blockquote>
+<h1 id="Redis优点"><a href="#Redis优点" class="headerlink" title="Redis优点"></a>Redis优点</h1><blockquote>
+<ul>
+<li><p>性能极高，Redis 能读的速度是110000 次/s，写的速度是81000 次/s  </p>
+</li>
+<li><p>Redis 的所有操作都是原子性的。单个操作是原子性的。多个操作也支持事务，即原子性，通过 MULTI 和 EXEC 指令包起来  </p>
+</li>
+<li><p>Redis 支持数据的持久化（RDB快照和AOF日志）  </p>
+</li>
+<li><p>Redis 支持数据的备份，即 master-slave 模式的数据备份  </p>
+</li>
+</ul>
+</blockquote>
+<h1 id="Redis启动"><a href="#Redis启动" class="headerlink" title="Redis启动"></a>Redis启动</h1><blockquote>
+<p>启动Redis&nbsp;&nbsp;<strong>redis-server.exe redis.windows.conf</strong><br>远程登陆&nbsp;&nbsp; <strong>redis-cli.exe -h 127.0.0.1 -p 6379</strong><br>停止Redis&nbsp;&nbsp; <strong>redis-cli.exe shutdown</strong><br>Redis默认启动端口为:&nbsp;&nbsp;<strong>6379</strong>  </p>
+</blockquote>
+<h1 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h1><blockquote>
+<ul>
+<li>字符串  </li>
+<li>散列(哈希表)  </li>
+<li>列表  </li>
+<li>集合  </li>
+<li>有序集合  </li>
+</ul>
+</blockquote>
+<h1 id="有关键的命令"><a href="#有关键的命令" class="headerlink" title="有关键的命令"></a>有关键的命令</h1><blockquote>
+<p><strong>keys pattern</strong><br>获得符合pattern规则的键名列表  </p>
+<ul>
+<li>?&nbsp;&nbsp;匹配一个字符  </li>
+<li>*&nbsp;&nbsp;匹配任意个字符  </li>
+<li>[&nbsp;]&nbsp;&nbsp;匹配括号间的任一个字符  </li>
+<li>\x&nbsp;&nbsp;匹配转义字符  </li>
+</ul>
+<hr>
+<p><strong>exists key</strong><br>判断一个键名是否存在<br><em>exists name&nbsp;&nbsp;判断键name是否存在</em>  </p>
+<hr>
+<p><strong>del key</strong><br>删除名字为key的键  </p>
+<hr>
+<p><strong>type key</strong><br>查看key键的数据类型  </p>
+</blockquote>
+<h1 id="字符串类型命令"><a href="#字符串类型命令" class="headerlink" title="字符串类型命令"></a>字符串类型命令</h1><blockquote>
+<p>string是Redis最基本的数据类型，可以存储任何形式的字符串，包括二进制数据，例如：图片，序列化的对象  </p>
+<hr>
+<p><strong>set key value</strong><br>设置键为key值为value  </p>
+<hr>
+<p><strong>get key</strong><br>获取键为key的value  </p>
+<hr>
+<p><strong>incr key</strong><br>如果key对应的值是整数形式,其value加1  </p>
+<hr>
+<p><strong>setnx key value</strong><br>将 key 的值设为 value ，当且仅当 key 不存在。若给定的 key 已经存在，则 SETNX 不做任何动作。  </p>
+<hr>
+<p><strong>incrby key increment</strong><br>key对应的值是整数形式,其value加increment数  </p>
+<hr>
+<p><strong>decr key</strong><br><strong>decr key increment</strong><br>与incr功能相反  </p>
+<hr>
+<p><strong>incrbyfloat key increment</strong><br>增加指定的increment浮点数  </p>
+<hr>
+<p><strong>append key value</strong><br>向key对应的字符串连接上value  </p>
+<hr>
+<p><strong>strlen key</strong><br>获取key的value值字符串的长度  </p>
+<hr>
+<p><strong>mget key1 key2 key3</strong><br><strong>mset key1 v1 key2 v2</strong><br>同时设置多个键值对  </p>
+</blockquote>
+<h1 id="位操作命令"><a href="#位操作命令" class="headerlink" title="位操作命令"></a>位操作命令</h1><blockquote>
+<p><strong>getbit key offset</strong><br>获取key对应的value值的二进制位的第offset位  </p>
+<hr>
+<p><strong>setbit key offset value</strong><br>将key对应的value值的二进制位的第offset位值为value(0|1)  </p>
+<hr>
+<p><strong>bitcount key</strong><br>获取key对应的value值的二进制中1的个数<br><strong>bitcount key begOffset endOffset</strong>  </p>
+<hr>
+<p><strong>bitop or|and|xor|not</strong><br>bitop提供位运算<br>bitop or res key1 key2  </p>
+<hr>
+</blockquote>
+<h1 id="散列类型命令"><a href="#散列类型命令" class="headerlink" title="散列类型命令"></a>散列类型命令</h1><blockquote>
+<p>Redis中散列类型适合存储对象。一般我们使用对象类型与ID构成键名object:id  </p>
+<hr>
+<p><strong>hset key field value</strong><br>存储键名位key属性为field值为value<br>hset ustc:sa17225123 name siwanghu  </p>
+<hr>
+<p><strong>hget key field</strong><br>获取对象键名为key属性field的值<br>hget ustc:sa17225123 name  </p>
+<hr>
+<p><strong>hmset key field1 value1 field2 value2</strong><br><strong>hmget key field1 field2</strong><br>同时设置与获取对象键名为key的多个属性  </p>
+<hr>
+<p><strong>hgetall key</strong><br>获取对象键名为key的所有属性与属性对应的值<br>hgetall ustc:sa17225123  </p>
+<hr>
+<p><strong>hexists key field</strong><br>判断对象键名为key的属性field是否存在  </p>
+<hr>
+<p><strong>hsetnx key field value</strong><br>给对象键名为key赋值属性field对应值为value，如果属性不存在；如果属性field存在，则什么也不做  </p>
+<hr>
+<p><strong>hincrby key field increment</strong><br>属性field增加数字值increment  </p>
+<hr>
+<p><strong>hdel key field</strong><br>删除对象键名为key的属性field  </p>
+</blockquote>
+<h1 id="列表类型命令"><a href="#列表类型命令" class="headerlink" title="列表类型命令"></a>列表类型命令</h1><blockquote>
+<p><strong>lpush key value</strong><br>向列表key左边增加元素value<br><strong>rpush key value</strong><br>向列表key右边增加元素value  </p>
+<hr>
+<p><strong>lpop key</strong><br>从列表key左边弹出元素<br><strong>rpop key</strong><br>从列表key右边弹出元素  </p>
+<hr>
+<p><strong>llen key</strong><br>统计列表key的元素个数  </p>
+<hr>
+<p><strong>lrange key start stop</strong><br>类似python切片操作，区别是返回包含start与stop为的元素  </p>
+<hr>
+<p><strong>lrem key count value</strong><br>从列表key中前count个数中删除值为value的元素<br>count可以指定为正数或负数，区别是正数从左开始，负数从右开始  </p>
+</blockquote>
+<h1 id="集合类型命令"><a href="#集合类型命令" class="headerlink" title="集合类型命令"></a>集合类型命令</h1><blockquote>
+<p><strong>sadd key member</strong><br>向集合key中添加member元素  </p>
+<hr>
+<p><strong>smembers key</strong><br>获取集合key中的所有元素</p>
+<hr>
+<p><strong>sismember key member</strong><br>判断集合key中是否存在member元素  </p>
+<hr>
+<p><strong>sdiff key1 key2 key3</strong><br>求集合差集key1-key2-key3<br><strong>sinter key1 key2 key3</strong><br>求集合交集<br><strong>sunion key1 key2 key3</strong><br>求集合并集  </p>
+</blockquote>
+<h1 id="有序集合类型命令"><a href="#有序集合类型命令" class="headerlink" title="有序集合类型命令"></a>有序集合类型命令</h1><blockquote>
+<p>一个元素与该元素的分数<br>如果元素的分数相同，Redis会按照元素字典顺序排序<br><strong>zadd key score member</strong><br>向有序集合key中增加成员member分数是score  </p>
+<hr>
+<p><strong>zscore key member</strong><br>获取有序集合key成员member的分数  </p>
+<hr>
+<p><strong>zrange key start stop</strong><br>获取有序集合key中排名在start与stop的元素,有序集合按照分数排名<br><strong>zrange key start stop withscore</strong>  </p>
+<hr>
+<p><strong>zrangescore key min max</strong><br> 获取有序集合key中指定分数范围的元素使用(表示不包含，+inf表示无上限</p>
+<hr>
+<p><strong>zincrby key increment member</strong><br>增加某个元素的分数  </p>
+<hr>
+<p><strong>zrevrangescore key stop start limit offsetr count</strong><br><strong>zrangescore key stop start limit offsetr count</strong><br>两者命令效果相反</p>
+<hr>
+</blockquote>
+<h1 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h1><blockquote>
+<h2 id="命令规范"><a href="#命令规范" class="headerlink" title="命令规范"></a>命令规范</h2><p><strong>multi</strong>&nbsp;&nbsp;开启事务<br><strong>…….</strong>&nbsp;&nbsp;发送Redis命令<br><strong>exec</strong>&nbsp;&nbsp;执行事务  </p>
+<h2 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h2><ul>
+<li>如果是命令语法错误，执行exec命令后，Redis会直接返回错误，事务中的一条命令都不执行  </li>
+<li>如果是运行时错误，Redis会忽略运行时错误的命令，其余无错误的命令都会执行  </li>
+<li>Redis不支持事务回滚功能  </li>
+</ul>
+</blockquote>
+<h1 id="watch命令"><a href="#watch命令" class="headerlink" title="watch命令"></a>watch命令</h1><blockquote>
+<p>watch命令可以监控一个或多个键，一旦其中一个键在事务开始之前被修改，那么之后的事务就不会执行  </p>
+</blockquote>
+<h1 id="过期时间命令"><a href="#过期时间命令" class="headerlink" title="过期时间命令"></a>过期时间命令</h1><blockquote>
+<p><strong>expire key seconds</strong><br>期望key键在seconds秒后过期(无效)  </p>
+<hr>
+<p><strong>ttl key</strong><br>查看key键还有多少时间过期  </p>
+<hr>
+<p><strong>persist key</strong><br>取消key键的过期时间，注意set命令为键赋值也会清除键的过期时间  </p>
+</blockquote>
+<h1 id="排序命令"><a href="#排序命令" class="headerlink" title="排序命令"></a>排序命令</h1><blockquote>
+<p><strong>sort key</strong><br>对列表类型，集合类型和有序集合进行排序<br>默认是从小到大排序,sort key desc可以从大到小<br><strong>sort tag:ruby:posts by post:*-&gt;time desc</strong><br>根据对象post:*(通配符)的time属性以降序的方式对列表tag:ruby:posts排序  </p>
+<ul>
+<li><blockquote>
+<p>lpush sortlist 1 2 3  </p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>set item:1 50  </p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>set item:2 100  </p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>set item:3 -10  </p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>sort sortlist by item:* desc  </p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>结果&nbsp;&nbsp;2 &nbsp;&nbsp;1&nbsp;&nbsp; 3<br>sort tag:ruby:posts by post:<em>-&gt;time desc get post:</em>-&gt;title get post:<em>-&gt;time<br>根据对象post:</em>(通配符)的time属性以降序的方式对列表tag:ruby:posts排序,同时获取post:<em>-&gt;title和post:</em>-&gt;time  </p>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+<h1 id="任务队列"><a href="#任务队列" class="headerlink" title="任务队列"></a>任务队列</h1><blockquote>
+<ul>
+<li>松耦合  </li>
+<li>易于扩展<br>使用Redis中队列类型,生产者lpush任务进入队列，消费者rpop获取任务<br><strong>一般消费者使用brpop；brpop当列表中没有元素时会一直阻塞住连接，直到有新元素加入</strong>  </li>
+</ul>
+</blockquote>
+<h1 id="优先级队列"><a href="#优先级队列" class="headerlink" title="优先级队列"></a>优先级队列</h1><blockquote>
+<p>brpop命令可以接受多个键；同时检测多个键，如果所有键都没有元素则阻塞，如果其中有一个键有元素则会从该键中弹出元素，按照从左到右的顺序取键中的元素  </p>
+<ul>
+<li><strong>brpop queue:one queue:two</strong>  </li>
+<li>一旦queue:one键中有元素就会去除queue:one键中的元素，直到queue:one键中无元素才会到queue:two键中取元素，也就是说queue:one的优先级比queue:two高  </li>
+</ul>
+</blockquote>
+<h1 id="发布-订阅模式"><a href="#发布-订阅模式" class="headerlink" title="发布/订阅模式"></a>发布/订阅模式</h1><blockquote>
+<p>Redis提供一组命令可以实现发布/订阅模式<br><strong>publish channel.1 hi</strong><br>向频道channel.1发送hi<br><strong>subscribe channel.1</strong><br>订阅频道channel.1<br>psubscribe命令可以支持正则表达式的形式订阅指定的频道  </p>
+</blockquote>
+<h1 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h1><blockquote>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;客户端与Redis使用TCP协议连接的，每次执行多个命令时每条命令必须要等待上一条命令执行完才能执行，这样会造成客户端与Redis执行多条命令时有累加时延。  </p>
+<hr>
+<p>&nbsp; &nbsp; &nbsp; &nbsp;为了解决这个问题可以采用管道,一次性发送多条命令并执行完后一次性将每条命令的执行结果返回。<br>&nbsp; &nbsp; &nbsp; &nbsp;管道通过减少客户端与Redis的通信次数来实现降低往返时延累计值的目的。  </p>
+</blockquote>
+<h1 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h1><blockquote>
+<ul>
+<li><p>将Redis作为数据库使用时，Redis存放在内存中的数据需要持久化到内存，下次Redis重启时还能保证数据有效  </p>
+</li>
+<li><p>将Redis作为缓存服务器使用时，如果缓存被穿透，所有的缓存同时会失效。导致服务无法响应，这是需要将数据持久化到硬盘  </p>
+</li>
+</ul>
+<hr>
+<h2 id="缓存设计常见问题"><a href="#缓存设计常见问题" class="headerlink" title="缓存设计常见问题"></a>缓存设计常见问题</h2><ul>
+<li>缓存穿透<br><strong>缓存穿透是指查询一个一定不存在的数据，由于缓存是不命中时被动写的，并且出于容错考虑，如果从存储层查不到数据则不写入缓存，这将导致这个不存在的数据每次请求都要到存储层去查询，失去了缓存的意义。在流量大时，可能DB就挂掉了，要是有人利用不存在的key频繁攻击我们的应用，这就是漏洞。</strong>  </li>
+</ul>
+<p>解决: <strong>采用布隆过滤器，将所有可能存在的数据哈希到一个足够大的bitmap中，一个一定不存在的数据会被 这个bitmap拦截掉，从而避免了对底层存储系统的查询压力。另外也有一个更为简单粗暴的方法（我们采用的就是这种），如果一个查询返回的数据为空（不管是数 据不存在，还是系统故障），我们仍然把这个空结果进行缓存，但它的过期时间会很短，最长不超过五分钟。</strong>  </p>
+<hr>
+<ul>
+<li>缓存雪崩<br><strong>缓存雪崩是指在我们设置缓存时采用了相同的过期时间，导致缓存在某一时刻同时失效，请求全部转发到DB，DB瞬时压力过重雪崩。</strong><br>解决:<strong>缓存失效时的雪崩效应对底层系统的冲击非常可怕。大多数系统设计者考虑用加锁或者队列的方式保证缓存的单线 程（进程）写，从而避免失效时大量的并发请求落到底层存储系统上。这里分享一个简单方案就时讲缓存失效时间分散开，比如我们可以在原有的失效时间基础上增加一个随机值，比如1-5分钟随机，这样每一个缓存的过期时间的重复率就会降低，就很难引发集体失效的事件。</strong>  </li>
+</ul>
+<hr>
+<ul>
+<li>缓存击穿<br><strong>对于一些设置了过期时间的key，如果这些key可能会在某些时间点被超高并发地访问，是一种非常“热点”的数据。这个时候，需要考虑一个问题：缓存被“击穿”的问题，这个和缓存雪崩的区别在于这里针对某一key缓存，前者则是很多key。缓存在某个时间点过期的时候，恰好在这个时间点对这个Key有大量的并发请求过来，这些请求发现缓存过期一般都会从后端DB加载数据并回设到缓存，这个时候大并发的请求可能会瞬间把后端DB压垮。</strong><br>解决:<strong>1.使用互斥锁(mutex key)2.”提前”使用互斥锁(mutex key)：3. “永远不过期”：</strong>  </li>
+</ul>
+<hr>
+<p>Redis持久化方式  </p>
+<ul>
+<li>RDB方式(快照)<br><strong>1.根据用户配置2.执行save或bgsave3.执行flushall命令</strong></li>
+<li>AOF方式<br><strong>AOF将Redis执行写命令时将数据写入硬盘，会明显降低Redis性能</strong>  </li>
+</ul>
+</blockquote>
+<h1 id="Redis集群"><a href="#Redis集群" class="headerlink" title="Redis集群"></a>Redis集群</h1><blockquote>
+<h2 id="复制"><a href="#复制" class="headerlink" title="复制"></a>复制</h2><p>Redis提供复制功能，可以实现当一台数据库中的数据更新后，自动将更新的数据同步到其他数据库上  </p>
+<h2 id="Redis配置"><a href="#Redis配置" class="headerlink" title="Redis配置"></a>Redis配置</h2><p>从数据库Redis配置文件中加入slaveof 主数据库地址 主数据库端口;主数据库无需配置  </p>
+<h2 id="哨兵"><a href="#哨兵" class="headerlink" title="哨兵"></a>哨兵</h2><ul>
+<li><p>监控主数据库和从数据库是否正常运行  </p>
+</li>
+<li><p>主数据库出项故障时自动将从数据库转为主数据库  </p>
+</li>
+<li><p>哨兵是一个独立的进程  </p>
+<h2 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h2><p>使用集群只需要将每个数据库节点的cluster-enabled配置项打开即可  </p>
+</li>
+</ul>
+</blockquote>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持胡思旺</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.jpg" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2018/10/31/jvm笔记/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2018/10/31/java容器笔记/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+
+   
+      <div class="git"></div>
+   
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/project/" rel="noopener noreferrer" target="_self">
+              项目
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/about/" rel="noopener noreferrer" target="_self">
+              关于
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'forsigner';
+    
+    var disqus_url = 'http://yoursite.com/2018/10/31/redis笔记/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <script id="dsq-count-scr" src="//forsigner.disqus.com/count.js" async></script>
+
+
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
