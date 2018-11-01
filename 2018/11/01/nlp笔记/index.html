@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>nlp笔记 | 胡思旺</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="全栈,微服务,Java,Netty,Vue,机器学习,Python">
+  
+
+  <meta name="description" content="文本建模 1.向量空间模型向量空间模型(VSM)使用词袋模型(词袋模型基于一元文法统计模型)表示方法将词表示成one-hot向量，该模型假设文档之间是相互独立的，词语之间也是相互独立的将文本映射成高维的特征向量，利用特征空间向量来表示文本   2.浅层语义分析模型 浅层语义分析模型(LSA),构造一个文档与词语的关系矩阵，矩阵的行表示词语，矩阵的列则表示文档，矩阵中元素的值表示该词语出现在该文档中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nlp笔记">
+<meta property="og:url" content="http://yoursite.com/2018/11/01/nlp笔记/index.html">
+<meta property="og:site_name" content="胡思旺">
+<meta property="og:description" content="文本建模 1.向量空间模型向量空间模型(VSM)使用词袋模型(词袋模型基于一元文法统计模型)表示方法将词表示成one-hot向量，该模型假设文档之间是相互独立的，词语之间也是相互独立的将文本映射成高维的特征向量，利用特征空间向量来表示文本   2.浅层语义分析模型 浅层语义分析模型(LSA),构造一个文档与词语的关系矩阵，矩阵的行表示词语，矩阵的列则表示文档，矩阵中元素的值表示该词语出现在该文档中">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2018/11/01/nlp笔记/word.PNG">
+<meta property="og:image" content="http://yoursite.com/2018/11/01/nlp笔记/ciyun.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/11/01/nlp笔记/skip-gram.png">
+<meta property="og:image" content="http://yoursite.com/2018/11/01/nlp笔记/CBOW.png">
+<meta property="og:image" content="http://yoursite.com/2018/11/01/nlp笔记/6261.PNG">
+<meta property="og:image" content="http://yoursite.com/2018/11/01/nlp笔记/6262.PNG">
+<meta property="og:image" content="http://yoursite.com/2018/11/01/nlp笔记/1.PNG">
+<meta property="og:image" content="http://yoursite.com/2018/11/01/nlp笔记/sentence.PNG">
+<meta property="og:image" content="http://yoursite.com/2018/11/01/nlp笔记/2.png">
+<meta property="og:image" content="http://yoursite.com/2018/11/01/nlp笔记/EMD.PNG">
+<meta property="og:image" content="http://yoursite.com/2018/11/01/nlp笔记/ext.PNG">
+<meta property="og:image" content="http://yoursite.com/2018/11/01/nlp笔记/seq2seq.png">
+<meta property="og:image" content="http://yoursite.com/2018/11/01/nlp笔记/scheme.PNG">
+<meta property="og:updated_time" content="2018-11-01T02:53:03.596Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="nlp笔记">
+<meta name="twitter:description" content="文本建模 1.向量空间模型向量空间模型(VSM)使用词袋模型(词袋模型基于一元文法统计模型)表示方法将词表示成one-hot向量，该模型假设文档之间是相互独立的，词语之间也是相互独立的将文本映射成高维的特征向量，利用特征空间向量来表示文本   2.浅层语义分析模型 浅层语义分析模型(LSA),构造一个文档与词语的关系矩阵，矩阵的行表示词语，矩阵的列则表示文档，矩阵中元素的值表示该词语出现在该文档中">
+<meta name="twitter:image" content="http://yoursite.com/2018/11/01/nlp笔记/word.PNG">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cben" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+
+</head>
+</html>
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/project/" rel="noopener noreferrer" target="_self">
+            项目
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/about/" rel="noopener noreferrer" target="_self">
+            联系
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#文本建模"><span class="toc-text">文本建模</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#词频分析"><span class="toc-text">词频分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Word2Vec词向量训练"><span class="toc-text">Word2Vec词向量训练</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#高频词聚类-意图分析"><span class="toc-text">高频词聚类(意图分析)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#关联分析"><span class="toc-text">关联分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#关键词提取"><span class="toc-text">关键词提取</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#TF-IDF算法"><span class="toc-text">TF-IDF算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TextRank算法"><span class="toc-text">TextRank算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#依存文法分析"><span class="toc-text">依存文法分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#举例"><span class="toc-text">举例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#句子结构"><span class="toc-text">句子结构</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#句子相似度计算"><span class="toc-text">句子相似度计算</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-句向量"><span class="toc-text">1.句向量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-EMD距离"><span class="toc-text">2.EMD距离</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#闲聊设计"><span class="toc-text">闲聊设计</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Elasticsearch"><span class="toc-text">Elasticsearch</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#文本聚类"><span class="toc-text">文本聚类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-产品"><span class="toc-text">1.产品</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-硬件"><span class="toc-text">2.硬件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#方案设计"><span class="toc-text">方案设计</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#项目构建"><span class="toc-text">项目构建</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-nlp笔记" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">nlp笔记</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.11.01</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>siwang.hu</span>
+        </span>
+      
+
+      
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://www.github.com/siwanghu/2018/11/01/nlp笔记/#disqus_thread"></a>
+        </span>
+      
+
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1 id="文本建模"><a href="#文本建模" class="headerlink" title="文本建模"></a>文本建模</h1><blockquote>
+<p><strong>1.向量空间模型</strong><br>向量空间模型(VSM)使用词袋模型(词袋模型基于一元文法统计模型)表示方法将词表示成one-hot向量，该模型假设文档之间是相互独立的，词语之间也是相互独立的将文本映射成高维的特征向量，利用特征空间向量来表示文本  </p>
+<p><strong>2.浅层语义分析模型</strong><br> 浅层语义分析模型(LSA),构造一个文档与词语的关系矩阵，矩阵的行表示词语，矩阵的列则表示文档，矩阵中元素的值表示该词语出现在该文档中的次数，也可以使用词语在文档中的权重来给矩阵中的元素赋值。使用PCA降维对文档与词语的关系矩阵进行降维，使得文档中相似的词合并掉  </p>
+<p><strong>3.文档主题模型</strong><br>文档主题模型(LDA)从语义出发，在词语和文档的关系之外，引入了主题词的概念，增加了词语和主题词的关系，主题词和文档的关系。该模型要指定文档主题的数量，即文本语料中包含有多少个主题，通过对文本语料的训练，给出每个文本属于每个主题的概率，以及文本中的每个词语属于每个主题的概率。  </p>
+</blockquote>
+<h1 id="词频分析"><a href="#词频分析" class="headerlink" title="词频分析"></a>词频分析</h1><blockquote>
+<p><strong>pip install nltk</strong><br><strong>pip install matplotlib</strong><br>(‘会议’, 6182)<br>(‘电话’, 4136)<br>(‘需求’, 2488)<br>(‘视频会议’, 2263)<br>(‘试用’, 2176)<br>(‘购买’, 2143)<br>(‘注册’, 2117)<br>(‘收费’, 1945)<br>(‘支持’, 1882)<br>(‘联系’, 1825)<br>(‘下载’, 1812)<br>(‘系统’, 1718)<br>(‘账号’, 1678)<br>(‘软件’, 1665)<br>(‘电话会议’, 1609)<br>(‘参加’, 1599)<br>(‘邮箱’, 1585)<br>(‘手机’, 1531)<br>(‘电脑’, 1415)<br>(‘视频’, 1378)<br>(‘测试’, 1349)<br>(‘销售’, 1187)<br>(‘接入’, 1074)<br>(‘报价’, 1021)<br>(‘呼叫’, 995)<br>(‘咨询’, 993)<br>(‘参会’, 939)<br>(‘终端’, 882)<br>(‘产品’, 846)<br>(‘负责人’, 834)<br>(‘网络’, 822)<br>(‘申请’, 796)<br>(‘帐号’, 785)<br>(‘登录’, 763)<br>(‘中心’, 741)<br>(‘方’, 738)<br>(‘链接’, 728)<br>(‘网页’, 713)<br>(‘人数’, 695)<br>(‘操作’, 690)<br>(‘问题’, 690)<br>(‘密码’, 690)<br>(‘会议室’, 686)<br>(‘硬件’, 644)<br>(‘官网’, 589)<br>(‘行业’, 560)<br>(‘免费’, 560)<br>(‘买’, 552)<br>(‘功能’, 551)<br>(‘点击’, 540)  </p>
+<p><img src="word.PNG" alt="词频分布图"><br><img src="ciyun.jpg" alt="分布图"></p>
+</blockquote>
+<h1 id="Word2Vec词向量训练"><a href="#Word2Vec词向量训练" class="headerlink" title="Word2Vec词向量训练"></a>Word2Vec词向量训练</h1><blockquote>
+<p> <strong>pip install gensim</strong><br>构建三层神经网络，分别是输入层，隐藏层,softmax输出层。对词进行one-hot编码，输入网络训练，词向量训练结果为词one-hot向量与网络隐藏层中间权重矩阵相乘<br><strong>1.skip-gram算法</strong><br><img src="skip-gram.png" alt="算法图">  </p>
+<p><strong>2.CBOW算法</strong><br><img src="CBOW.png" alt="算法图"><br><strong>“产品”的相似词</strong>(1,300)向量  </p>
+<p>平台 0.7766879796981812<br>业务 0.7454820275306702<br>解决方案 0.7286168336868286<br>服务 0.7222141027450562<br>软件 0.7052211761474609<br>方案 0.6947022676467896<br>系统 0.6891728639602661<br>功能 0.6855509281158447<br>智能 0.6630642414093018<br>代理 0.6596889495849609  </p>
+</blockquote>
+<h1 id="高频词聚类-意图分析"><a href="#高频词聚类-意图分析" class="headerlink" title="高频词聚类(意图分析)"></a>高频词聚类(意图分析)</h1><blockquote>
+<p><strong>pip install sckit-learn</strong><br><strong>k-means聚类算法</strong><br>第1类：  [‘手机’, ‘电脑’, ‘网页’]<br>第2类：  [‘买’, ‘购买’]<br>第3类：  [‘邮箱’]<br>第4类：  [‘会议’]<br>第5类：  [‘免费’, ‘问题’]<br>第6类：  [‘中心’, ‘电话会议’, ‘硬件’, ‘视频会议’]<br>第7类：  [‘需求’]<br>第8类：  [‘负责人’, ‘销售’]<br>第9类：  [‘官网’, ‘密码’, ‘点击’, ‘登录’, ‘链接’]<br>第10类：  [‘人数’]<br>第11类：  [‘电话’]<br>第12类：  [‘产品’, ‘功能’, ‘支持’, ‘系统’, ‘网络’, ‘视频’, ‘软件’]<br>第13类：  [‘联系’]<br>第14类：  [‘下载’, ‘操作’]<br>第15类：  [‘帐号’, ‘账号’]<br>第16类：  [‘测试’, ‘试用’]<br>第17类：  [‘接入’, ‘终端’]<br>第18类：  [‘行业’]<br>第19类：  [‘注册’, ‘申请’]<br>第20类：  [‘收费’]<br>第21类：  [‘参加’]<br>第22类：  [‘报价’]<br>第23类：  [‘会议室’, ‘参会’, ‘方’]<br>第24类：  [‘呼叫’]<br>第25类：  [‘咨询’]  </p>
+</blockquote>
+<h1 id="关联分析"><a href="#关联分析" class="headerlink" title="关联分析"></a>关联分析</h1><blockquote>
+<p><strong>pip install apyori</strong><br>关联分析发现隐藏在大型数据集中有意义的数据联系的方法  </p>
+<p>关联规则是形如X→Y的表达式，其中X和Y是不相交的项集，即X∩Y=∅。关联规则的强度可以用支持度和置信度衡量。支持度确定规则可以用于给定数据集的频繁程度，而置信度确定Y在包含X的事务中出现的频繁程度。支持度(s)和置信度(c)的形式定义如下：<br><img src="6261.PNG" alt="定义"><br><img src="6262.PNG" alt="公式"><br><strong>Apriori算法</strong>&nbsp;&nbsp; <a href="https://blog.csdn.net/qq_23100787/article/details/51790637" target="_blank" rel="noopener">FP增长算法</a><br><a href="http://crescentmoon.info/2013/02/18/%E3%80%8A%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98%E5%AF%BC%E8%AE%BA%E3%80%8B%E6%80%BB%E7%BB%93%E4%B9%8B%E5%85%B3%E8%81%94%E5%88%86%E6%9E%90/" target="_blank" rel="noopener">参考资料</a>  </p>
+</blockquote>
+<h1 id="关键词提取"><a href="#关键词提取" class="headerlink" title="关键词提取"></a>关键词提取</h1><blockquote>
+<p><strong>pip install jieba</strong></p>
+<h2 id="TF-IDF算法"><a href="#TF-IDF算法" class="headerlink" title="TF-IDF算法"></a><strong>TF-IDF</strong>算法</h2><p><strong>关键字的提取严重依赖预料库</strong><br>TF=(词在文档中出现的次数)/(文档总词数)<br>IDF=log(语料库中文档总数/(包含该词的文档数+1))<br>TF-IDF= TF*IDF<br>TF-IDF值越大，则这个词成为一个关键词的概率就越大  </p>
+<h2 id="TextRank算法"><a href="#TextRank算法" class="headerlink" title="TextRank算法"></a><strong>TextRank</strong>算法</h2><p>1.先对文档分词,分词结束词性标注处理，并过滤掉一些停用词，保留我们需要的词性的单词，名词或者动词或形容词  </p>
+<p>2.将上述我们需要的词语构建一个关键词图，其中词语为图的节点，然后通过共现关系构造任意两点之间的边，两个节点之间存在边仅当他们对应的词汇在长度为k的窗口中共现，K表示窗口的大小，即一个窗口单词的个数默认是5  </p>
+<p>3.根据PageRank原理中的衡量重要性的公式，初始化各节点的权重，然后迭代计算各节点的权重，直至收敛<br><img src="1.PNG" alt="PageRank计算公式"><br>4.对节点权重进行排序，选取得分最高的几个作为候选关键词</p>
+</blockquote>
+<h1 id="依存文法分析"><a href="#依存文法分析" class="headerlink" title="依存文法分析"></a>依存文法分析</h1><blockquote>
+<p>1.一个句子中只有一个成分是独立的  </p>
+<p>2.其它成分直接依存于某一成分  </p>
+<p>3.任何一个成分都不能依存与两个或两个以上的成分  </p>
+<p>4.如果A成分直接依存于B成分，而C成分在句中位于A和B之间，那么C或者直接依存于B，或者直接依存于A和B之间的某一成分  </p>
+<p>5.中心成分左右两面的其它成分相互不发生关系  </p>
+<h2 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h2><p> 主谓关系&nbsp;&nbsp;SBV&nbsp;(subject-verb)&nbsp;&nbsp;我送她一束花 (我 &lt;– 送)  </p>
+<p> 动宾关系&nbsp;&nbsp;VOB&nbsp;(verb-object)&nbsp;&nbsp;我送她一束花 (送 –&gt; 花)  </p>
+<p> 间宾关系&nbsp;&nbsp;IOB&nbsp;(indirect-object)&nbsp;&nbsp;我送她一束花 (送 –&gt; 她)  </p>
+<p>前置宾语&nbsp;&nbsp;FOB&nbsp;(fronting-object)&nbsp;&nbsp;他什么书都读 (书 &lt;– 读)  </p>
+<p> 并列关系&nbsp;&nbsp;COO&nbsp;(coordinate)&nbsp;&nbsp;大山和大海 (大山 –&gt; 大海)  </p>
+<p> 定中关系&nbsp;&nbsp;ATT&nbsp;(attribute)&nbsp;&nbsp;红苹果 (红 &lt;– 苹果)  </p>
+<p>兼语&nbsp;&nbsp;DBL&nbsp;(double)&nbsp;&nbsp;他请我吃饭 (请 –&gt; 我)  </p>
+<h2 id="句子结构"><a href="#句子结构" class="headerlink" title="句子结构"></a>句子结构</h2><p><strong>现代汉语结构：</strong> &nbsp;(定语)主语 + [状语]谓语 &lt;补语&gt; + (定语)宾语<br><img src="sentence.PNG" alt="汉语结构"></p>
+</blockquote>
+<h1 id="句子相似度计算"><a href="#句子相似度计算" class="headerlink" title="句子相似度计算"></a>句子相似度计算</h1><blockquote>
+<h2 id="1-句向量"><a href="#1-句向量" class="headerlink" title="1.句向量"></a>1.句向量</h2><p>1.对句子中的所有词的词向量进行加权平均(每个词向量的权重为<strong>a/(a+p(w))</strong><br><strong>a</strong> 代表参数，<strong>p(w)</strong> 代表词w的频率(相对整个预料的频率，不是指相对句子的频率)  </p>
+<p>2.使用<a href="https://github.com/siwanghu/Machine-Learning/blob/master/%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90.pdf" target="_blank" rel="noopener">PCA算法</a>对生成的句向量降维<br><img src="2.png" alt="句向量算法"><br>参考论文<a href="https://openreview.net/pdf?id=SyK00v5xx" target="_blank" rel="noopener">A Simple but Tough-to-Beat Baseline for Sentence Embeddings</a>  </p>
+<h2 id="2-EMD距离"><a href="#2-EMD距离" class="headerlink" title="2.EMD距离"></a>2.EMD距离</h2><p><strong>pip install pyemd</strong><br>首先将参与计算相似度的句子进行分词，去除停用词。接着查找词的词向量并计算每个词在所在句子中的词频。采用EMD距离计算短文本间的语义相似度，将一个句子的特征词向量全部“流向”另一个句子的特征词向量所经过的距离总和的最小值作为两个短文本之间的语义相似度。<br><img src="EMD.PNG" alt="EMD算法"><br><img src="ext.PNG" alt="EMD举例">  </p>
+<p><a href="https://github.com/wmayner/pyemd" target="_blank" rel="noopener">pyemd参考资料</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://blog.csdn.net/index20001/article/details/77162495" target="_blank" rel="noopener">EMD介绍</a>  </p>
+</blockquote>
+<h1 id="闲聊设计"><a href="#闲聊设计" class="headerlink" title="闲聊设计"></a>闲聊设计</h1><blockquote>
+<p><strong>1.使用seq2seq2模型，在tensorflow上实现</strong><br><strong>pip install tensorflow-gpu</strong><br><a href="https://github.com/siwanghu/chabot/blob/master/train.py" target="_blank" rel="noopener">实现代码</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://blog.csdn.net/malefactor/article/details/78767781" target="_blank" rel="noopener">注意力机制</a>  </p>
+<p><img src="seq2seq.png" alt="模型图">  </p>
+<p><strong>2.图灵机器人</strong><br><strong>pip install itchat</strong><br><a href="https://github.com/siwanghu/chabot/blob/master/wechat.py" target="_blank" rel="noopener">实现代码</a>  </p>
+</blockquote>
+<h1 id="Elasticsearch"><a href="#Elasticsearch" class="headerlink" title="Elasticsearch"></a>Elasticsearch</h1><blockquote>
+<p><strong>pip install elasticsearch</strong><br>基于Lucene的全文搜索引擎<br><a href="http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html" target="_blank" rel="noopener">入门教程</a>&nbsp;&nbsp;<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/getting-started.html" target="_blank" rel="noopener">官方教程</a>  </p>
+</blockquote>
+<h1 id="文本聚类"><a href="#文本聚类" class="headerlink" title="文本聚类"></a>文本聚类</h1><blockquote>
+<h2 id="1-产品"><a href="#1-产品" class="headerlink" title="1.产品"></a>1.产品</h2><p>第1类：  [‘请问你们的云视频会议产品可以作二次开发吗’, ‘请问你们的产品是否提供开放式’]<br>第2类：  [‘产品大概多少钱啊’, ‘什么样的产品’]<br>第3类：  [‘上次有找你们了解过你们的产品’, ‘不了解你们的产品’]<br>第4类：  [‘之前没有用过你们家产品’, ‘产品可以发过来体验’]<br>第5类：  [‘产品试用的人数有限制嘛’, ‘你们产品如何试用’]<br>第6类：  [‘您是需要什么产品吗’, ‘请问我需要产品的价格的话’]<br>第7类：  [‘你们公司的产品是做视频直播的’, ‘公司已经估使用你们的产品了’]<br>第8类：  [‘个人能够购买你们的产品吗’, ‘产品在线购买是怎么操作’]<br>第9类：  [‘如果作为加入会议的一方还需要购买咱们的产品吗’, ‘如果是发起会议就必须付费购买产品吧’]<br>第10类：  [‘你们的产品网络视频会议系统’, ‘你们的网络直播产品’]<br>第11类：  [‘产品使用’, ‘你们的产品怎么使用啊’]<br>第12类：  [‘产品的收费标准我看一下’, ‘你们产品的收费是怎样的’]<br>第13类：  [‘刚有留联系方式咨询产品的’, ‘咨询一下你们外呼的产品’]<br>第14类：  [‘你们的产品是会议还是呼叫中心’, ‘关于呼叫中心的产品白皮书’]<br>第15类：  [‘介绍下你们产品呗’, ‘介绍下您家的产品’]<br>第16类：  [‘不能先给我个你们的产品介绍或方案么’, ‘产品介绍可以发给我看一下吗’]<br>第17类：  [‘你们的产品可以满足这个需求吗’, ‘刚才你们同事打电话咨询我的产品需求’]<br>第18类：  [‘你们这个产品是可以直接拨打其他人手机号加入电话会议的吗’, ‘我想问下你们这个产品是以网页的形式进行在线视频会议的吗’]<br>第19类：  [‘另外用你们的产品是需要下载软件的吗’, ‘就其他人不用下载你们的产品’]<br>第20类：  [‘你们卖的产品是软件吗’, ‘你们的产品是硬件还是软件啊’]<br>第21类：  [‘你们的产品可以满足这些要求么’, ‘你们的产品能满足这些功能吗’]<br>第22类：  [‘产品信息的收费情况’, ‘产品属于什么的’]<br>第23类：  [‘想了解一下咱们产品都在什么单位使用呢’, ‘想了解一下咱们的产品功能’]<br>第24类：  [‘会议产品费用如何’, ‘会议终端如果本身就是思科的产品’]<br>第25类：  [‘产品主要功能’, ‘产品功能’]<br>第26类：  [‘能安排一下产品经理和我联系吗’, ‘要不我就联系别的产品了’]<br>第27类：  [‘你们代理思科的产品吗’, ‘你们是代理的思科的产品吗’]<br>第28类：  [‘产品功能和报价’, ‘产品和报价’]<br>第29类：  [‘产品确定了’, ‘我不太清楚你们的产品’]<br>第30类：  [‘不知道咱们的产品是否支持’, ‘产品支持多人在线视频’]  </p>
+<h2 id="2-硬件"><a href="#2-硬件" class="headerlink" title="2.硬件"></a>2.硬件</h2><p>第1类：  [‘不需要买硬件对吧’, ‘不需要任何硬件’, ‘不需要其他硬件了吧’]<br>第2类：  [‘不是硬件’, ‘不是硬件’, ‘主要是硬件’]<br>第3类：  [‘但是我们想要带硬件的那种’, ‘你们是做软件还是硬件还是软件硬件一起做全套的’, ‘你们是用硬件实现视频会议还是纯软件’]<br>第4类：  [‘不用购买硬件’, ‘不购买额外的硬件’, ‘不需要另外购买硬件支持的’]<br>第5类：  [‘你们也提供硬件吧’, ‘你们公司做视频会议硬件吗’, ‘你们提供的是否包括硬件设备’]<br>第6类：  [‘你们这个是没有硬件的是吧’, ‘如果没有硬件’, ‘您这边没有硬件设备’]<br>第7类：  [‘你们的硬件终端包括哪些设备’, ‘宝利通的硬件终端可以通吗’, ‘我们还有思科硬件终端’]<br>第8类：  [‘一般视频会议需要些什么硬件设备’, ‘不需要硬件支持吗’, ‘会议室需要什么硬件支持呢’]<br>第9类：  [‘一年包含硬件吗’, ‘不用其他硬件’, ‘不用其他硬件吗’]<br>第10类：  [‘后期会有硬件视频会议需求’, ‘对硬件有什么需求吗’, ‘或者对硬件有什么需求你们也可以给我们方案’]  </p>
+</blockquote>
+<h1 id="方案设计"><a href="#方案设计" class="headerlink" title="方案设计"></a>方案设计</h1><blockquote>
+<p><strong>设计图</strong>  </p>
+<p><img src="scheme.PNG" alt="方案"><br><strong>方案步骤</strong><br>1.原始数据–&gt;数据分词–&gt;语料IDF计算 <strong>(计算原始语料数据词语IDF值)</strong>  </p>
+<p>2.原始数据–&gt;数据分词–&gt;Word2Vec词向量训练 <strong>(训练词向量)</strong>  </p>
+<p>3.Word2Vec词向量训练–&gt;同义词分析 <strong>(分析高频词同义词)</strong>  </p>
+<p>4.原始数据–&gt;数据分词–&gt;词频统计–&gt;高频词聚类–&gt;问题提取–&gt;意图分类 <strong>(意图提取)</strong>  </p>
+<p>5.意图分类–&gt;TF-IDF关键词提取–&gt;语义向量构建–&gt;文本聚类–&gt;问题分类 <strong>(问题细分)</strong>  </p>
+<p><strong>第4步：先按照提取问题中含有的关键字优先级 <em>(以词频表示优先级)</em> 对问题做出意图分类</strong><br><strong>第5步：对第4步中分类的每个意图分别采取文本聚类 <em>(语义向量构建)</em> 进一步对意图分类</strong>  </p>
+</blockquote>
+<h1 id="项目构建"><a href="#项目构建" class="headerlink" title="项目构建"></a>项目构建</h1><blockquote>
+<p><strong>python项目构建</strong>  </p>
+<p><a href="https://www.jianshu.com/p/81d20ccf5d13" target="_blank" rel="noopener">参考资料</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://beginman.cn/python/2016/01/18/python-tools-dev/" target="_blank" rel="noopener">构建工具</a>  </p>
+</blockquote>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持胡思旺</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.jpg" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2018/10/31/java多线程笔记/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2018/11/01/springboot注解笔记/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+
+   
+      <div class="git"></div>
+   
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/project/" rel="noopener noreferrer" target="_self">
+              项目
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/about/" rel="noopener noreferrer" target="_self">
+              联系
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'forsigner';
+    
+    var disqus_url = 'http://yoursite.com/2018/11/01/nlp笔记/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <script id="dsq-count-scr" src="//forsigner.disqus.com/count.js" async></script>
+
+
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

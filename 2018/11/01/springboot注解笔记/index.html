@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>springboot注解笔记 | 胡思旺</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="全栈,微服务,Java,Netty,Vue,机器学习,Python">
+  
+
+  <meta name="description" content="SpringBoot注解（siwang.hu&amp;nbsp;&amp;nbsp;V1.0） 官方学习资料    1.&amp;nbsp;&amp;nbsp;@SpringBootApplication  注解在启动类上    等效于以默认属性使用 @Configuration ， @EnableAutoConfiguration 和 @ComponentScan   123456789101112131415@SpringB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="springboot注解笔记">
+<meta property="og:url" content="http://yoursite.com/2018/11/01/springboot注解笔记/index.html">
+<meta property="og:site_name" content="胡思旺">
+<meta property="og:description" content="SpringBoot注解（siwang.hu&amp;nbsp;&amp;nbsp;V1.0） 官方学习资料    1.&amp;nbsp;&amp;nbsp;@SpringBootApplication  注解在启动类上    等效于以默认属性使用 @Configuration ， @EnableAutoConfiguration 和 @ComponentScan   123456789101112131415@SpringB">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-01T02:54:01.814Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="springboot注解笔记">
+<meta name="twitter:description" content="SpringBoot注解（siwang.hu&amp;nbsp;&amp;nbsp;V1.0） 官方学习资料    1.&amp;nbsp;&amp;nbsp;@SpringBootApplication  注解在启动类上    等效于以默认属性使用 @Configuration ， @EnableAutoConfiguration 和 @ComponentScan   123456789101112131415@SpringB">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cben" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+
+</head>
+</html>
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/project/" rel="noopener noreferrer" target="_self">
+            项目
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/about/" rel="noopener noreferrer" target="_self">
+            联系
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SpringBoot注解（siwang-hu-nbsp-nbsp-V1-0）"><span class="toc-text">SpringBoot注解（siwang.hu  V1.0）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-nbsp-nbsp-SpringBootApplication"><span class="toc-text">1.  @SpringBootApplication</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-springboot注解笔记" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">springboot注解笔记</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.11.01</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>siwang.hu</span>
+        </span>
+      
+
+      
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://www.github.com/siwanghu/2018/11/01/springboot注解笔记/#disqus_thread"></a>
+        </span>
+      
+
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1 id="SpringBoot注解（siwang-hu-nbsp-nbsp-V1-0）"><a href="#SpringBoot注解（siwang-hu-nbsp-nbsp-V1-0）" class="headerlink" title="SpringBoot注解（siwang.hu&nbsp;&nbsp;V1.0）"></a>SpringBoot注解（siwang.hu&nbsp;&nbsp;V1.0）</h1><blockquote>
+<p><a href="https://docs.spring.io/spring-boot/docs/2.0.0.BUILD-SNAPSHOT/reference/htmlsingle/" target="_blank" rel="noopener">官方学习资料</a>  </p>
+</blockquote>
+<h2 id="1-nbsp-nbsp-SpringBootApplication"><a href="#1-nbsp-nbsp-SpringBootApplication" class="headerlink" title="1.&nbsp;&nbsp;@SpringBootApplication"></a><strong>1.&nbsp;&nbsp;@SpringBootApplication</strong></h2><blockquote>
+<ul>
+<li><p>注解在启动类上  </p>
+</li>
+<li><p>等效于以默认属性使用 @Configuration ， @EnableAutoConfiguration 和 @ComponentScan  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@SpringBootApplication</span><br><span class="line">public class StartApplication &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String args[])throws Exception&#123;</span><br><span class="line">        SpringApplication.run(StartApplication.class,args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">```  </span><br><span class="line">&gt;  </span><br><span class="line">## **2.&amp;nbsp;&amp;nbsp;@value**  </span><br><span class="line">&gt; + 该注解可以读取springboot中的配置文件中的参数值  </span><br><span class="line">&gt; + 方便读取自定义的配置参数  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; application.properties文件中的自定义配置如下:</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<p>port=8080<br>ip=127.0.0.1<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">使用方式:</span><br></pre></td></tr></table></figure></p>
+<p>@Value(“${port}”)<br>private int Port;</p>
+<p>@Value((“${ip}”))<br>private String Ip;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">## **3.&amp;nbsp;&amp;nbsp;@Configuration**  </span><br><span class="line">&gt; + 注解在类上,相当于用spring的时候xml里面的```&lt;beans&gt;```标签  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + 代表这个类是一个配置类  </span><br><span class="line">&gt;  </span><br><span class="line">## **4.&amp;nbsp;&amp;nbsp;@Bean**  </span><br><span class="line">&gt; + 注解在方法上，产生bean的方法，并且交给Spring容器管理  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + 如果未通过@Bean指定bean的名称，则默认与标注的方法名相同  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + @Bean注解默认作用域为单例singleton作用域，可通过@Scope(“prototype”)设置为原型作用域</span><br></pre></td></tr></table></figure></p>
+<p>@Configuration<br>public class RedisCache extends CachingConfigurerSupport {</p>
+<pre><code>@Autowired
+RedisConnectionFactory redisConnectionFactory;
+
+@Bean
+public RedisTemplate&lt;String,Object&gt; redisTemplate(){
+    RedisTemplate&lt;String, Object&gt; redisTemplate = new RedisTemplate&lt;&gt;();
+    initDomainRedisTemplate(redisTemplate, redisConnectionFactory);
+    return redisTemplate;
+}
+
+private void initDomainRedisTemplate(RedisTemplate&lt;String, Object&gt; redisTemplate, RedisConnectionFactory factory) {
+    redisTemplate.setKeySerializer(new StringRedisSerializer());
+    redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+    redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+    redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
+    redisTemplate.setConnectionFactory(factory);
+}
+
+@Bean
+public HashOperations&lt;String, String, Object&gt; hashOperations(RedisTemplate&lt;String, Object&gt; redisTemplate) {
+    return redisTemplate.opsForHash();
+}
+
+@Bean
+public ValueOperations&lt;String, Object&gt; valueOperations(RedisTemplate&lt;String, Object&gt; redisTemplate) {
+    return redisTemplate.opsForValue();
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">## **5.&amp;nbsp;&amp;nbsp;@Autowired和@Resource**  </span><br><span class="line">&gt; + @Autowired与@Resource都可以用来装配bean  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + 可以写在字段上,或写在setter方法上  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + @Autowired是默认按照类型装配的 @Resource默认是按照名称装配  </span><br><span class="line">&gt;  </span><br><span class="line">## **6.&amp;nbsp;&amp;nbsp;@Qualifier**  </span><br><span class="line">&gt; + 当有多个同一类型的Bean时，可以用@Qualifier(“name”)来指定  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + @Qualifier限定描述符能进行更细粒度的控制如何选择候选者</span><br></pre></td></tr></table></figure></p>
+<p>@Autowired<br>@Qualifier(value = “userOpService”)<br>private UserService userOpService;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">## **7.&amp;nbsp;&amp;nbsp;@ResponseBody**  </span><br><span class="line">&gt; + 注解在方法上，表明将结果直接写入HTTP response body，不做界面跳转  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + 比如获取json数据，加上@responsebody后，会直接返回json数据  </span><br><span class="line">## **8.&amp;nbsp;&amp;nbsp;@RestController与@Controller**   </span><br><span class="line">&gt; + @Controller一般用于前端界面跳转  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + @RestController相当于@ResponseBody ＋ @Controller合在一起的作用  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + @RestController用于开发restful api服务  </span><br><span class="line">## **9.&amp;nbsp;&amp;nbsp;@RequestMapping**  </span><br><span class="line">&gt; + 对外Url链接地址</span><br></pre></td></tr></table></figure></p>
+<p>@RequestMapping(value=”/voice/add”,method ={RequestMethod.GET,RequestMethod.POST})<br>public boolean addVoice(Voice voice) {<br>    return voiceService.insertVoice(voice);<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">## **10.&amp;nbsp;&amp;nbsp;组件注解**  </span><br><span class="line">&gt; + @Component注解放在类的头上,是所有受Spring 管理组件的通用形式,不推荐使用  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + @Service对应的是业务层Bean  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + @Repository对应数据访问层Bean  </span><br><span class="line">&gt;  </span><br><span class="line">## **11.&amp;nbsp;&amp;nbsp;@Transactional**  </span><br><span class="line">&gt; + 事务注解，添加在方法或类上，声明为事务  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + 一般用于数据库操作函数中</span><br></pre></td></tr></table></figure></p>
+<p>@Transactional<br>public boolean checkVoiceById(int id,Stringcommit){<br>    Voice voice=voiceDao.findById(id);<br>    voice.setCommit(commit);<br>    voiceDao.save(voice);<br>    return true;<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">## **12.&amp;nbsp;&amp;nbsp;@Entity与@Table(name=&quot;tb_voice&quot;)**  </span><br><span class="line">&gt; + @Entity声明持久化类  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + @Table声明表名  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + @Id声明表主键  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + @GeneratedValue(strategy= GenerationType.IDENTITY)声明表主键自动增长  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + @Column(nullable = false,name = &quot;id&quot;)声明表字段的属性和名称</span><br></pre></td></tr></table></figure></p>
+<p>@Entity<br>@Table(name=”tb_voice”)<br>public class Voice implements Serializable{<br>    private static final long serialVersionUID = 2300044412175011558L;</p>
+<pre><code>@Id
+@GeneratedValue(strategy= GenerationType.IDENTITY)
+@Column(nullable = false,name = &quot;id&quot;)
+private int id;
+
+@Column(nullable = false , name = &quot;name&quot;)
+private String name;
+
+@Column(nullable = false , name = &quot;label&quot;)
+private String label;
+
+@Column(nullable = false , name = &quot;datetime&quot;)
+private Date datetime;
+
+@Column(nullable = false , name = &quot;uri&quot;)
+private String uri;
+
+@Column(nullable = false , name = &quot;commit&quot;)
+private String commit;
+
+@Column(nullable = false , name = &quot;size&quot;)
+private String size;
+
+public void setId(int id) {
+    this.id = id;
+}
+
+public void setName(String name) {
+    this.name = name;
+}
+
+public void setLabel(String label) {
+    this.label = label;
+}
+
+public void setDatetime(Date datetime) {
+    this.datetime = datetime;
+}
+
+public void setUri(String uri) {
+    this.uri = uri;
+}
+
+public void setCommit(String commit) {
+    this.commit = commit;
+}
+
+public void setSize(String size) {
+    this.size = size;
+}
+
+public int getId() {
+    return id;
+}
+
+public String getName() {
+    return name;
+}
+
+public String getLabel() {
+    return label;
+}
+
+public Date getDatetime() {
+    return datetime;
+}
+
+public String getUri() {
+    return uri;
+}
+
+public String getCommit() {
+    return commit;
+}
+
+public String getSize() {
+    return size;
+}
+
+@Override
+public String toString() {
+    return &quot;Voice{&quot; +
+            &quot;id=&quot; + id +
+            &quot;, name=&apos;&quot; + name + &apos;\&apos;&apos; +
+            &quot;, label=&apos;&quot; + label + &apos;\&apos;&apos; +
+            &quot;, datetime=&quot; + datetime +
+            &quot;, uri=&apos;&quot; + uri + &apos;\&apos;&apos; +
+            &quot;, commit=&apos;&quot; + commit + &apos;\&apos;&apos; +
+            &quot;, size=&apos;&quot; + size + &apos;\&apos;&apos; +
+            &apos;}&apos;;
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">## **13.&amp;nbsp;&amp;nbsp;@Query**  </span><br><span class="line">&gt; + 用于springboot JPA中的自定义sql查询语句</span><br></pre></td></tr></table></figure></p>
+<p>public interface BookDao extends JpaRepository&lt;Book, Integer&gt;{</p>
+<pre><code>//Hql语句查询
+@Query(&quot;select b from Book b where b.bookName like %?1%&quot;)
+public List&lt;Book&gt; findByBookName(String bookName);
+
+//本地sql语句查询
+@Query(value=&quot;select * from t_book order by RAND() limit ?1&quot;,nativeQuery=true)
+public List&lt;Book&gt; randomList(Integer n);
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">## **14.&amp;nbsp;&amp;nbsp;@ControllerAdvice与@ExceptionHandler**  </span><br><span class="line">&gt; + 全局异常处理  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + 用于拦截服务器的异常</span><br></pre></td></tr></table></figure></p>
+<p>@ControllerAdvice<br>public class GlobalExceptionHandler {</p>
+<pre><code>@ExceptionHandler(Exception.class)
+public String handleException(){
+    return &quot;Exception!&quot;;
+}
+</code></pre><p>}<br><code>`</code>  </p>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持胡思旺</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.jpg" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2018/11/01/nlp笔记/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2018/11/01/springcloud笔记/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+
+   
+      <div class="git"></div>
+   
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/project/" rel="noopener noreferrer" target="_self">
+              项目
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/about/" rel="noopener noreferrer" target="_self">
+              联系
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'forsigner';
+    
+    var disqus_url = 'http://yoursite.com/2018/11/01/springboot注解笔记/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <script id="dsq-count-scr" src="//forsigner.disqus.com/count.js" async></script>
+
+
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

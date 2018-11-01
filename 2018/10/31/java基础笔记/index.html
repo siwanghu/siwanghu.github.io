@@ -7,28 +7,27 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>java基础笔记 | 胡思旺</title>
+  <title>胡思旺</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Java,">
+    <meta name="keywords" content="全栈,微服务,Java,Netty,Vue,机器学习,Python">
   
 
-  <meta name="description" content="Java基础命名规范  类名：使用UpperCamelCase风格（首字母都大写），必须遵从驼峰形式。 例如： ZipUtil    方法名、参数名、成员变量、局部变量： 都统一使用 lowerCamelCase 风格（第一个单词首字母小写，其他单词首字母大写），必须遵从驼峰形式。 例如： myName    静态变量、常量： 全部大写，单词间用下划线隔开，力求语义表达完整清楚。 例如：MAX_N">
-<meta name="keywords" content="Java">
+  <meta name="description" content="title: java基础笔记date: 2018-10-31 16:45:46 tags: Java命名规范  类名：使用UpperCamelCase风格（首字母都大写），必须遵从驼峰形式。 例如： ZipUtil    方法名、参数名、成员变量、局部变量： 都统一使用 lowerCamelCase 风格（第一个单词首字母小写，其他单词首字母大写），必须遵从驼峰形式。 例如： myName">
 <meta property="og:type" content="article">
-<meta property="og:title" content="java基础笔记">
+<meta property="og:title" content="胡思旺">
 <meta property="og:url" content="http://yoursite.com/2018/10/31/java基础笔记/index.html">
 <meta property="og:site_name" content="胡思旺">
-<meta property="og:description" content="Java基础命名规范  类名：使用UpperCamelCase风格（首字母都大写），必须遵从驼峰形式。 例如： ZipUtil    方法名、参数名、成员变量、局部变量： 都统一使用 lowerCamelCase 风格（第一个单词首字母小写，其他单词首字母大写），必须遵从驼峰形式。 例如： myName    静态变量、常量： 全部大写，单词间用下划线隔开，力求语义表达完整清楚。 例如：MAX_N">
+<meta property="og:description" content="title: java基础笔记date: 2018-10-31 16:45:46 tags: Java命名规范  类名：使用UpperCamelCase风格（首字母都大写），必须遵从驼峰形式。 例如： ZipUtil    方法名、参数名、成员变量、局部变量： 都统一使用 lowerCamelCase 风格（第一个单词首字母小写，其他单词首字母大写），必须遵从驼峰形式。 例如： myName">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2018/10/31/java基础笔记/hash.gif">
 <meta property="og:image" content="http://yoursite.com/2018/10/31/java基础笔记/xlh.png">
-<meta property="og:updated_time" content="2018-10-31T08:51:01.112Z">
+<meta property="og:updated_time" content="2018-11-01T01:51:21.189Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="java基础笔记">
-<meta name="twitter:description" content="Java基础命名规范  类名：使用UpperCamelCase风格（首字母都大写），必须遵从驼峰形式。 例如： ZipUtil    方法名、参数名、成员变量、局部变量： 都统一使用 lowerCamelCase 风格（第一个单词首字母小写，其他单词首字母大写），必须遵从驼峰形式。 例如： myName    静态变量、常量： 全部大写，单词间用下划线隔开，力求语义表达完整清楚。 例如：MAX_N">
+<meta name="twitter:title" content="胡思旺">
+<meta name="twitter:description" content="title: java基础笔记date: 2018-10-31 16:45:46 tags: Java命名规范  类名：使用UpperCamelCase风格（首字母都大写），必须遵从驼峰形式。 例如： ZipUtil    方法名、参数名、成员变量、局部变量： 都统一使用 lowerCamelCase 风格（第一个单词首字母小写，其他单词首字母大写），必须遵从驼峰形式。 例如： myName">
 <meta name="twitter:image" content="http://yoursite.com/2018/10/31/java基础笔记/hash.gif">
 
   
@@ -124,15 +123,15 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java基础"><span class="toc-text">Java基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#命名规范"><span class="toc-text">命名规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类型提升"><span class="toc-text">类型提升</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#equals与hashcode"><span class="toc-text">equals与hashcode</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型"><span class="toc-text">泛型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类型擦除"><span class="toc-text">类型擦除</span></a></li></ol></li></ol>
-  </div>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#tags-Java"><span class="toc-text">tags: Java</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#命名规范"><span class="toc-text">命名规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类型提升"><span class="toc-text">类型提升</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#equals与hashcode"><span class="toc-text">equals与hashcode</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型"><span class="toc-text">泛型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类型擦除"><span class="toc-text">类型擦除</span></a></li></ol>
+  </li></div>
 
 
 
 <div class="content content-post CENTER">
    <article id="post-java基础笔记" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">java基础笔记</h1>
+    <h1 class="post-title">(no title)</h1>
 
     <div class="article-meta">
       <span>
@@ -164,7 +163,9 @@
 
   <div class="article-content">
     
-      <h1 id="Java基础"><a href="#Java基础" class="headerlink" title="Java基础"></a>Java基础</h1><h2 id="命名规范"><a href="#命名规范" class="headerlink" title="命名规范"></a>命名规范</h2><blockquote>
+      <hr>
+<p>title: java基础笔记<br>date: 2018-10-31 16:45:46</p>
+<h2 id="tags-Java"><a href="#tags-Java" class="headerlink" title="tags: Java"></a>tags: Java</h2><h2 id="命名规范"><a href="#命名规范" class="headerlink" title="命名规范"></a>命名规范</h2><blockquote>
 <ul>
 <li><p><strong>类名</strong>：使用UpperCamelCase风格（首字母都大写），必须遵从驼峰形式。 例如： ZipUtil  </p>
 </li>
