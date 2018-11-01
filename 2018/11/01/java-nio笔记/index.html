@@ -22,10 +22,15 @@
 <meta property="og:site_name" content="胡思旺">
 <meta property="og:description" content="Java NIO  Java NIO(New IO)是一个可以替代标准Java IO API（从Java 1.4开始)，提供了与标准IO不同的IO工作方式    标准的IO基于字节流和字符流进行操作的，而NIO是基于通道（Channel）和缓冲区（Buffer）进行操作，数据总是从通道读取到缓冲区中，或者从缓冲区写入到通道中    Java NIO可以让你非阻塞的使用IO    Java NIO引">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-01T02:56:40.448Z">
+<meta property="og:image" content="http://yoursite.com/2018/11/01/java-nio笔记/nio1.PNG">
+<meta property="og:image" content="http://yoursite.com/2018/11/01/java-nio笔记/nio2.PNG">
+<meta property="og:image" content="http://yoursite.com/2018/11/01/java-nio笔记/javanio-channel-buffer.png">
+<meta property="og:image" content="http://yoursite.com/2018/11/01/java-nio笔记/javanio-selecor-3-channel.png">
+<meta property="og:updated_time" content="2018-11-01T08:22:00.460Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java-nio笔记">
 <meta name="twitter:description" content="Java NIO  Java NIO(New IO)是一个可以替代标准Java IO API（从Java 1.4开始)，提供了与标准IO不同的IO工作方式    标准的IO基于字节流和字符流进行操作的，而NIO是基于通道（Channel）和缓冲区（Buffer）进行操作，数据总是从通道读取到缓冲区中，或者从缓冲区写入到通道中    Java NIO可以让你非阻塞的使用IO    Java NIO引">
+<meta name="twitter:image" content="http://yoursite.com/2018/11/01/java-nio笔记/nio1.PNG">
 
   
 
@@ -120,7 +125,7 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java-NIO"><span class="toc-text">Java NIO</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#核心部分"><span class="toc-text">核心部分</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java-NIO"><span class="toc-text">Java NIO</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#核心部分"><span class="toc-text">核心部分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IO过程"><span class="toc-text">IO过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#channels"><span class="toc-text">channels</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#buffer"><span class="toc-text">buffer</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#缓冲区重要属性"><span class="toc-text">缓冲区重要属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#申请缓冲区空间"><span class="toc-text">申请缓冲区空间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#主要方法"><span class="toc-text">主要方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Selectors"><span class="toc-text">Selectors</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建选择器"><span class="toc-text">创建选择器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#将通道注册到选择器中"><span class="toc-text">将通道注册到选择器中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#兴趣集合（interest-set）"><span class="toc-text">兴趣集合（interest set）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#就绪状态集合（ready-set）"><span class="toc-text">就绪状态集合（ready set）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通道-选择器"><span class="toc-text">通道 + 选择器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#附加对象"><span class="toc-text">附加对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通过选择器『选择』通道"><span class="toc-text">通过选择器『选择』通道</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#非阻塞Server实现"><span class="toc-text">非阻塞Server实现</span></a></li></ol></li></ol>
   </div>
 
 
@@ -177,7 +182,116 @@
 <li>Selectors（选择器）  </li>
 </ul>
 </blockquote>
-
+<h2 id="IO过程"><a href="#IO过程" class="headerlink" title="IO过程"></a>IO过程</h2><blockquote>
+<p>进程使用read( )系统调用，要求其缓冲区被填满。内核随即向磁盘控制硬件发出命令，要求其从磁盘读取数据。磁盘控制器把数据直接写入内核内存缓冲区，这一步通过DMA完成，无需主CPU协助。一旦磁盘控制器把缓冲区装满，内核即把数据从内核空间的临时缓冲区拷贝到进程执行read( )调用时指定的缓冲区  </p>
+<p>当进程请求I/O操作的时候，它执行一个系统调用（有时称为陷阱）将控制权移交给内核。C/C++程序员所熟知的底层方法open( )、read( )、write( )和close( )要做的无非就是建立和执行适当的系统调用。当内核以这种方式被调用，它随即采取任何必要步骤，找到进程所需数据，并把数据传送到用户空间内的指定缓冲区。内核试图对数据进行高速缓存或预读取，因此进程所需数据可能已经在内核空间里了。如果是这样，该数据只需简单地拷贝出来即可。如果数据不在内核空间，则进程被挂起，内核着手把数据读进内存<br><img src="nio1.PNG" alt="图片">  </p>
+<p><img src="nio2.PNG" alt="图片">  </p>
+</blockquote>
+<h2 id="channels"><a href="#channels" class="headerlink" title="channels"></a>channels</h2><blockquote>
+<p><img src="javanio-channel-buffer.png" alt="图片"><br>NIO的所有IO都是从一个通道开始的。通道和流(Stream)有点类似，数据可以 从通道读出到缓冲区中，也可以从缓冲区写入到通道中<br>主要channels:  </p>
+<ul>
+<li>FileChanel  </li>
+<li>DatagramChannel  </li>
+<li>SocketChannel  </li>
+<li>ServerSocketChannel<br>Java NIO实现涵盖了UDP+TCP网络IO，以及文件IO  </li>
+</ul>
+<p>使用FileChanel demo：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">RandomAccessFile aFile = RandomAccessFile(&quot;data/nio-data.txt&quot;, &quot;rw&quot;);</span><br><span class="line">FileChannel inChannel = aFile.getChannel();</span><br><span class="line">ByteBuffer buf = ByteBuffer.allocate(48);</span><br><span class="line">int bytesRead = inChannel.read(buf);</span><br><span class="line">while (bytesRead != -1) &#123;</span><br><span class="line">    System.out.println(&quot;\n=====Read &quot; + bytesRead);</span><br><span class="line">    buf.flip();</span><br><span class="line">    while(buf.hasRemaining())&#123;</span><br><span class="line">        System.out.print((char) buf.get());</span><br><span class="line">    &#125;</span><br><span class="line">    buf.clear();</span><br><span class="line">    bytesRead = inChannel.read(buf);</span><br><span class="line">&#125;</span><br><span class="line">aFile.close();</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>buf.flip()调用。首先将数据读到缓冲区中，然后切换缓冲区为读模式，接着从缓冲区读数据</p>
+</blockquote>
+<h2 id="buffer"><a href="#buffer" class="headerlink" title="buffer"></a>buffer</h2><blockquote>
+<p>在Java NIO中核心缓冲区的实现类如下：</p>
+<ul>
+<li>ByteBuffer</li>
+<li>CharBuffer</li>
+<li>DoubleBuffer</li>
+<li>FloatBuffer</li>
+<li>IntBuffer</li>
+<li>LongBuffer</li>
+<li>ShortBuffer</li>
+</ul>
+<p>这些缓冲区涵盖了可以通过NIO发送的基本数据类型：byte、<br>short、int、long、float、double、char。Java NIO中还有一个MappedByteBuffer实现，用来连接内存映射文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">RandomAccessFile aFile = new RandomAccessFile(&quot;data/nio-data.txt&quot;, &quot;rw&quot;);</span><br><span class="line">FileChannel inChannel = aFile.getChannel();</span><br><span class="line">//创建一个容量为48字节的缓冲区</span><br><span class="line">ByteBuffer buf = ByteBuffer.allocate(48);</span><br><span class="line">int bytesRead = inChannel.read(buf); //write：从通道中读出数据到缓冲区</span><br><span class="line">while (bytesRead != -1) &#123;</span><br><span class="line">    buf.flip();  //flip: 将缓冲区切换到读模式</span><br><span class="line">    while(buf.hasRemaining())&#123;</span><br><span class="line">      System.out.print((char) buf.get()); // read: 一次读取一字节</span><br><span class="line">    &#125;</span><br><span class="line">    buf.clear(); //clear: 清空缓冲区，准备下次读入</span><br><span class="line">    bytesRead = inChannel.read(buf);</span><br><span class="line">&#125;</span><br><span class="line">aFile.close();</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<h3 id="缓冲区重要属性"><a href="#缓冲区重要属性" class="headerlink" title="缓冲区重要属性"></a>缓冲区重要属性</h3><p>position和limit具体含义取决于缓冲区是在读模式还是写模式  </p>
+<ul>
+<li><p>容量：capacity<br>缓冲区中最多写入capacity这么多的byte，long，char类型的数据。一旦满了，就需要先清空（已读数据，或者全部清空）才能再往里面写入数据  </p>
+</li>
+<li><p>位置：position<br>当往缓冲期里写数据时，总是会从某个位置(position)开始。刚开始时，position是0。当写入一个byte或者long类型的数据后，position会指向下一个可写入的位置。显然，postion的最大值等于capacity-1。当从缓冲区中读取数据时，也总是会从某个位置开始。当缓冲区从写模式切换到读模式后，postion会被重置为0。当从缓冲区中读取数据时，postion会指向下一个可读取的位置。  </p>
+</li>
+<li><p>上限：limit<br>在写模式下，缓冲区的limit指的是可以往缓冲区里写入多少数据。即，写模式下limit和capacity的含义相同<br>在读模式下，limit指的是可以从缓冲区中读出多少数据。因此，当缓冲区切换到读模式后，limit会设置为写模式时position的值  </p>
+</li>
+</ul>
+<h3 id="申请缓冲区空间"><a href="#申请缓冲区空间" class="headerlink" title="申请缓冲区空间"></a>申请缓冲区空间</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//申请大小为 48字节 的ByteBuffer</span><br><span class="line">ByteBuffer buf = ByteBuffer.allocate(48);</span><br><span class="line"></span><br><span class="line">//申请大小为 1024个字符 </span><br><span class="line">CharBuffer buf = CharBuffer.allocate(1024);</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<h3 id="主要方法"><a href="#主要方法" class="headerlink" title="主要方法"></a>主要方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">flip()   //将缓冲区从写模式切换为读模式，也就是将limit设置为position，然后重置position为0</span><br><span class="line"></span><br><span class="line">channel.write(buf)  //从缓冲区中读取数据写入到通道中</span><br><span class="line"></span><br><span class="line">buf.get()   //从缓冲区中读取数据</span><br><span class="line"></span><br><span class="line">rewind()   //将position重置为0，重复读取缓冲区中的所有数据。而limit值不变，仍然表示缓冲区中可以读出多少个元素（字节、字符等等）</span><br><span class="line"></span><br><span class="line">clear()  //清空所有数据并重置position等属性  </span><br><span class="line"></span><br><span class="line">compact()  //会将所有未读数据复制到缓冲区开头，然后会将position设置为最后一个未读数据之后。而limit仍然会设置为capacity，就和clear()方法中的一样。现在，就可以继续往缓冲期写入而不会覆盖未读数据</span><br><span class="line"></span><br><span class="line">mark() 和 reset()  //通过调用mark()方法，可以在缓冲区中的指定位置做打个标签，随后可以通过调用reset()方法将缓冲区的position重置到打标签的位置</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+</blockquote>
+<h2 id="Selectors"><a href="#Selectors" class="headerlink" title="Selectors"></a>Selectors</h2><blockquote>
+<p><img src="javanio-selecor-3-channel.png" alt="图片"><br>选择器可以让一个线程处理多个通道。当应用程序打开多个连接（Channel），需要先将Channel注册到选择器中，之后就可以调用它的select()方法。该方法一直阻塞到所注册通道中某个事件就绪为止。一旦方法返回，线程就可以处理这些事件。这些事件包括有连接进来，数据接收等  </p>
+<h3 id="创建选择器"><a href="#创建选择器" class="headerlink" title="创建选择器"></a>创建选择器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Selector selector = Selector.open();</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<h3 id="将通道注册到选择器中"><a href="#将通道注册到选择器中" class="headerlink" title="将通道注册到选择器中"></a>将通道注册到选择器中</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">channel.configureBlocking(false);</span><br><span class="line">SelectionKey key = channel.register(selector, SelectionKey.OP_READ);</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>通道只有在非阻塞模式下才能使用选择器。这就意味着FileChannel是不能使用选择器的，原因是FileChannel是无法切换到非阻塞模式下的，而基于Socket的通道是可以的  </p>
+<p>register()方法的第二个参数。这是一个所谓的兴趣集合（interest set），意思是选择器对通道中的哪些事件感兴趣，以监听这类事件,可以监听的事件类型有四种：  </p>
+<ul>
+<li>SelectionKey.OP_CONNECT  </li>
+<li>SelectionKey.OP_ACCEPT  </li>
+<li>SelectionKey.OP_READ  </li>
+<li>SelectionKey.OP_WRITE  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">int interestSet = SelectionKey.OP_READ | SelectionKey.OP_WRITE;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>在将通道注册到选择器时，调用了register()方法，返回值为SelectionKey对象。SelectionKey对象包含了几个有意思的属性：  </p>
+<ul>
+<li>兴趣集合（interest set）  </li>
+<li>就绪状态集合（ready set） </li>
+<li>通道 </li>
+<li>选择器  </li>
+<li>附加对象 (可选)  <h3 id="兴趣集合（interest-set）"><a href="#兴趣集合（interest-set）" class="headerlink" title="兴趣集合（interest set）"></a>兴趣集合（interest set）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int interestSet = selectionKey.interestOps();</span><br><span class="line">boolean isInterestedInAccept  = interestSet &amp; SelectionKey.OP_ACCEPT;</span><br><span class="line">boolean isInterestedInConnect = interestSet &amp; SelectionKey.OP_CONNECT;</span><br><span class="line">boolean isInterestedInRead    = interestSet &amp; SelectionKey.OP_READ;</span><br><span class="line">boolean isInterestedInWrite   = interestSet &amp; SelectionKey.OP_WRITE;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>可以使用AND（与）操作来判断给定的集合中是否包含了某个事件  </p>
+<h3 id="就绪状态集合（ready-set）"><a href="#就绪状态集合（ready-set）" class="headerlink" title="就绪状态集合（ready set）"></a>就绪状态集合（ready set）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">selectionKey.isAcceptable();</span><br><span class="line">selectionKey.isConnectable();</span><br><span class="line">selectionKey.isReadable();</span><br><span class="line">selectionKey.isWritable();</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>就绪状态集合（ready set），顾名思义，就是指通道中已经就绪的操作集合。在做出『选择』之后，主要就是对就绪状态集合进行操作  </p>
+<h3 id="通道-选择器"><a href="#通道-选择器" class="headerlink" title="通道 + 选择器"></a>通道 + 选择器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Channel  channel  = selectionKey.channel();</span><br><span class="line">Selector selector = selectionKey.selector();</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>访问SelectionKey中的通道和选择器很简单  </p>
+<h3 id="附加对象"><a href="#附加对象" class="headerlink" title="附加对象"></a>附加对象</h3><p>可以在SelectionKey中附加一个对象，以便于识别给定通道，或者为通道附加更多信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">selectionKey.attach(theObject);</span><br><span class="line">Object attachedObj = selectionKey.attachment();</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<h3 id="通过选择器『选择』通道"><a href="#通过选择器『选择』通道" class="headerlink" title="通过选择器『选择』通道"></a>通过选择器『选择』通道</h3><p>一旦在选择器中注册了一个或者几个通道之后，就可以调用select()方法。这些方法会返回你感兴趣的事件已经就绪状态的通道，比如Connect，Accept，Read 或者 Write。换言之，如果想选择可以读取数据的通道，select()方法会返回那些Read就绪的通道。select()方法有下面几种重载模式：  </p>
+<ul>
+<li><p>int select() - 会被阻塞到所注册的事件就绪为止  </p>
+</li>
+<li><p>int select(long timeout) - 也会阻塞，但是可以设置阻塞超时时间（参数timeout）  </p>
+</li>
+<li><p>int selectNow() - 不会阻塞，会立即返回任何就绪的通道  </p>
+</li>
+</ul>
+<p>int类型的返回值表示有多少个通道已经就绪，即，在最后一次调用select()方法后有多少通道已经就绪。假如调用了一次select()方法，返回了1，说明有一个通道已经就绪；此时再调用一次select()方法，又有一个Channel也变成就绪状态，则还是会返回1。如果不对第一次已经就绪的那个通道做任何处理的话，这时应该有两个通道是处于就绪状态的。但是在每次调用select()方法时，只会有一个通道变为就绪状态。  </p>
+<p>在调用select()方法后，其返回值说明有几个通道已经就绪，这时可以调用selectedKeys()方法，通过『已选择键集合』来访问这些通道，像这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;SelectionKey&gt; selectedKeys = selector.selectedKeys();</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>遍历『已选择键集合』就可以访问已经就绪的各个通道:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;SelectionKey&gt; selectedKeys = selector.selectedKeys();</span><br><span class="line">Iterator&lt;SelectionKey&gt; keyIterator = selectedKeys.iterator();</span><br><span class="line">while(keyIterator.hasNext()) &#123;</span><br><span class="line">    SelectionKey key = keyIterator.next();</span><br><span class="line">    if(key.isAcceptable()) &#123;</span><br><span class="line">        // ServerSocketChannel可以接受连接</span><br><span class="line">    &#125; else if (key.isConnectable()) &#123;</span><br><span class="line">        // 已经连接到远程服务器</span><br><span class="line">    &#125; else if (key.isReadable()) &#123;</span><br><span class="line">        // 通道可以读取</span><br><span class="line">    &#125; else if (key.isWritable()) &#123;</span><br><span class="line">        // 通道可以写入</span><br><span class="line">    &#125;</span><br><span class="line">    keyIterator.remove();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>注意到在最后调用了keyIterator.remove()方法，在通道处理完成之后必须这样做的原因是选择器不会自己从已选择键集合中去掉SelectionKey实例。当下次通道就绪时，选择器会将它再次加入到已选择就绪集合中<br>SelectionKey.channel()返回的通道实例需要强制转换成要处理的通道类型，比如ServerSocketChannel或者SocketChannel等  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Selector selector = Selector.open();</span><br><span class="line">channel.configureBlocking(false);</span><br><span class="line">SelectionKey key = channel.register(selector, SelectionKey.OP_READ);</span><br><span class="line">while(true) &#123;</span><br><span class="line">  int readyChannels = selector.select();</span><br><span class="line">  if(readyChannels == 0) continue;</span><br><span class="line">  Set&lt;SelectionKey&gt; selectedKeys = selector.selectedKeys();</span><br><span class="line">  Iterator&lt;SelectionKey&gt; keyIterator = selectedKeys.iterator();</span><br><span class="line">  while(keyIterator.hasNext()) &#123;</span><br><span class="line">    SelectionKey key = keyIterator.next();</span><br><span class="line">    if(key.isAcceptable()) &#123;</span><br><span class="line">        // ServerSocketChannel可以接受连接</span><br><span class="line">    &#125; else if (key.isConnectable()) &#123;</span><br><span class="line">        // 已经连接到远程服务器</span><br><span class="line">    &#125; else if (key.isReadable()) &#123;</span><br><span class="line">        // 通道可以读取</span><br><span class="line">    &#125; else if (key.isWritable()) &#123;</span><br><span class="line">        // 通道可以写入</span><br><span class="line">    &#125;</span><br><span class="line">    keyIterator.remove();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="非阻塞Server实现"><a href="#非阻塞Server实现" class="headerlink" title="非阻塞Server实现"></a>非阻塞Server实现</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    Selector selector = Selector.open();</span><br><span class="line">    ServerSocketChannel channel = ServerSocketChannel.open();</span><br><span class="line">    channel.configureBlocking(false);</span><br><span class="line">    channel.socket().bind(new InetSocketAddress(port), 1024);</span><br><span class="line">    channel.register(selector, SelectionKey.OP_ACCEPT);</span><br><span class="line">    System.out.println(&quot;time server is run&quot;);</span><br><span class="line">    while(true)&#123;</span><br><span class="line">	    selector.select();</span><br><span class="line">	    Set&lt;SelectionKey&gt; selectedKeys = selector.selectedKeys();</span><br><span class="line">	    Iterator&lt;SelectionKey&gt; iterator = selectedKeys.iterator();</span><br><span class="line">	    SelectionKey key = null;</span><br><span class="line">	    while(iterator.hasNext())&#123;</span><br><span class="line">		    key = iterator.next();</span><br><span class="line">		    iterator.remove();</span><br><span class="line">		    try&#123;</span><br><span class="line">			    handleInput(key);</span><br><span class="line">		    &#125;catch (Exception e) &#123;</span><br><span class="line">			    if (key != null) &#123;</span><br><span class="line">				    key.cancel();</span><br><span class="line">				    if (key.channel() != null)</span><br><span class="line">				    key.channel().close();</span><br><span class="line">			    &#125;</span><br><span class="line">		    &#125;</span><br><span class="line">	    &#125;</span><br><span class="line">        if(selector!=null)&#123;</span><br><span class="line">	        try &#123;</span><br><span class="line">		        selector.close();</span><br><span class="line">	        &#125; catch (IOException e) &#123;</span><br><span class="line">		        e.printStackTrace();</span><br><span class="line">	        &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">void handleInput(SelectionKey key) throws IOException&#123;</span><br><span class="line">	if(key.isValid())&#123;</span><br><span class="line">		if(key.isAcceptable())&#123;</span><br><span class="line">			ServerSocketChannel schannel = (ServerSocketChannel) key.channel();</span><br><span class="line">			SocketChannel accept = schannel.accept();</span><br><span class="line">			accept.configureBlocking(false);</span><br><span class="line">			accept.register(selector, SelectionKey.OP_READ);</span><br><span class="line">		&#125;</span><br><span class="line">		if(key.isReadable())&#123;</span><br><span class="line">			SocketChannel sc = (SocketChannel) key.channel();</span><br><span class="line">			ByteBuffer buffer = ByteBuffer.allocate(1024);</span><br><span class="line">			int size = sc.read(buffer);  //非阻塞，数据已在内核空间准备好</span><br><span class="line">			if(size&gt;0)&#123;</span><br><span class="line">				buffer.flip();</span><br><span class="line">				byte[] arr = new byte[buffer.remaining()];</span><br><span class="line">				buffer.get(arr);</span><br><span class="line">				String body = new String(arr,&quot;UTF-8&quot;);</span><br><span class="line">				System.out.println(body);</span><br><span class="line">				SimpleDateFormat format = new SimpleDateFormat(&quot;yyyy-MM-dd hh:mm:ss&quot;);</span><br><span class="line">				byte[] bytes = res.getBytes();</span><br><span class="line">			    ByteBuffer buffe = ByteBuffer.allocate(bytes.length);</span><br><span class="line">			    buffe.put(bytes);</span><br><span class="line">			    buffe.flip();</span><br><span class="line">			    sc.write(buffe);</span><br><span class="line">			&#125;else if(size&lt;0)&#123;</span><br><span class="line">				key.cancel();</span><br><span class="line">				sc.close();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     
   </div>
 
