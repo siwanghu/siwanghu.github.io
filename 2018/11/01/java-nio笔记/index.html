@@ -26,7 +26,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/11/01/java-nio笔记/nio2.PNG">
 <meta property="og:image" content="http://yoursite.com/2018/11/01/java-nio笔记/javanio-channel-buffer.png">
 <meta property="og:image" content="http://yoursite.com/2018/11/01/java-nio笔记/javanio-selecor-3-channel.png">
-<meta property="og:updated_time" content="2018-11-01T08:22:00.460Z">
+<meta property="og:updated_time" content="2018-11-01T08:24:47.620Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java-nio笔记">
 <meta name="twitter:description" content="Java NIO  Java NIO(New IO)是一个可以替代标准Java IO API（从Java 1.4开始)，提供了与标准IO不同的IO工作方式    标准的IO基于字节流和字符流进行操作的，而NIO是基于通道（Channel）和缓冲区（Buffer）进行操作，数据总是从通道读取到缓冲区中，或者从缓冲区写入到通道中    Java NIO可以让你非阻塞的使用IO    Java NIO引">
@@ -244,7 +244,7 @@
 <li>SelectionKey.OP_CONNECT  </li>
 <li>SelectionKey.OP_ACCEPT  </li>
 <li>SelectionKey.OP_READ  </li>
-<li>SelectionKey.OP_WRITE  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">int interestSet = SelectionKey.OP_READ | SelectionKey.OP_WRITE;</span><br></pre></td></tr></table></figure>
+<li>SelectionKey.OP_WRITE  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int interestSet = SelectionKey.OP_READ | SelectionKey.OP_WRITE;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </blockquote>
