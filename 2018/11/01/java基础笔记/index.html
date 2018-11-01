@@ -7,7 +7,7 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>胡思旺</title>
+  <title>java基础笔记 | 胡思旺</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,20 +15,20 @@
     <meta name="keywords" content="全栈,微服务,Java,Netty,Vue,机器学习,Python">
   
 
-  <meta name="description" content="title: java基础笔记date: 2018-10-31 16:45:46 tags:命名规范  类名：使用UpperCamelCase风格（首字母都大写），必须遵从驼峰形式。 例如： ZipUtil    方法名、参数名、成员变量、局部变量： 都统一使用 lowerCamelCase 风格（第一个单词首字母小写，其他单词首字母大写），必须遵从驼峰形式。 例如： myName    静态变">
+  <meta name="description" content="Java基础命名规范  类名：使用UpperCamelCase风格（首字母都大写），必须遵从驼峰形式。 例如： ZipUtil    方法名、参数名、成员变量、局部变量： 都统一使用 lowerCamelCase 风格（第一个单词首字母小写，其他单词首字母大写），必须遵从驼峰形式。 例如： myName    静态变量、常量： 全部大写，单词间用下划线隔开，力求语义表达完整清楚。 例如：MAX_N">
 <meta property="og:type" content="article">
-<meta property="og:title" content="胡思旺">
-<meta property="og:url" content="http://yoursite.com/2018/10/31/java基础笔记/index.html">
+<meta property="og:title" content="java基础笔记">
+<meta property="og:url" content="http://yoursite.com/2018/11/01/java基础笔记/index.html">
 <meta property="og:site_name" content="胡思旺">
-<meta property="og:description" content="title: java基础笔记date: 2018-10-31 16:45:46 tags:命名规范  类名：使用UpperCamelCase风格（首字母都大写），必须遵从驼峰形式。 例如： ZipUtil    方法名、参数名、成员变量、局部变量： 都统一使用 lowerCamelCase 风格（第一个单词首字母小写，其他单词首字母大写），必须遵从驼峰形式。 例如： myName    静态变">
+<meta property="og:description" content="Java基础命名规范  类名：使用UpperCamelCase风格（首字母都大写），必须遵从驼峰形式。 例如： ZipUtil    方法名、参数名、成员变量、局部变量： 都统一使用 lowerCamelCase 风格（第一个单词首字母小写，其他单词首字母大写），必须遵从驼峰形式。 例如： myName    静态变量、常量： 全部大写，单词间用下划线隔开，力求语义表达完整清楚。 例如：MAX_N">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://yoursite.com/2018/10/31/java基础笔记/hash.gif">
-<meta property="og:image" content="http://yoursite.com/2018/10/31/java基础笔记/xlh.png">
-<meta property="og:updated_time" content="2018-11-01T03:59:17.127Z">
+<meta property="og:image" content="http://yoursite.com/2018/11/01/java基础笔记/hash.gif">
+<meta property="og:image" content="http://yoursite.com/2018/11/01/java基础笔记/xlh.png">
+<meta property="og:updated_time" content="2018-11-01T04:18:02.961Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="胡思旺">
-<meta name="twitter:description" content="title: java基础笔记date: 2018-10-31 16:45:46 tags:命名规范  类名：使用UpperCamelCase风格（首字母都大写），必须遵从驼峰形式。 例如： ZipUtil    方法名、参数名、成员变量、局部变量： 都统一使用 lowerCamelCase 风格（第一个单词首字母小写，其他单词首字母大写），必须遵从驼峰形式。 例如： myName    静态变">
-<meta name="twitter:image" content="http://yoursite.com/2018/10/31/java基础笔记/hash.gif">
+<meta name="twitter:title" content="java基础笔记">
+<meta name="twitter:description" content="Java基础命名规范  类名：使用UpperCamelCase风格（首字母都大写），必须遵从驼峰形式。 例如： ZipUtil    方法名、参数名、成员变量、局部变量： 都统一使用 lowerCamelCase 风格（第一个单词首字母小写，其他单词首字母大写），必须遵从驼峰形式。 例如： myName    静态变量、常量： 全部大写，单词间用下划线隔开，力求语义表达完整清楚。 例如：MAX_N">
+<meta name="twitter:image" content="http://yoursite.com/2018/11/01/java基础笔记/hash.gif">
 
   
 
@@ -123,20 +123,20 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#tags"><span class="toc-text">tags:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#命名规范"><span class="toc-text">命名规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类型提升"><span class="toc-text">类型提升</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#equals与hashcode"><span class="toc-text">equals与hashcode</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型"><span class="toc-text">泛型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类型擦除"><span class="toc-text">类型擦除</span></a></li></ol>
-  </li></div>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java基础"><span class="toc-text">Java基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#命名规范"><span class="toc-text">命名规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类型提升"><span class="toc-text">类型提升</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#equals与hashcode"><span class="toc-text">equals与hashcode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型"><span class="toc-text">泛型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类型擦除"><span class="toc-text">类型擦除</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#序列化"><span class="toc-text">序列化</span></a></li></ol></li></ol>
+  </div>
 
 
 
 <div class="content content-post CENTER">
    <article id="post-java基础笔记" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">(no title)</h1>
+    <h1 class="post-title">java基础笔记</h1>
 
     <div class="article-meta">
       <span>
         <i class="icon-calendar"></i>
-        <span>2018.10.31</span>
+        <span>2018.11.01</span>
       </span>
 
       
@@ -152,7 +152,7 @@
       
         <span>
           <i class="icon-comment"></i>
-          <a href="http://www.github.com/siwanghu/2018/10/31/java基础笔记/#disqus_thread"></a>
+          <a href="http://www.github.com/siwanghu/2018/11/01/java基础笔记/#disqus_thread"></a>
         </span>
       
 
@@ -163,9 +163,7 @@
 
   <div class="article-content">
     
-      <hr>
-<p>title: java基础笔记<br>date: 2018-10-31 16:45:46</p>
-<h2 id="tags"><a href="#tags" class="headerlink" title="tags:"></a>tags:</h2><h2 id="命名规范"><a href="#命名规范" class="headerlink" title="命名规范"></a>命名规范</h2><blockquote>
+      <h1 id="Java基础"><a href="#Java基础" class="headerlink" title="Java基础"></a>Java基础</h1><h2 id="命名规范"><a href="#命名规范" class="headerlink" title="命名规范"></a><strong>命名规范</strong></h2><blockquote>
 <ul>
 <li><p><strong>类名</strong>：使用UpperCamelCase风格（首字母都大写），必须遵从驼峰形式。 例如： ZipUtil  </p>
 </li>
@@ -174,7 +172,7 @@
 <li><strong>静态变量、常量：</strong> 全部大写，单词间用下划线隔开，力求语义表达完整清楚。 例如：MAX_NAME_LENGTH</li>
 </ul>
 </blockquote>
-<h2 id="类型提升"><a href="#类型提升" class="headerlink" title="类型提升"></a>类型提升</h2><blockquote>
+<h2 id="类型提升"><a href="#类型提升" class="headerlink" title="类型提升"></a><strong>类型提升</strong></h2><blockquote>
 <ul>
 <li>整数值默认就是int类型，只有在数值常量后面加“L”或“l”才表明该常量是long型  </li>
 <li>浮点数默认是double类型，只有在数值后面加上“f”或“F”才表明该常量是float类型  </li>
@@ -198,10 +196,16 @@
 <li>如果有一个操作数是float类型，就将整个表达式提升为float类型  </li>
 <li>如果任何一个操作数为double类型，结果将为double类型  </li>
 </ul>
-<p>s1+1运算中的操作数s1会被自动提升为int类型，s1+1运算结果会成为int类型，再赋值给short类型的s1时，编译器会报告需要强制转换类型的错误  </p>
-<p>+=是java语言中的运算符，Java编译器会对它特殊处理进行正确的编译  </p>
+<p>short s1 = 1;<br>s1 = s1 + 1;  </p>
+<ul>
+<li>s1+1运算中的操作数s1会被自动提升为int类型，s1+1运算结果会成为int类型，再赋值给short类型的s1时，编译器会报告需要强制转换类型的错误  </li>
+</ul>
+<p>short s1 = 1;<br>s1 += 1;  </p>
+<ul>
+<li>+=是java语言中的运算符，Java编译器会对它特殊处理进行正确的编译  </li>
+</ul>
 </blockquote>
-<h1 id="equals与hashcode"><a href="#equals与hashcode" class="headerlink" title="equals与hashcode"></a>equals与hashcode</h1><blockquote>
+<h2 id="equals与hashcode"><a href="#equals与hashcode" class="headerlink" title="equals与hashcode"></a><strong>equals与hashcode</strong></h2><blockquote>
 <ul>
 <li>equals方法用于比较两个对象是否相等，比较的是对象的值(==比较的是对象引用)  </li>
 <li>hashcode方法为对象生成唯一的哈希码  </li>
@@ -226,7 +230,7 @@
 </li>
 </ul>
 </blockquote>
-<h2 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h2><blockquote>
+<h2 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a><strong>泛型</strong></h2><blockquote>
 <p>泛型：JDK5引入了泛型机制，泛型实现了参数化类型的概念，使代码可以应用于多种类型；由编译器来保证类型的正确性。  </p>
 <p><em>基本类型无法作为泛型中的类型参数</em><br><strong>泛型的优点:</strong>  </p>
 <ul>
@@ -241,9 +245,30 @@
 <li>E —-异常类  </li>
 <li>T —-泛型  </li>
 </ul>
-<h2 id="类型擦除"><a href="#类型擦除" class="headerlink" title="类型擦除"></a><strong>类型擦除</strong></h2><p>Java 泛型是使用擦除来实现的，使用泛型时，任何具体的类型信息都被擦除了。ArrayList<string> 和 ArrayList<integer> 在运行时，JVM 将它们视为同一类型<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public class ErasedTypeEquivalence &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Class c1 = new ArrayList&lt;String&gt;().getClass();</span><br><span class="line">        Class c2 = new ArrayList&lt;Integer&gt;().getClass();</span><br><span class="line">        System.out.println(c1 == c2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">```  </span><br><span class="line">&gt; 输出结果是 true  </span><br><span class="line">## 序列化  </span><br><span class="line">&gt; + 序列化：将对象转换为字节流  </span><br><span class="line">&gt; + 反序列化：将字节流转换为对象  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; Java通过对象输入输出流来实现序列化和反序列化  </span><br><span class="line">&gt; + java.io.ObjectOutputStream 类的 writeObject() 方法可以实现序列化  </span><br><span class="line">&gt; + java.io.ObjectInputStream 类的 readObject() 方法用于实现反序列化  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; *被序列化的类必须属于 Enum、Array 和 Serializable类型其中的任何一种*  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; **1.serialVersionUID**  </span><br><span class="line">&gt; serialVersionUID 是Java为每个序列化类产生的版本标识  </span><br><span class="line">&gt; serialVersionUID 字段必须是static final long类型  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; **2.默认序列化机制**  </span><br><span class="line">&gt; &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;如果仅仅只是让某个类实现 Serializable接口，而没有其它任何处理的话，那么就是使用默认序列化机制。使用默认机制，在序列化对象时，不仅会序列化当前对象本身，还会对其父类的字段以及该对象引用的其它对象也进行序列化。同样地，这些其它对象引用的另外对象也将被序列化，以此类推。所以，如果一个对象包含的成员变量是容器类对象，而这些容器所含有的元素也是容器类对象，那么这个序列化的过程就会较复杂，开销也较大。  </span><br><span class="line">&gt; *这里的父类和引用对象既然要进行序列化，那么它们当然也要满足序列化要求*  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; **3.非默认序列化机制**</span><br></pre></td></tr></table></figure></integer></string></p>
 </blockquote>
-<p>public class SerializeDemo02 {<br>    static class Person implements Serializable {<br>        transient private Integer age = null;<br>        // 其他内容<br>    }<br>    // 其他内容<br>}<br><code>`</code>  </p>
+<h2 id="类型擦除"><a href="#类型擦除" class="headerlink" title="类型擦除"></a><strong>类型擦除</strong></h2><blockquote>
+<p>Java 泛型是使用擦除来实现的，使用泛型时，任何具体的类型信息都被擦除了。ArrayList<string> 和 ArrayList<integer> 在运行时，JVM 将它们视为同一类型  </integer></string></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class ErasedTypeEquivalence &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Class c1 = new ArrayList&lt;String&gt;().getClass();</span><br><span class="line">        Class c2 = new ArrayList&lt;Integer&gt;().getClass();</span><br><span class="line">        System.out.println(c1 == c2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>输出结果是 true  </p>
+</blockquote>
+<h2 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a><strong>序列化</strong></h2><blockquote>
+<ul>
+<li>序列化：将对象转换为字节流  </li>
+<li>反序列化：将字节流转换为对象  </li>
+</ul>
+<p>Java通过对象输入输出流来实现序列化和反序列化  </p>
+<ul>
+<li>java.io.ObjectOutputStream 类的 writeObject() 方法可以实现序列化  </li>
+<li>java.io.ObjectInputStream 类的 readObject() 方法用于实现反序列化  </li>
+</ul>
+<p><em>被序列化的类必须属于 Enum、Array 和 Serializable类型其中的任何一种</em>  </p>
+<p><strong>1.serialVersionUID</strong><br>serialVersionUID 是Java为每个序列化类产生的版本标识<br>serialVersionUID 字段必须是static final long类型  </p>
+<p><strong>2.默认序列化机制</strong><br>&nbsp;&nbsp;&nbsp;&nbsp;如果仅仅只是让某个类实现 Serializable接口，而没有其它任何处理的话，那么就是使用默认序列化机制。使用默认机制，在序列化对象时，不仅会序列化当前对象本身，还会对其父类的字段以及该对象引用的其它对象也进行序列化。同样地，这些其它对象引用的另外对象也将被序列化，以此类推。所以，如果一个对象包含的成员变量是容器类对象，而这些容器所含有的元素也是容器类对象，那么这个序列化的过程就会较复杂，开销也较大。<br><em>这里的父类和引用对象既然要进行序列化，那么它们当然也要满足序列化要求</em>  </p>
+<p><strong>3.非默认序列化机制</strong>  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class SerializeDemo02 &#123;</span><br><span class="line">    static class Person implements Serializable &#123;</span><br><span class="line">        transient private Integer age = null;</span><br><span class="line">        // 其他内容</span><br><span class="line">    &#125;</span><br><span class="line">    // 其他内容</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
 <blockquote>
 <p>当某个字段被声明为 transient 后，默认序列化机制就会忽略该字段,不会对其序列化  </p>
 <p><img src="xlh.png" alt="图片">  </p>
@@ -285,10 +310,10 @@
 
    
   <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2018/10/31/java流笔记/">
+    <a class="show pull-left" href="/2018/11/01/java-nio笔记/">
         <i class="icon icon-angle-left"></i>
     </a>
-    <a class="show pull-right" href="/2018/10/31/ros笔记/">
+    <a class="show pull-right" href="/2018/11/01/linux笔记/">
         <i class="icon icon-angle-right"></i>
     </a>
   </div>
@@ -358,7 +383,7 @@
   <script>
     var disqus_shortname = 'forsigner';
     
-    var disqus_url = 'http://yoursite.com/2018/10/31/java基础笔记/';
+    var disqus_url = 'http://yoursite.com/2018/11/01/java基础笔记/';
     
     (function(){
       var dsq = document.createElement('script');

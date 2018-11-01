@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/10/31/netty笔记/netty7.PNG">
 <meta property="og:image" content="http://yoursite.com/2018/10/31/netty笔记/netty8.PNG">
 <meta property="og:image" content="http://yoursite.com/2018/10/31/netty笔记/netty5.PNG">
-<meta property="og:updated_time" content="2018-10-31T08:54:22.587Z">
+<meta property="og:updated_time" content="2018-11-01T04:31:54.519Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="netty笔记">
 <meta name="twitter:description" content="netty  netty由JBOSS提供的一个Java开源框架    提供异步的、事件驱动的网络应用程序框架和工具    快速开发高性能、高可靠性的网络服务器和客户端程序    Netty是一个基于NIO的客户、服务器端编程框架    提供了多种协议的编解码包括HTTP、二进制和Google Protobuf等等，它们通过Codec Framework进行整合    demo例程    学习网站">
@@ -284,28 +284,11 @@
 <li><p>业务代码里面调用write方法，netty会把你要写出去的消息放入他的对接，然后依靠调度将消息写出去，你只需要write  </p>
 </li>
 <li><p>Netty其实是允许在非NIO线程中写消息的。如果当前是在NIO线程，就直接写过去，如果不在NIO线程，写消息操作会被封装成一个task，然后再由NIO线程池来处理  </p>
-<pre><code>private void write(Object msg, boolean flush, ChannelPromise promise) {
-      AbstractChannelHandlerContext next = findContextOutbound();
-      final Object m = pipeline.touch(msg, next);
-      EventExecutor executor = next.executor();
-      if (executor.inEventLoop()) {
-          if (flush) {
-              next.invokeWriteAndFlush(m, promise);
-          } else {
-              next.invokeWrite(m, promise);
-          }
-      } else {
-          AbstractWriteTask task;
-          if (flush) {
-              task = WriteAndFlushTask.newInstance(next, m, promise);
-          }  else {
-              task = WriteTask.newInstance(next, m, promise);
-          }
-          safeExecute(executor, task, promise, m);
-      }
-  }
-</code></pre></li>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">private void write(Object msg, boolean flush, ChannelPromise promise) &#123;</span><br><span class="line">        AbstractChannelHandlerContext next = findContextOutbound();</span><br><span class="line">        final Object m = pipeline.touch(msg, next);</span><br><span class="line">        EventExecutor executor = next.executor();</span><br><span class="line">        if (executor.inEventLoop()) &#123;</span><br><span class="line">            if (flush) &#123;</span><br><span class="line">                next.invokeWriteAndFlush(m, promise);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                next.invokeWrite(m, promise);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            AbstractWriteTask task;</span><br><span class="line">            if (flush) &#123;</span><br><span class="line">                task = WriteAndFlushTask.newInstance(next, m, promise);</span><br><span class="line">            &#125;  else &#123;</span><br><span class="line">                task = WriteTask.newInstance(next, m, promise);</span><br><span class="line">            &#125;</span><br><span class="line">            safeExecute(executor, task, promise, m);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
+</blockquote>
+<blockquote>
 </blockquote>
 
     

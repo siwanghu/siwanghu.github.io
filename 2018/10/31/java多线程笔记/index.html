@@ -23,7 +23,8 @@
 <meta property="og:description" content="Java多线程 1.基本概念 并发：交替执行多任务，不一定要同时    并行：同时处理多个任务    同步：程序发出一个调用，在没有得到结果之前，该调用就不返回，程序阻塞。但是一旦调用返回，就得到返回值    异步：程序发出一个调用，这个调用就直接返回了，没有返回结果。当一个异步过程调用发出后，调用者不会立刻得到结果。而是在调用发出后，被调用者通过状态、来通知调用者，或通过回调函数处理这个调用">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2018/10/31/java多线程笔记/thread-state.png">
-<meta property="og:updated_time" content="2018-10-31T09:07:10.385Z">
+<meta property="og:image" content="http://yoursite.com/2018/10/31/java多线程笔记/lock.PNG">
+<meta property="og:updated_time" content="2018-11-01T04:28:14.149Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java多线程笔记">
 <meta name="twitter:description" content="Java多线程 1.基本概念 并发：交替执行多任务，不一定要同时    并行：同时处理多个任务    同步：程序发出一个调用，在没有得到结果之前，该调用就不返回，程序阻塞。但是一旦调用返回，就得到返回值    异步：程序发出一个调用，这个调用就直接返回了，没有返回结果。当一个异步过程调用发出后，调用者不会立刻得到结果。而是在调用发出后，被调用者通过状态、来通知调用者，或通过回调函数处理这个调用">
@@ -122,7 +123,7 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java多线程"><span class="toc-text">Java多线程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-基本概念"><span class="toc-text">1.基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-进程与线程的区别"><span class="toc-text">2.进程与线程的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-多线程的优缺点"><span class="toc-text">3.多线程的优缺点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-如何避免死锁与活锁"><span class="toc-text">4.如何避免死锁与活锁</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Java线程"><span class="toc-text">Java线程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Java线程创建"><span class="toc-text">Java线程创建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#区别"><span class="toc-text">区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Java中的多线程同步手段"><span class="toc-text">Java中的多线程同步手段</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#分布式锁"><span class="toc-text">分布式锁</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java多线程"><span class="toc-text">Java多线程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-基本概念"><span class="toc-text">1.基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-进程与线程的区别"><span class="toc-text">2.进程与线程的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-多线程的优缺点"><span class="toc-text">3.多线程的优缺点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-如何避免死锁与活锁"><span class="toc-text">4.如何避免死锁与活锁</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Java线程"><span class="toc-text">Java线程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Java线程创建"><span class="toc-text">Java线程创建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Thread中的重要方法"><span class="toc-text">Thread中的重要方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Java线程间通信"><span class="toc-text">Java线程间通信</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Object"><span class="toc-text">Object</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#管道"><span class="toc-text">管道</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Java并发底层实现"><span class="toc-text">Java并发底层实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-synchronized"><span class="toc-text">1.synchronized</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-volatile"><span class="toc-text">2.volatile</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lock锁"><span class="toc-text">Lock锁</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Semaphore信号量"><span class="toc-text">Semaphore信号量</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#区别"><span class="toc-text">区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Java中的多线程同步手段"><span class="toc-text">Java中的多线程同步手段</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#分布式锁"><span class="toc-text">分布式锁</span></a></li></ol>
   </div>
 
 
@@ -271,88 +272,114 @@
 <li>继承Thread类  </li>
 <li>实现Runable接口  </li>
 <li>使用线程池(ThreadPoolExecutor)  </li>
-<li>实现callable接口  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">public class CallableDemo &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Callable&lt;Integer&gt; callable = () -&gt; new Random().nextInt(100);</span><br><span class="line">        FutureTask&lt;Integer&gt; future = new FutureTask&lt;&gt;(callable);</span><br><span class="line">        new Thread(future).start();</span><br><span class="line">        try &#123;</span><br><span class="line">            Thread.sleep(1000);//可能做一些事情</span><br><span class="line">            System.out.println(future.get());</span><br><span class="line">        &#125; catch (InterruptedException | ExecutionException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br><span class="line">```  </span><br><span class="line"># Thread中的重要方法  </span><br><span class="line">&gt; + run - 线程的执行实体  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + start - 线程的启动方法  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + setName、getName - 可以通过 setName()、 getName() 来设置、获取线程名称  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + setPriority、getPriority - 在 Java 中，所有线程在运行前都会保持在就绪状态，那么此时，哪个线程优先级高，哪个线程就有可能被先执行。可以通过 setPriority、getPriority 来设置、获取线程优先级  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + setDaemon、isDaemon - 可以使用 setDaemon() 方法设置线程为守护线程；可以使用 isDaemon() 方法判断线程是否为守护线程  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + isAlive - 可以通过 isAlive 来判断线程是否启动  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + interrupt - 当一个线程运行时，另一个线程可以直接通过 interrupt() 方法中断其运行状态  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + join - 使用 join() 方法让一个线程强制运行，线程强制运行期间，其他线程无法运行，必须等待此线程完成之后才可以继续执行  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + Thread.sleep - 使用 Thread.sleep() 方法即可实现休眠  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + Thread.yield - 可以使用 Thread.yield() 方法将一个线程的操作暂时让给其他线程执行  </span><br><span class="line">&gt;  </span><br><span class="line"># Java线程间通信  </span><br><span class="line">&gt; ## **Object**</span><br><span class="line">&gt; wait、notify、notifyAll 是 Object 类中的方法  </span><br><span class="line">&gt; + wait - 线程自动释放其占有的对象锁，并等待 notify  </span><br><span class="line">&gt; + notify - 唤醒一个正在 wait 当前对象锁的线程，并让它拿到对象锁  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + notifyAll - 唤醒所有正在 wait 前对象锁的线程  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; **notify与notifyAll的区别**  </span><br><span class="line">&gt; + 唤醒在此对象监视器上等待的单个线程。如果所有线程都在此对象上等待，则会选择唤醒其中一个线程。选择是任意性的，并在对实现做出决定时发生  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + 唤醒在此对象监视器上等待的所有线程  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; ## **管道**  </span><br><span class="line">&gt; 主要用于线程之间的数据传输，而传输的媒介为内存. 4 种具体实现：PipedOutputStream、PipedInputStream、PipedReader 和 PipedWriter，前两种面向字节，而后两种面向字符  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; *ThreadLocal线程本地变量，ThreadLocal 为变量在每个线程中都创建了一个副本，那么每个线程可以访问自己内部的副本变量*</span><br></pre></td></tr></table></figure>
+<li>实现callable接口  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class CallableDemo &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Callable&lt;Integer&gt; callable = () -&gt; new Random().nextInt(100);</span><br><span class="line">        FutureTask&lt;Integer&gt; future = new FutureTask&lt;&gt;(callable);</span><br><span class="line">        new Thread(future).start();</span><br><span class="line">        try &#123;</span><br><span class="line">            Thread.sleep(1000);//可能做一些事情</span><br><span class="line">            System.out.println(future.get());</span><br><span class="line">        &#125; catch (InterruptedException | ExecutionException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </blockquote>
-<p>public class Piped {</p>
-<pre><code>public static void main(String[] args) throws Exception {
-    PipedWriter out = new PipedWriter();
-    PipedReader in = new PipedReader();
-    // 将输出流和输入流进行连接，否则在使用时会抛出IOException
-    out.connect(in);
-    Thread printThread = new Thread(new Print(in), &quot;PrintThread&quot;);
-    printThread.start();
-    int receive = 0;
-    try {
-        while ((receive = System.in.read()) != -1) {
-            out.write(receive);
-        }
-    } finally {
-        out.close();
-    }
-}
-
-static class Print implements Runnable {
-
-    private PipedReader in;
-
-    Print(PipedReader in) {
-        this.in = in;
-    }
-
-    public void run() {
-        int receive = 0;
-        try {
-            while ((receive = in.read()) != -1) {
-                System.out.print((char) receive);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-}
-</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"># Java并发底层实现  </span><br><span class="line">&gt; ## **1.synchronized**  </span><br><span class="line">&gt; 关键字 synchronized 可以保证在同一个时刻，只有一个线程可以执行某个方法或者某个代码块  </span><br><span class="line">&gt; **原理：**  </span><br><span class="line">&gt; + 对于普通同步方法，锁是当前实例对象  </span><br><span class="line">&gt; 造成其他的线程也无法调用当前类的其他同步方法  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + 对于静态同步方法，锁是当前类的 Class 对象  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + 对于同步方法块，锁是Synchonized 括号里配置的对象  </span><br><span class="line">&gt; 同步方法块是细粒度的同步，推荐使用这种写法  </span><br><span class="line">&gt; *注意：Java中的synchronized是可重入的，即一个线程得到一个对象锁后再次请求该对象锁，是永远可以拿到锁的*  </span><br><span class="line">&gt; ## **2.volatile**  </span><br><span class="line">&gt; volatile 是轻量级的 synchronized，它在多处理器开发中保证了共享变量的“可见性”  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; 可见性的意思是当一个线程修改一个共享变量时，另外一个线程能读到这个修改的值  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; 一旦一个共享变量（类的成员变量、类的静态成员变量）被 volatile 修饰之后，那么就具备了两层语义：保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的。禁止进行指令重排序。如果一个字段被声明成 volatile，Java 线程内存模型确保所有线程看到这个变量的值是一致的  </span><br><span class="line"># Lock锁  </span><br><span class="line">&gt; **synchronized缺陷**  </span><br><span class="line">&gt; + 被synchronized修饰的方法或代码块，只能被一个线程访问。如果这个线程被阻塞，其他线程也只能等待</span><br><span class="line">&gt;  </span><br><span class="line">&gt; + synchronized 不能响应中断  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + synchronized 没有超时机制  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + synchronized 只能是非公平锁  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; ![图片](lock.PNG)  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; **Lock接口**</span><br></pre></td></tr></table></figure></p>
-<p>public interface Lock {<br>    void lock();<br>    void lockInterruptibly() throws InterruptedException;<br>    boolean tryLock();<br>    boolean tryLock(long time, TimeUnit unit) throws InterruptedException;<br>    void unlock();<br>    Condition newCondition();<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&gt; + lock() 方法的作用是获取锁。如果锁已被其他线程获取，则进行等待  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + tryLock() 方法的作用是尝试获取锁，如果成功，则返回 true；如果失败（即锁已被其他线程获取），则返回 false。也就是说，这个方法无论如何都会立即返回，获取不到锁时不会一直等待  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + lockInterruptibly() 方法比较特殊，当通过这个方法去获取锁时，如果线程正在等待获取锁，则这个线程能够响应中断，即中断线程的等待状态。也就使说，当两个线程同时通过 lock.lockInterruptibly() 想获取某个锁时，假若此时线程 A 获取到了锁，而线程 B 只有在等待，那么对线程 B 调用 threadB.interrupt() 方法能够中断线程 B 的等待过程。  </span><br><span class="line">&gt;*当一个线程获取了锁之后，是不会被 interrupt() 方法中断的。因为本身在前面的文章中讲过单独调用 interrupt() 方法不能中断正在运行过程中的线程，只能中断阻塞过程中的线程。因此当通过 lockInterruptibly() 方法获取某个锁时，如果不能获取到，只有进行等待的情况下，是可以响应中断的*  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + unlock() 方法的作用是释放锁  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; ReentrantLock(可重入锁)是唯一实现了 Lock 接口的类  </span><br><span class="line">&gt; **ReadWriteLock 和 ReentrantReadWriteLock**  </span><br><span class="line">&gt; eadWriteLock 允许多个线程同时对其执行读操作，但是只允许一个线程对其执行写操作  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; ReentrantReadWriteLock 实现了 ReadWriteLock 接口，所以它是一个读写锁  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; **ReadWriteLock接口定义**</span><br></pre></td></tr></table></figure></p>
-<p>public interface ReadWriteLock {<br>    /**</p>
-<pre><code> * 返回用于读操作的锁
- */
-Lock readLock();
-
-/**
- * 返回用于写操作的锁
- */
-Lock writeLock();
-</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; **condition接口**  </span><br><span class="line">&gt; Condition 将 Object 监视器方法（wait、notify 和 notifyAll）分解成截然不同的对象，以便通过将这些对象与任意 Lock 实现组合使用，为每个对象提供多个等待 set（wait-set）。其中，Lock 替代了 synchronized 方法和语句的使用，Condition 替代了 Object 监视器方法的使用</span><br></pre></td></tr></table></figure></p>
-<p> class BoundedBuffer {<br>   final Lock lock = new ReentrantLock();<br>   final Condition notFull  = lock.newCondition();<br>   final Condition notEmpty = lock.newCondition(); </p>
-<p>   final Object[] items = new Object[100];<br>   int putptr, takeptr, count;</p>
-<p>   public void put(Object x) throws InterruptedException {<br>     lock.lock();<br>     try {<br>       while (count == items.length)<br>         notFull.await();<br>       items[putptr] = x;<br>       if (++putptr == items.length) putptr = 0;<br>       ++count;<br>       notEmpty.signal();<br>     } finally {<br>       lock.unlock();<br>     }<br>   }</p>
-<p>   public Object take() throws InterruptedException {<br>     lock.lock();<br>     try {<br>       while (count == 0)<br>         notEmpty.await();<br>       Object x = items[takeptr];<br>       if (++takeptr == items.length) takeptr = 0;<br>       –count;<br>       notFull.signal();<br>       return x;<br>     } finally {<br>       lock.unlock();<br>     }<br>   }<br> }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># Semaphore信号量  </span><br><span class="line">&gt; Semaphore用来控制同时访问某个特定资源的操作数量，或者同时执行某个指定操作的数量  </span><br><span class="line">&gt; **原理**：Semaphore管理着一组虚拟的许可（permit），permit的初始数量可通过构造方法来指定。每次执行acquire方法可以获取一个permit，如果没有就等待；而release方法可以释放一个permit  </span><br><span class="line">&gt;  </span><br><span class="line">&gt; + Semaphore 可以用于实现资源池，如数据库连接池  </span><br><span class="line">&gt; + Semaphore 可以用于将任何一种容器变成有界阻塞容器  </span><br><span class="line">&gt; Semaphore构造方法</span><br></pre></td></tr></table></figure></p>
-<p>//初始化固定数量的 permit，并且默认为非公平模式<br>public Semaphore(int permits) {}<br>//初始化固定数量的 permit，第二个参数设置是否为公平模式。所谓公平，是指等待久的优先获取许可<br>public Semaphore(int permits, boolean fair) {}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; Semaphore的重要方法</span><br></pre></td></tr></table></figure></p>
-<p>// 获取 1 个许可<br>public void acquire() throws InterruptedException {}<br>//获取 permits 个许可<br>public void acquire(int permits) throws InterruptedException {}<br>// 释放 1 个许可<br>public void release() {}<br>//释放 permits 个许可<br>public void release(int permits) {}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; 程序Demo</span><br></pre></td></tr></table></figure></p>
-<p>public class SemaphoreDemo {</p>
-<pre><code>private static final int THREAD_COUNT = 30;
-
-private static ExecutorService threadPool = Executors.newFixedThreadPool(THREAD_COUNT);
-
-private static Semaphore s = new Semaphore(10);
-
-public static void main(String[] args) {
-    for (int i = 0; i &lt; THREAD_COUNT; i++) {
-        threadPool.execute(() -&gt; {
-            try {
-                s.acquire();
-                System.out.println(&quot;save data&quot;);
-                s.release();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    threadPool.shutdown();
-}
-</code></pre><p>}<br><code>`</code></p>
+<h1 id="Thread中的重要方法"><a href="#Thread中的重要方法" class="headerlink" title="Thread中的重要方法"></a>Thread中的重要方法</h1><blockquote>
+<ul>
+<li><p>run - 线程的执行实体  </p>
+</li>
+<li><p>start - 线程的启动方法  </p>
+</li>
+<li><p>setName、getName - 可以通过 setName()、 getName() 来设置、获取线程名称  </p>
+</li>
+<li><p>setPriority、getPriority - 在 Java 中，所有线程在运行前都会保持在就绪状态，那么此时，哪个线程优先级高，哪个线程就有可能被先执行。可以通过 setPriority、getPriority 来设置、获取线程优先级  </p>
+</li>
+<li><p>setDaemon、isDaemon - 可以使用 setDaemon() 方法设置线程为守护线程；可以使用 isDaemon() 方法判断线程是否为守护线程  </p>
+</li>
+<li><p>isAlive - 可以通过 isAlive 来判断线程是否启动  </p>
+</li>
+<li><p>interrupt - 当一个线程运行时，另一个线程可以直接通过 interrupt() 方法中断其运行状态  </p>
+</li>
+<li><p>join - 使用 join() 方法让一个线程强制运行，线程强制运行期间，其他线程无法运行，必须等待此线程完成之后才可以继续执行  </p>
+</li>
+<li><p>Thread.sleep - 使用 Thread.sleep() 方法即可实现休眠  </p>
+</li>
+<li><p>Thread.yield - 可以使用 Thread.yield() 方法将一个线程的操作暂时让给其他线程执行  </p>
+</li>
+</ul>
+</blockquote>
+<h1 id="Java线程间通信"><a href="#Java线程间通信" class="headerlink" title="Java线程间通信"></a>Java线程间通信</h1><blockquote>
+<h2 id="Object"><a href="#Object" class="headerlink" title="Object"></a><strong>Object</strong></h2><p>wait、notify、notifyAll 是 Object 类中的方法  </p>
+<ul>
+<li>wait - 线程自动释放其占有的对象锁，并等待 notify  </li>
+<li><p>notify - 唤醒一个正在 wait 当前对象锁的线程，并让它拿到对象锁  </p>
+</li>
+<li><p>notifyAll - 唤醒所有正在 wait 前对象锁的线程  </p>
+</li>
+</ul>
+<p><strong>notify与notifyAll的区别</strong>  </p>
+<ul>
+<li><p>唤醒在此对象监视器上等待的单个线程。如果所有线程都在此对象上等待，则会选择唤醒其中一个线程。选择是任意性的，并在对实现做出决定时发生  </p>
+</li>
+<li><p>唤醒在此对象监视器上等待的所有线程  </p>
+</li>
+</ul>
+<h2 id="管道"><a href="#管道" class="headerlink" title="管道"></a><strong>管道</strong></h2><p>主要用于线程之间的数据传输，而传输的媒介为内存. 4 种具体实现：PipedOutputStream、PipedInputStream、PipedReader 和 PipedWriter，前两种面向字节，而后两种面向字符  </p>
+<p><em>ThreadLocal线程本地变量，ThreadLocal 为变量在每个线程中都创建了一个副本，那么每个线程可以访问自己内部的副本变量</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">public class Piped &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws Exception &#123;</span><br><span class="line">        PipedWriter out = new PipedWriter();</span><br><span class="line">        PipedReader in = new PipedReader();</span><br><span class="line">        // 将输出流和输入流进行连接，否则在使用时会抛出IOException</span><br><span class="line">        out.connect(in);</span><br><span class="line">        Thread printThread = new Thread(new Print(in), &quot;PrintThread&quot;);</span><br><span class="line">        printThread.start();</span><br><span class="line">        int receive = 0;</span><br><span class="line">        try &#123;</span><br><span class="line">            while ((receive = System.in.read()) != -1) &#123;</span><br><span class="line">                out.write(receive);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            out.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    static class Print implements Runnable &#123;</span><br><span class="line"></span><br><span class="line">        private PipedReader in;</span><br><span class="line"></span><br><span class="line">        Print(PipedReader in) &#123;</span><br><span class="line">            this.in = in;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public void run() &#123;</span><br><span class="line">            int receive = 0;</span><br><span class="line">            try &#123;</span><br><span class="line">                while ((receive = in.read()) != -1) &#123;</span><br><span class="line">                    System.out.print((char) receive);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; catch (IOException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h1 id="Java并发底层实现"><a href="#Java并发底层实现" class="headerlink" title="Java并发底层实现"></a>Java并发底层实现</h1><blockquote>
+<h2 id="1-synchronized"><a href="#1-synchronized" class="headerlink" title="1.synchronized"></a><strong>1.synchronized</strong></h2><p>关键字 synchronized 可以保证在同一个时刻，只有一个线程可以执行某个方法或者某个代码块<br><strong>原理：</strong>  </p>
+<ul>
+<li><p>对于普通同步方法，锁是当前实例对象<br>造成其他的线程也无法调用当前类的其他同步方法  </p>
+</li>
+<li><p>对于静态同步方法，锁是当前类的 Class 对象  </p>
+</li>
+<li><p>对于同步方法块，锁是Synchonized 括号里配置的对象<br>同步方法块是细粒度的同步，推荐使用这种写法<br><em>注意：Java中的synchronized是可重入的，即一个线程得到一个对象锁后再次请求该对象锁，是永远可以拿到锁的</em>  </p>
+<h2 id="2-volatile"><a href="#2-volatile" class="headerlink" title="2.volatile"></a><strong>2.volatile</strong></h2><p>volatile 是轻量级的 synchronized，它在多处理器开发中保证了共享变量的“可见性”  </p>
+</li>
+</ul>
+<p>可见性的意思是当一个线程修改一个共享变量时，另外一个线程能读到这个修改的值  </p>
+<p>一旦一个共享变量（类的成员变量、类的静态成员变量）被 volatile 修饰之后，那么就具备了两层语义：保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的。禁止进行指令重排序。如果一个字段被声明成 volatile，Java 线程内存模型确保所有线程看到这个变量的值是一致的  </p>
+</blockquote>
+<h1 id="Lock锁"><a href="#Lock锁" class="headerlink" title="Lock锁"></a>Lock锁</h1><blockquote>
+<p><strong>synchronized缺陷</strong>  </p>
+<ul>
+<li><p>被synchronized修饰的方法或代码块，只能被一个线程访问。如果这个线程被阻塞，其他线程也只能等待</p>
+</li>
+<li><p>synchronized 不能响应中断  </p>
+</li>
+<li><p>synchronized 没有超时机制  </p>
+</li>
+<li><p>synchronized 只能是非公平锁  </p>
+</li>
+</ul>
+<p><img src="lock.PNG" alt="图片">  </p>
+<p><strong>Lock接口</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public interface Lock &#123;</span><br><span class="line">    void lock();</span><br><span class="line">    void lockInterruptibly() throws InterruptedException;</span><br><span class="line">    boolean tryLock();</span><br><span class="line">    boolean tryLock(long time, TimeUnit unit) throws InterruptedException;</span><br><span class="line">    void unlock();</span><br><span class="line">    Condition newCondition();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<ul>
+<li><p>lock() 方法的作用是获取锁。如果锁已被其他线程获取，则进行等待  </p>
+</li>
+<li><p>tryLock() 方法的作用是尝试获取锁，如果成功，则返回 true；如果失败（即锁已被其他线程获取），则返回 false。也就是说，这个方法无论如何都会立即返回，获取不到锁时不会一直等待  </p>
+</li>
+<li><p>lockInterruptibly() 方法比较特殊，当通过这个方法去获取锁时，如果线程正在等待获取锁，则这个线程能够响应中断，即中断线程的等待状态。也就使说，当两个线程同时通过 lock.lockInterruptibly() 想获取某个锁时，假若此时线程 A 获取到了锁，而线程 B 只有在等待，那么对线程 B 调用 threadB.interrupt() 方法能够中断线程 B 的等待过程。<br><em>当一个线程获取了锁之后，是不会被 interrupt() 方法中断的。因为本身在前面的文章中讲过单独调用 interrupt() 方法不能中断正在运行过程中的线程，只能中断阻塞过程中的线程。因此当通过 lockInterruptibly() 方法获取某个锁时，如果不能获取到，只有进行等待的情况下，是可以响应中断的</em>  </p>
+</li>
+<li><p>unlock() 方法的作用是释放锁  </p>
+</li>
+</ul>
+<p>ReentrantLock(可重入锁)是唯一实现了 Lock 接口的类<br><strong>ReadWriteLock 和 ReentrantReadWriteLock</strong><br>eadWriteLock 允许多个线程同时对其执行读操作，但是只允许一个线程对其执行写操作  </p>
+<p>ReentrantReadWriteLock 实现了 ReadWriteLock 接口，所以它是一个读写锁  </p>
+<p><strong>ReadWriteLock接口定义</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public interface ReadWriteLock &#123;</span><br><span class="line">    /**</span><br><span class="line">     * 返回用于读操作的锁</span><br><span class="line">     */</span><br><span class="line">    Lock readLock();</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 返回用于写操作的锁</span><br><span class="line">     */</span><br><span class="line">    Lock writeLock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p><strong>condition接口</strong><br>Condition 将 Object 监视器方法（wait、notify 和 notifyAll）分解成截然不同的对象，以便通过将这些对象与任意 Lock 实现组合使用，为每个对象提供多个等待 set（wait-set）。其中，Lock 替代了 synchronized 方法和语句的使用，Condition 替代了 Object 监视器方法的使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"> class BoundedBuffer &#123;</span><br><span class="line">   final Lock lock = new ReentrantLock();</span><br><span class="line">   final Condition notFull  = lock.newCondition(); </span><br><span class="line">   final Condition notEmpty = lock.newCondition(); </span><br><span class="line"></span><br><span class="line">   final Object[] items = new Object[100];</span><br><span class="line">   int putptr, takeptr, count;</span><br><span class="line"></span><br><span class="line">   public void put(Object x) throws InterruptedException &#123;</span><br><span class="line">     lock.lock();</span><br><span class="line">     try &#123;</span><br><span class="line">       while (count == items.length) </span><br><span class="line">         notFull.await();</span><br><span class="line">       items[putptr] = x; </span><br><span class="line">       if (++putptr == items.length) putptr = 0;</span><br><span class="line">       ++count;</span><br><span class="line">       notEmpty.signal();</span><br><span class="line">     &#125; finally &#123;</span><br><span class="line">       lock.unlock();</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   public Object take() throws InterruptedException &#123;</span><br><span class="line">     lock.lock();</span><br><span class="line">     try &#123;</span><br><span class="line">       while (count == 0) </span><br><span class="line">         notEmpty.await();</span><br><span class="line">       Object x = items[takeptr]; </span><br><span class="line">       if (++takeptr == items.length) takeptr = 0;</span><br><span class="line">       --count;</span><br><span class="line">       notFull.signal();</span><br><span class="line">       return x;</span><br><span class="line">     &#125; finally &#123;</span><br><span class="line">       lock.unlock();</span><br><span class="line">     &#125;</span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h1 id="Semaphore信号量"><a href="#Semaphore信号量" class="headerlink" title="Semaphore信号量"></a>Semaphore信号量</h1><blockquote>
+<p>Semaphore用来控制同时访问某个特定资源的操作数量，或者同时执行某个指定操作的数量<br><strong>原理</strong>：Semaphore管理着一组虚拟的许可（permit），permit的初始数量可通过构造方法来指定。每次执行acquire方法可以获取一个permit，如果没有就等待；而release方法可以释放一个permit  </p>
+<ul>
+<li>Semaphore 可以用于实现资源池，如数据库连接池  </li>
+<li>Semaphore 可以用于将任何一种容器变成有界阻塞容器<br>Semaphore构造方法  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//初始化固定数量的 permit，并且默认为非公平模式</span><br><span class="line">public Semaphore(int permits) &#123;&#125;</span><br><span class="line">//初始化固定数量的 permit，第二个参数设置是否为公平模式。所谓公平，是指等待久的优先获取许可</span><br><span class="line">public Semaphore(int permits, boolean fair) &#123;&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>Semaphore的重要方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 获取 1 个许可</span><br><span class="line">public void acquire() throws InterruptedException &#123;&#125;</span><br><span class="line">//获取 permits 个许可</span><br><span class="line">public void acquire(int permits) throws InterruptedException &#123;&#125;</span><br><span class="line">// 释放 1 个许可</span><br><span class="line">public void release() &#123;&#125;</span><br><span class="line">//释放 permits 个许可</span><br><span class="line">public void release(int permits) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>程序Demo<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">public class SemaphoreDemo &#123;</span><br><span class="line"></span><br><span class="line">    private static final int THREAD_COUNT = 30;</span><br><span class="line"></span><br><span class="line">    private static ExecutorService threadPool = Executors.newFixedThreadPool(THREAD_COUNT);</span><br><span class="line"></span><br><span class="line">    private static Semaphore s = new Semaphore(10);</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        for (int i = 0; i &lt; THREAD_COUNT; i++) &#123;</span><br><span class="line">            threadPool.execute(() -&gt; &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    s.acquire();</span><br><span class="line">                    System.out.println(&quot;save data&quot;);</span><br><span class="line">                    s.release();</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        threadPool.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
 <h1 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h1><blockquote>
 <p> <strong>Semaphore与Lock的区别</strong>  </p>
 <ul>
