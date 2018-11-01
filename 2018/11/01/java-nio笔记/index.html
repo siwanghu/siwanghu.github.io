@@ -26,7 +26,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/11/01/java-nio笔记/nio2.PNG">
 <meta property="og:image" content="http://yoursite.com/2018/11/01/java-nio笔记/javanio-channel-buffer.png">
 <meta property="og:image" content="http://yoursite.com/2018/11/01/java-nio笔记/javanio-selecor-3-channel.png">
-<meta property="og:updated_time" content="2018-11-01T08:24:47.620Z">
+<meta property="og:updated_time" content="2018-11-01T08:53:26.853Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java-nio笔记">
 <meta name="twitter:description" content="Java NIO  Java NIO(New IO)是一个可以替代标准Java IO API（从Java 1.4开始)，提供了与标准IO不同的IO工作方式    标准的IO基于字节流和字符流进行操作的，而NIO是基于通道（Channel）和缓冲区（Buffer）进行操作，数据总是从通道读取到缓冲区中，或者从缓冲区写入到通道中    Java NIO可以让你非阻塞的使用IO    Java NIO引">
@@ -125,7 +125,7 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java-NIO"><span class="toc-text">Java NIO</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#核心部分"><span class="toc-text">核心部分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IO过程"><span class="toc-text">IO过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#channels"><span class="toc-text">channels</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#buffer"><span class="toc-text">buffer</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#缓冲区重要属性"><span class="toc-text">缓冲区重要属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#申请缓冲区空间"><span class="toc-text">申请缓冲区空间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#主要方法"><span class="toc-text">主要方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Selectors"><span class="toc-text">Selectors</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建选择器"><span class="toc-text">创建选择器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#将通道注册到选择器中"><span class="toc-text">将通道注册到选择器中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#兴趣集合（interest-set）"><span class="toc-text">兴趣集合（interest set）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#就绪状态集合（ready-set）"><span class="toc-text">就绪状态集合（ready set）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通道-选择器"><span class="toc-text">通道 + 选择器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#附加对象"><span class="toc-text">附加对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通过选择器『选择』通道"><span class="toc-text">通过选择器『选择』通道</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#非阻塞Server实现"><span class="toc-text">非阻塞Server实现</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java-NIO"><span class="toc-text">Java NIO</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#核心部分"><span class="toc-text">核心部分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IO过程"><span class="toc-text">IO过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#channels"><span class="toc-text">channels</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#buffer"><span class="toc-text">buffer</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#缓冲区重要属性"><span class="toc-text">缓冲区重要属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#申请缓冲区空间"><span class="toc-text">申请缓冲区空间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#主要方法"><span class="toc-text">主要方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Selectors"><span class="toc-text">Selectors</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建选择器"><span class="toc-text">创建选择器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#将通道注册到选择器中"><span class="toc-text">将通道注册到选择器中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SelectionKey"><span class="toc-text">SelectionKey</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#兴趣集合（interest-set）"><span class="toc-text">兴趣集合（interest set）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#就绪状态集合（ready-set）"><span class="toc-text">就绪状态集合（ready set）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从selectionKey获取事件发生的对应通道"><span class="toc-text">从selectionKey获取事件发生的对应通道</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#附加对象"><span class="toc-text">附加对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#channel事件发生获取"><span class="toc-text">channel事件发生获取</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#非阻塞Server实现"><span class="toc-text">非阻塞Server实现</span></a></li></ol></li></ol>
   </div>
 
 
@@ -176,7 +176,9 @@
 <li><p>Java NIO引入了选择器的概念，选择器用于监听多个通道的事件（比如：连接打开，数据到达）。因此，单个的线程可以监听多个数据通道  </p>
 </li>
 </ul>
-<h2 id="核心部分"><a href="#核心部分" class="headerlink" title="核心部分"></a><strong>核心部分</strong></h2><ul>
+</blockquote>
+<h2 id="核心部分"><a href="#核心部分" class="headerlink" title="核心部分"></a>核心部分</h2><blockquote>
+<ul>
 <li>channels（通道）  </li>
 <li>Buffers（缓冲区）  </li>
 <li>Selectors（选择器）  </li>
@@ -220,7 +222,7 @@
 </li>
 <li><p>位置：position<br>当往缓冲期里写数据时，总是会从某个位置(position)开始。刚开始时，position是0。当写入一个byte或者long类型的数据后，position会指向下一个可写入的位置。显然，postion的最大值等于capacity-1。当从缓冲区中读取数据时，也总是会从某个位置开始。当缓冲区从写模式切换到读模式后，postion会被重置为0。当从缓冲区中读取数据时，postion会指向下一个可读取的位置。  </p>
 </li>
-<li><p>上限：limit<br>在写模式下，缓冲区的limit指的是可以往缓冲区里写入多少数据。即，写模式下limit和capacity的含义相同<br>在读模式下，limit指的是可以从缓冲区中读出多少数据。因此，当缓冲区切换到读模式后，limit会设置为写模式时position的值  </p>
+<li><p>上限：limit<br>缓冲区的第一个不能被读或写的元素。或者说，缓冲区中现存元素的计数<br>在写模式下，缓冲区的limit指的是可以往缓冲区里写入多少数据。即，写模式下limit和capacity的含义相同<br>在读模式下，limit指的是可以从缓冲区中读出多少数据。因此，当缓冲区切换到读模式后，limit会设置为写模式时position的值  </p>
 </li>
 </ul>
 <h3 id="申请缓冲区空间"><a href="#申请缓冲区空间" class="headerlink" title="申请缓冲区空间"></a>申请缓冲区空间</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//申请大小为 48字节 的ByteBuffer</span><br><span class="line">ByteBuffer buf = ByteBuffer.allocate(48);</span><br><span class="line"></span><br><span class="line">//申请大小为 1024个字符 </span><br><span class="line">CharBuffer buf = CharBuffer.allocate(1024);</span><br></pre></td></tr></table></figure>
@@ -232,14 +234,14 @@
 </blockquote>
 <h2 id="Selectors"><a href="#Selectors" class="headerlink" title="Selectors"></a>Selectors</h2><blockquote>
 <p><img src="javanio-selecor-3-channel.png" alt="图片"><br>选择器可以让一个线程处理多个通道。当应用程序打开多个连接（Channel），需要先将Channel注册到选择器中，之后就可以调用它的select()方法。该方法一直阻塞到所注册通道中某个事件就绪为止。一旦方法返回，线程就可以处理这些事件。这些事件包括有连接进来，数据接收等  </p>
-<h3 id="创建选择器"><a href="#创建选择器" class="headerlink" title="创建选择器"></a>创建选择器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Selector selector = Selector.open();</span><br></pre></td></tr></table></figure>
+<h3 id="创建选择器"><a href="#创建选择器" class="headerlink" title="创建选择器"></a><strong>创建选择器</strong></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Selector selector = Selector.open();</span><br></pre></td></tr></table></figure>
 </blockquote>
 <blockquote>
-<h3 id="将通道注册到选择器中"><a href="#将通道注册到选择器中" class="headerlink" title="将通道注册到选择器中"></a>将通道注册到选择器中</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">channel.configureBlocking(false);</span><br><span class="line">SelectionKey key = channel.register(selector, SelectionKey.OP_READ);</span><br></pre></td></tr></table></figure>
+<h3 id="将通道注册到选择器中"><a href="#将通道注册到选择器中" class="headerlink" title="将通道注册到选择器中"></a><strong>将通道注册到选择器中</strong></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">channel.configureBlocking(false);</span><br><span class="line">SelectionKey key = channel.register(selector, SelectionKey.OP_READ);</span><br></pre></td></tr></table></figure>
 </blockquote>
 <blockquote>
 <p>通道只有在非阻塞模式下才能使用选择器。这就意味着FileChannel是不能使用选择器的，原因是FileChannel是无法切换到非阻塞模式下的，而基于Socket的通道是可以的  </p>
-<p>register()方法的第二个参数。这是一个所谓的兴趣集合（interest set），意思是选择器对通道中的哪些事件感兴趣，以监听这类事件,可以监听的事件类型有四种：  </p>
+<h3 id="SelectionKey"><a href="#SelectionKey" class="headerlink" title="SelectionKey"></a><strong>SelectionKey</strong></h3><p>register()方法的第二个参数。这是一个所谓的兴趣集合（interest set），意思是选择器对通道中的哪些事件感兴趣，以监听这类事件,可以监听的事件类型有四种：  </p>
 <ul>
 <li>SelectionKey.OP_CONNECT  </li>
 <li>SelectionKey.OP_ACCEPT  </li>
@@ -255,24 +257,24 @@
 <li>就绪状态集合（ready set） </li>
 <li>通道 </li>
 <li>选择器  </li>
-<li>附加对象 (可选)  <h3 id="兴趣集合（interest-set）"><a href="#兴趣集合（interest-set）" class="headerlink" title="兴趣集合（interest set）"></a>兴趣集合（interest set）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int interestSet = selectionKey.interestOps();</span><br><span class="line">boolean isInterestedInAccept  = interestSet &amp; SelectionKey.OP_ACCEPT;</span><br><span class="line">boolean isInterestedInConnect = interestSet &amp; SelectionKey.OP_CONNECT;</span><br><span class="line">boolean isInterestedInRead    = interestSet &amp; SelectionKey.OP_READ;</span><br><span class="line">boolean isInterestedInWrite   = interestSet &amp; SelectionKey.OP_WRITE;</span><br></pre></td></tr></table></figure>
+<li>附加对象 (可选)  <h3 id="兴趣集合（interest-set）"><a href="#兴趣集合（interest-set）" class="headerlink" title="兴趣集合（interest set）"></a><strong>兴趣集合（interest set）</strong></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int interestSet = selectionKey.interestOps();</span><br><span class="line">boolean isInterestedInAccept  = interestSet &amp; SelectionKey.OP_ACCEPT;</span><br><span class="line">boolean isInterestedInConnect = interestSet &amp; SelectionKey.OP_CONNECT;</span><br><span class="line">boolean isInterestedInRead    = interestSet &amp; SelectionKey.OP_READ;</span><br><span class="line">boolean isInterestedInWrite   = interestSet &amp; SelectionKey.OP_WRITE;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </blockquote>
 <blockquote>
 <p>可以使用AND（与）操作来判断给定的集合中是否包含了某个事件  </p>
-<h3 id="就绪状态集合（ready-set）"><a href="#就绪状态集合（ready-set）" class="headerlink" title="就绪状态集合（ready set）"></a>就绪状态集合（ready set）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">selectionKey.isAcceptable();</span><br><span class="line">selectionKey.isConnectable();</span><br><span class="line">selectionKey.isReadable();</span><br><span class="line">selectionKey.isWritable();</span><br></pre></td></tr></table></figure>
+<h3 id="就绪状态集合（ready-set）"><a href="#就绪状态集合（ready-set）" class="headerlink" title="就绪状态集合（ready set）"></a><strong>就绪状态集合（ready set）</strong></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">selectionKey.isAcceptable();</span><br><span class="line">selectionKey.isConnectable();</span><br><span class="line">selectionKey.isReadable();</span><br><span class="line">selectionKey.isWritable();</span><br></pre></td></tr></table></figure>
 </blockquote>
 <blockquote>
 <p>就绪状态集合（ready set），顾名思义，就是指通道中已经就绪的操作集合。在做出『选择』之后，主要就是对就绪状态集合进行操作  </p>
-<h3 id="通道-选择器"><a href="#通道-选择器" class="headerlink" title="通道 + 选择器"></a>通道 + 选择器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Channel  channel  = selectionKey.channel();</span><br><span class="line">Selector selector = selectionKey.selector();</span><br></pre></td></tr></table></figure>
+<h3 id="从selectionKey获取事件发生的对应通道"><a href="#从selectionKey获取事件发生的对应通道" class="headerlink" title="从selectionKey获取事件发生的对应通道"></a><strong>从selectionKey获取事件发生的对应通道</strong></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Channel  channel  = selectionKey.channel();</span><br><span class="line">Selector selector = selectionKey.selector();</span><br></pre></td></tr></table></figure>
 </blockquote>
 <blockquote>
 <p>访问SelectionKey中的通道和选择器很简单  </p>
-<h3 id="附加对象"><a href="#附加对象" class="headerlink" title="附加对象"></a>附加对象</h3><p>可以在SelectionKey中附加一个对象，以便于识别给定通道，或者为通道附加更多信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">selectionKey.attach(theObject);</span><br><span class="line">Object attachedObj = selectionKey.attachment();</span><br></pre></td></tr></table></figure></p>
+<h3 id="附加对象"><a href="#附加对象" class="headerlink" title="附加对象"></a><strong>附加对象</strong></h3><p>可以在SelectionKey中附加一个对象，以便于识别给定通道，或者为通道附加更多信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">selectionKey.attach(theObject);</span><br><span class="line">Object attachedObj = selectionKey.attachment();</span><br></pre></td></tr></table></figure></p>
 </blockquote>
 <blockquote>
-<h3 id="通过选择器『选择』通道"><a href="#通过选择器『选择』通道" class="headerlink" title="通过选择器『选择』通道"></a>通过选择器『选择』通道</h3><p>一旦在选择器中注册了一个或者几个通道之后，就可以调用select()方法。这些方法会返回你感兴趣的事件已经就绪状态的通道，比如Connect，Accept，Read 或者 Write。换言之，如果想选择可以读取数据的通道，select()方法会返回那些Read就绪的通道。select()方法有下面几种重载模式：  </p>
+<h3 id="channel事件发生获取"><a href="#channel事件发生获取" class="headerlink" title="channel事件发生获取"></a><strong>channel事件发生获取</strong></h3><p>一旦在选择器中注册了一个或者几个通道之后，就可以调用select()方法。这些方法会返回你感兴趣的事件已经就绪状态的通道，比如Connect，Accept，Read 或者 Write。换言之，如果想选择可以读取数据的通道，select()方法会返回那些Read就绪的通道。select()方法有下面几种重载模式：  </p>
 <ul>
 <li><p>int select() - 会被阻塞到所注册的事件就绪为止  </p>
 </li>
