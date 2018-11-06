@@ -29,7 +29,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/11/06/netty线程模型/bg5.PNG">
 <meta property="og:image" content="http://yoursite.com/2018/11/06/netty线程模型/bg6.PNG">
 <meta property="og:image" content="http://yoursite.com/2018/11/06/netty线程模型/bg7.PNG">
-<meta property="og:updated_time" content="2018-11-06T04:01:19.049Z">
+<meta property="og:updated_time" content="2018-11-06T04:03:08.446Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="netty线程模型">
 <meta name="twitter:description" content="netty线程模型 Reactor模型：异步非阻塞IO，所有的IO操作都不会导致阻塞  Reactor单线程模型 Reactor单线程模型，指所有的I/O操作都在同一个NIO线程上面完成：     作为NIO服务端，接收客户端的TCP连接    作为NIO客户端，向服务端发起TCP连接    读取通信对端的请求或者应答数据    向通信对端发送消息请求或者应答消息     在小容量应用场景下，可以">
@@ -224,8 +224,9 @@
 <ul>
 <li><p>一：线程数量=(线程总事件/瓶颈资源时间)*瓶颈资源的线程并行数  </p>
 </li>
-<li><p>二：QPS=1000/线程总时间<em>线程数(每秒查询率QPS)  
-</em>线程数量配置以实际效果位准*  </p>
+<li><p>二：QPS=1000/线程总时间*线程数(每秒查询率QPS)  </p>
+</li>
+<li><p>线程数量配置以实际效果为准  </p>
 </li>
 </ul>
 </blockquote>
