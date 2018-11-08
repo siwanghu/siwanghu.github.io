@@ -15,19 +15,19 @@
     <meta name="keywords" content="全栈,微服务,Java,Netty,Vue,机器学习,Python">
   
 
-  <meta name="description" content="Java线程池笔记（siwang.hu&amp;nbsp;&amp;nbsp;V1.0) &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在实际开发中，如果每个请求到达服务器就创建一个新线程为其服务，开销是相当大的。服务器在创建和销毁线程上花费的时间和消耗的系统资源非常大，甚至可能要比在处理实际的用请求的时间和资源要多的多。除了创建和销毁线程的开销之外，活动的线程也需要消耗系统资源。如果在一个jvm里创建太多的线">
+  <meta name="description" content="Java线程池笔记 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在实际开发中，如果每个请求到达服务器就创建一个新线程为其服务，开销是相当大的。服务器在创建和销毁线程上花费的时间和消耗的系统资源非常大，甚至可能要比在处理实际的用请求的时间和资源要多的多。除了创建和销毁线程的开销之外，活动的线程也需要消耗系统资源。如果在一个jvm里创建太多的线程，可能会使系统由于过度消耗内存或线程上下文切换过度而">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java线程池笔记">
 <meta property="og:url" content="http://yoursite.com/2018/11/08/java线程池笔记/index.html">
 <meta property="og:site_name" content="胡思旺">
-<meta property="og:description" content="Java线程池笔记（siwang.hu&amp;nbsp;&amp;nbsp;V1.0) &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在实际开发中，如果每个请求到达服务器就创建一个新线程为其服务，开销是相当大的。服务器在创建和销毁线程上花费的时间和消耗的系统资源非常大，甚至可能要比在处理实际的用请求的时间和资源要多的多。除了创建和销毁线程的开销之外，活动的线程也需要消耗系统资源。如果在一个jvm里创建太多的线">
+<meta property="og:description" content="Java线程池笔记 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在实际开发中，如果每个请求到达服务器就创建一个新线程为其服务，开销是相当大的。服务器在创建和销毁线程上花费的时间和消耗的系统资源非常大，甚至可能要比在处理实际的用请求的时间和资源要多的多。除了创建和销毁线程的开销之外，活动的线程也需要消耗系统资源。如果在一个jvm里创建太多的线程，可能会使系统由于过度消耗内存或线程上下文切换过度而">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2018/11/08/java线程池笔记/qw.jpeg">
 <meta property="og:image" content="http://yoursite.com/2018/11/08/java线程池笔记/th1.png">
-<meta property="og:updated_time" content="2018-11-08T03:35:05.362Z">
+<meta property="og:updated_time" content="2018-11-08T08:13:25.593Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java线程池笔记">
-<meta name="twitter:description" content="Java线程池笔记（siwang.hu&amp;nbsp;&amp;nbsp;V1.0) &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在实际开发中，如果每个请求到达服务器就创建一个新线程为其服务，开销是相当大的。服务器在创建和销毁线程上花费的时间和消耗的系统资源非常大，甚至可能要比在处理实际的用请求的时间和资源要多的多。除了创建和销毁线程的开销之外，活动的线程也需要消耗系统资源。如果在一个jvm里创建太多的线">
+<meta name="twitter:description" content="Java线程池笔记 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在实际开发中，如果每个请求到达服务器就创建一个新线程为其服务，开销是相当大的。服务器在创建和销毁线程上花费的时间和消耗的系统资源非常大，甚至可能要比在处理实际的用请求的时间和资源要多的多。除了创建和销毁线程的开销之外，活动的线程也需要消耗系统资源。如果在一个jvm里创建太多的线程，可能会使系统由于过度消耗内存或线程上下文切换过度而">
 <meta name="twitter:image" content="http://yoursite.com/2018/11/08/java线程池笔记/qw.jpeg">
 
   
@@ -123,7 +123,7 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java线程池笔记（siwang-hu-nbsp-nbsp-V1-0"><span class="toc-text">Java线程池笔记（siwang.hu  V1.0)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#线程池类"><span class="toc-text">线程池类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线程池的创建"><span class="toc-text">线程池的创建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#newSingleThreadExecutor"><span class="toc-text">newSingleThreadExecutor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#newCacheThreadPool"><span class="toc-text">newCacheThreadPool</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#newFixedThreadPool"><span class="toc-text">newFixedThreadPool</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#newScheduledThreadPool"><span class="toc-text">newScheduledThreadPool</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#例程"><span class="toc-text">例程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#提交任务"><span class="toc-text">提交任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#与Callable配套的Future"><span class="toc-text">与Callable配套的Future</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关闭线程池"><span class="toc-text">关闭线程池</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FutureTask"><span class="toc-text">FutureTask</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ThreadPoolExecutor"><span class="toc-text">ThreadPoolExecutor</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Executor、ExecutorService、ThreadPoolExecutor区别"><span class="toc-text">Executor、ExecutorService、ThreadPoolExecutor区别</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java线程池笔记"><span class="toc-text">Java线程池笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#线程池类"><span class="toc-text">线程池类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线程池的创建"><span class="toc-text">线程池的创建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#newSingleThreadExecutor"><span class="toc-text">newSingleThreadExecutor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#newCacheThreadPool"><span class="toc-text">newCacheThreadPool</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#newFixedThreadPool"><span class="toc-text">newFixedThreadPool</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#newScheduledThreadPool"><span class="toc-text">newScheduledThreadPool</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#例程"><span class="toc-text">例程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#提交任务"><span class="toc-text">提交任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#与Callable配套的Future"><span class="toc-text">与Callable配套的Future</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关闭线程池"><span class="toc-text">关闭线程池</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FutureTask"><span class="toc-text">FutureTask</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ThreadPoolExecutor"><span class="toc-text">ThreadPoolExecutor</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Executor、ExecutorService、ThreadPoolExecutor区别"><span class="toc-text">Executor、ExecutorService、ThreadPoolExecutor区别</span></a></li></ol></li></ol>
   </div>
 
 
@@ -163,7 +163,7 @@
 
   <div class="article-content">
     
-      <h1 id="Java线程池笔记（siwang-hu-nbsp-nbsp-V1-0"><a href="#Java线程池笔记（siwang-hu-nbsp-nbsp-V1-0" class="headerlink" title="Java线程池笔记（siwang.hu&nbsp;&nbsp;V1.0)"></a>Java线程池笔记（siwang.hu&nbsp;&nbsp;V1.0)</h1><blockquote>
+      <h1 id="Java线程池笔记"><a href="#Java线程池笔记" class="headerlink" title="Java线程池笔记"></a>Java线程池笔记</h1><blockquote>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;在实际开发中，如果每个请求到达服务器就创建一个新线程为其服务，开销是相当大的。服务器在创建和销毁线程上花费的时间和消耗的系统资源非常大，甚至可能要比在处理实际的用请求的时间和资源要多的多。除了创建和销毁线程的开销之外，活动的线程也需要消耗系统资源。如果在一个jvm里创建太多的线程，可能会使系统由于过度消耗内存或线程上下文切换过度而导致系统资源不足<br>&nbsp;&nbsp;&nbsp;&nbsp;线程池可以应对突然大爆发量的访问，通过有限个固定线程为大量的操作服务，减少创建和销毁线程所需的时间  </p>
 <p><strong>使用线程池好处：</strong>  </p>
 <ul>
