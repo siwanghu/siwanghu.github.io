@@ -15,17 +15,17 @@
     <meta name="keywords" content="全栈,微服务,Java,Netty,Vue,机器学习,Python">
   
 
-  <meta name="description" content="vue基础笔记（siwang.hu&amp;nbsp;&amp;nbsp;V1.0）  官方学习网站     v-if&amp;nbsp;指令  条件渲染指令   如果ok==true 界面显示Yes,否则显示No  12&amp;lt;h1 v-if=&amp;quot;ok&amp;quot;&amp;gt;Yes&amp;lt;/h1&amp;gt;&amp;lt;h1 v-else&amp;gt;No&amp;lt;/h1&amp;gt;      类似于 v-else，v-else-if">
+  <meta name="description" content="vue基础笔记  官方学习网站     v-if&amp;nbsp;指令  条件渲染指令   如果ok==true 界面显示Yes,否则显示No  12&amp;lt;h1 v-if=&amp;quot;ok&amp;quot;&amp;gt;Yes&amp;lt;/h1&amp;gt;&amp;lt;h1 v-else&amp;gt;No&amp;lt;/h1&amp;gt;      类似于 v-else，v-else-if 也必须紧跟在带 v-if 或者 v-else-if 的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vue基础笔记">
 <meta property="og:url" content="http://yoursite.com/2018/11/16/vue基础笔记/index.html">
 <meta property="og:site_name" content="胡思旺">
-<meta property="og:description" content="vue基础笔记（siwang.hu&amp;nbsp;&amp;nbsp;V1.0）  官方学习网站     v-if&amp;nbsp;指令  条件渲染指令   如果ok==true 界面显示Yes,否则显示No  12&amp;lt;h1 v-if=&amp;quot;ok&amp;quot;&amp;gt;Yes&amp;lt;/h1&amp;gt;&amp;lt;h1 v-else&amp;gt;No&amp;lt;/h1&amp;gt;      类似于 v-else，v-else-if">
+<meta property="og:description" content="vue基础笔记  官方学习网站     v-if&amp;nbsp;指令  条件渲染指令   如果ok==true 界面显示Yes,否则显示No  12&amp;lt;h1 v-if=&amp;quot;ok&amp;quot;&amp;gt;Yes&amp;lt;/h1&amp;gt;&amp;lt;h1 v-else&amp;gt;No&amp;lt;/h1&amp;gt;      类似于 v-else，v-else-if 也必须紧跟在带 v-if 或者 v-else-if 的">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-16T03:12:33.925Z">
+<meta property="og:updated_time" content="2018-11-16T07:31:52.516Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="vue基础笔记">
-<meta name="twitter:description" content="vue基础笔记（siwang.hu&amp;nbsp;&amp;nbsp;V1.0）  官方学习网站     v-if&amp;nbsp;指令  条件渲染指令   如果ok==true 界面显示Yes,否则显示No  12&amp;lt;h1 v-if=&amp;quot;ok&amp;quot;&amp;gt;Yes&amp;lt;/h1&amp;gt;&amp;lt;h1 v-else&amp;gt;No&amp;lt;/h1&amp;gt;      类似于 v-else，v-else-if">
+<meta name="twitter:description" content="vue基础笔记  官方学习网站     v-if&amp;nbsp;指令  条件渲染指令   如果ok==true 界面显示Yes,否则显示No  12&amp;lt;h1 v-if=&amp;quot;ok&amp;quot;&amp;gt;Yes&amp;lt;/h1&amp;gt;&amp;lt;h1 v-else&amp;gt;No&amp;lt;/h1&amp;gt;      类似于 v-else，v-else-if 也必须紧跟在带 v-if 或者 v-else-if 的">
 
   
 
@@ -120,7 +120,7 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#vue基础笔记（siwang-hu-nbsp-nbsp-V1-0）"><span class="toc-text">vue基础笔记（siwang.hu  V1.0）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#v-if-nbsp-指令"><span class="toc-text">v-if 指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#v-show-nbsp-指令"><span class="toc-text">v-show 指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#v-for-nbsp-指令"><span class="toc-text">v-for 指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#v-on-nbsp-指令"><span class="toc-text">v-on 指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#v-model-nbsp-指令"><span class="toc-text">v-model 指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#v-bind-nbsp-指令"><span class="toc-text">v-bind 指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#计算属性"><span class="toc-text">计算属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#侦听器"><span class="toc-text">侦听器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加组件"><span class="toc-text">添加组件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用vue-router"><span class="toc-text">使用vue-router</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#vue基础笔记"><span class="toc-text">vue基础笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#v-if-nbsp-指令"><span class="toc-text">v-if 指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#v-show-nbsp-指令"><span class="toc-text">v-show 指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#v-for-nbsp-指令"><span class="toc-text">v-for 指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#v-on-nbsp-指令"><span class="toc-text">v-on 指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#v-model-nbsp-指令"><span class="toc-text">v-model 指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#v-bind-nbsp-指令"><span class="toc-text">v-bind 指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#计算属性"><span class="toc-text">计算属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#侦听器"><span class="toc-text">侦听器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加组件"><span class="toc-text">添加组件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用vue-router"><span class="toc-text">使用vue-router</span></a></li></ol></li></ol>
   </div>
 
 
@@ -160,7 +160,7 @@
 
   <div class="article-content">
     
-      <h1 id="vue基础笔记（siwang-hu-nbsp-nbsp-V1-0）"><a href="#vue基础笔记（siwang-hu-nbsp-nbsp-V1-0）" class="headerlink" title="vue基础笔记（siwang.hu&nbsp;&nbsp;V1.0）"></a>vue基础笔记（siwang.hu&nbsp;&nbsp;V1.0）</h1><blockquote>
+      <h1 id="vue基础笔记"><a href="#vue基础笔记" class="headerlink" title="vue基础笔记"></a>vue基础笔记</h1><blockquote>
 <ul>
 <li>官方学习<a href="https://cn.vuejs.org/v2/guide/" target="_blank" rel="noopener">网站</a>  </li>
 </ul>
