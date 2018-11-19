@@ -24,10 +24,10 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2018/11/01/java-nio笔记/nio1.PNG">
 <meta property="og:image" content="http://yoursite.com/2018/11/01/java-nio笔记/nio2.PNG">
-<meta property="og:image" content="http://yoursite.com/2018/11/01/java-nio笔记/data/vhHX.png">
+<meta property="og:image" content="http://yoursite.com/2018/11/01/java-nio笔记/vhHX.png">
 <meta property="og:image" content="http://yoursite.com/2018/11/01/java-nio笔记/javanio-channel-buffer.png">
 <meta property="og:image" content="http://yoursite.com/2018/11/01/java-nio笔记/javanio-selecor-3-channel.png">
-<meta property="og:updated_time" content="2018-11-19T05:58:13.698Z">
+<meta property="og:updated_time" content="2018-11-19T06:00:12.162Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java-nio笔记">
 <meta name="twitter:description" content="Java NIO  Java NIO(New IO)是一个可以替代标准Java IO API（从Java 1.4开始)，提供了与标准IO不同的IO工作方式    标准的IO基于字节流和字符流进行操作的，而NIO是基于通道（Channel）和缓冲区（Buffer）进行操作，数据总是从通道读取到缓冲区中，或者从缓冲区写入到通道中    Java NIO可以让你非阻塞的使用IO    Java NIO引">
@@ -231,7 +231,7 @@
 <li><p>用户线程中不需要再次调用IO函数进行具体的读写。这点是和信号驱动模型有所不同的，在信号驱动模型中，当用户线程接收到信号表示数据已经就绪，然后需要用户线程调用IO函数进行实际的读写操作；而在异步IO模型中，收到信号表示IO操作已经完成，不需要再在用户线程中调用iO函数进行实际的读写操作  </p>
 </li>
 </ul>
-<p><img src="./data/vhHX.png" alt="图片">  </p>
+<p><img src="vhHX.png" alt="图片">  </p>
 </blockquote>
 <h2 id="channels"><a href="#channels" class="headerlink" title="channels"></a>channels</h2><blockquote>
 <p><img src="javanio-channel-buffer.png" alt="图片"><br>NIO的所有IO都是从一个通道开始的。通道和流(Stream)有点类似，数据可以 从通道读出到缓冲区中，也可以从缓冲区写入到通道中<br>主要channels:  </p>
