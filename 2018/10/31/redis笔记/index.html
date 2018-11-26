@@ -22,10 +22,12 @@
 <meta property="og:site_name" content="胡思旺">
 <meta property="og:description" content="Redis远程字典服务器 Redis是速度非常快的非关系型（NoSQL）内存键值数据库    Redis优点  性能极高，Redis 能读的速度是110000 次/s，写的速度是81000 次/s    Redis 的所有操作都是原子性的。单个操作是原子性的。多个操作也支持事务，即原子性，通过 MULTI 和 EXEC 指令包起来    Redis 支持数据的持久化（RDB快照和AOF日志）">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-26T02:19:03.274Z">
+<meta property="og:image" content="http://yoursite.com/2018/10/31/redis笔记/rd1.PNG">
+<meta property="og:updated_time" content="2018-11-26T03:05:05.492Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis笔记">
 <meta name="twitter:description" content="Redis远程字典服务器 Redis是速度非常快的非关系型（NoSQL）内存键值数据库    Redis优点  性能极高，Redis 能读的速度是110000 次/s，写的速度是81000 次/s    Redis 的所有操作都是原子性的。单个操作是原子性的。多个操作也支持事务，即原子性，通过 MULTI 和 EXEC 指令包起来    Redis 支持数据的持久化（RDB快照和AOF日志）">
+<meta name="twitter:image" content="http://yoursite.com/2018/10/31/redis笔记/rd1.PNG">
 
   
 
@@ -120,7 +122,7 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis远程字典服务器"><span class="toc-text">Redis远程字典服务器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis优点"><span class="toc-text">Redis优点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis启动"><span class="toc-text">Redis启动</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数据类型"><span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#有关键的命令"><span class="toc-text">有关键的命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#字符串类型命令"><span class="toc-text">字符串类型命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#位操作命令"><span class="toc-text">位操作命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#散列类型命令"><span class="toc-text">散列类型命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#列表类型命令"><span class="toc-text">列表类型命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#集合类型命令"><span class="toc-text">集合类型命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#有序集合类型命令"><span class="toc-text">有序集合类型命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#事务"><span class="toc-text">事务</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#命令规范"><span class="toc-text">命令规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#错误处理"><span class="toc-text">错误处理</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#watch命令"><span class="toc-text">watch命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#过期时间命令"><span class="toc-text">过期时间命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#排序命令"><span class="toc-text">排序命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#任务队列"><span class="toc-text">任务队列</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#优先级队列"><span class="toc-text">优先级队列</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#发布-订阅模式"><span class="toc-text">发布/订阅模式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#管道"><span class="toc-text">管道</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#持久化"><span class="toc-text">持久化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#缓存设计常见问题"><span class="toc-text">缓存设计常见问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis持久化方式"><span class="toc-text">Redis持久化方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RDB方式"><span class="toc-text">RDB方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AOF方式"><span class="toc-text">AOF方式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis集群"><span class="toc-text">Redis集群</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#复制"><span class="toc-text">复制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis配置"><span class="toc-text">Redis配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#哨兵"><span class="toc-text">哨兵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集群"><span class="toc-text">集群</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis远程字典服务器"><span class="toc-text">Redis远程字典服务器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis优点"><span class="toc-text">Redis优点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis启动"><span class="toc-text">Redis启动</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数据类型"><span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#有关键的命令"><span class="toc-text">有关键的命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#字符串类型命令"><span class="toc-text">字符串类型命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#位操作命令"><span class="toc-text">位操作命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#散列类型命令"><span class="toc-text">散列类型命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#列表类型命令"><span class="toc-text">列表类型命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#集合类型命令"><span class="toc-text">集合类型命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#有序集合类型命令"><span class="toc-text">有序集合类型命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#事务"><span class="toc-text">事务</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#命令规范"><span class="toc-text">命令规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#错误处理"><span class="toc-text">错误处理</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#watch命令"><span class="toc-text">watch命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#过期时间命令"><span class="toc-text">过期时间命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#排序命令"><span class="toc-text">排序命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#任务队列"><span class="toc-text">任务队列</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#优先级队列"><span class="toc-text">优先级队列</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#发布-订阅模式"><span class="toc-text">发布/订阅模式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#管道"><span class="toc-text">管道</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#持久化"><span class="toc-text">持久化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#缓存设计常见问题"><span class="toc-text">缓存设计常见问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis持久化方式"><span class="toc-text">Redis持久化方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RDB方式"><span class="toc-text">RDB方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AOF方式"><span class="toc-text">AOF方式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis集群"><span class="toc-text">Redis集群</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#复制"><span class="toc-text">复制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#哨兵"><span class="toc-text">哨兵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集群"><span class="toc-text">集群</span></a></li></ol></li></ol>
   </div>
 
 
@@ -415,8 +417,24 @@
 <p><strong>redis允许同时开启aof与rdb持久化方式，下一次redis启动时会采用aof文件恢复缓存,因为aof更能保证数据完整性</strong>  </p>
 </blockquote>
 <h1 id="Redis集群"><a href="#Redis集群" class="headerlink" title="Redis集群"></a>Redis集群</h1><blockquote>
-<h2 id="复制"><a href="#复制" class="headerlink" title="复制"></a>复制</h2><p>Redis提供复制功能，可以实现当一台数据库中的数据更新后，自动将更新的数据同步到其他数据库上  </p>
-<h2 id="Redis配置"><a href="#Redis配置" class="headerlink" title="Redis配置"></a>Redis配置</h2><p>从数据库Redis配置文件中加入slaveof 主数据库地址 主数据库端口;主数据库无需配置  </p>
+<ul>
+<li><p>在结构上，单个redis服务器会发生单点故障，同时一台服务器需要承受所有的请求负载，需要为数据生成多个副本并分配在不同的服务器上  </p>
+</li>
+<li><p>在容量上，单个redis服务器的内存容易造成存储瓶颈，需要进行数据分片，存储在不同的redis服务器上  </p>
+<h2 id="复制"><a href="#复制" class="headerlink" title="复制"></a>复制</h2><p>Redis提供复制功能，可以实现当一台主数据库中的数据更新后，自动将更新的数据同步到从数据库上,防止单点故障造成数据丢失  </p>
+</li>
+<li><p>redis将数据库分为主数据库，从数据库；主数据库拥有多个从数据库，从数据库只能有一个主数据库。主数据库支持读写，从数据库只读  </p>
+</li>
+<li><p>redis配置非常简单，只要在redis从数据库的配置文件中加入  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">slaveof 主数据库地址  端口号</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>主数据库无需任何配置  </p>
+<ul>
+<li>redis复制过程<br><img src="rd1.PNG" alt="图片"><br>1.slave向master发送sync命令。2.master开启子进程来讲dataset写入rdb文件，同时将子进程完成之前接收到的写命令缓存起来。3.子进程写完，父进程得知，开始将RDB文件发送给slave。master发送完RDB文件，将缓存的命令也发给slave。4.master增量的把写命令发给slave。  </li>
+</ul>
 <h2 id="哨兵"><a href="#哨兵" class="headerlink" title="哨兵"></a>哨兵</h2><ul>
 <li><p>监控主数据库和从数据库是否正常运行  </p>
 </li>
