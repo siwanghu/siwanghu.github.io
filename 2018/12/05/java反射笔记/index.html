@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>java反射笔记 | 胡思旺</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="全栈,微服务,Java,Netty,Vue,机器学习,Python">
+  
+
+  <meta name="description" content="Java反射笔记  Java反射是指在程序运行时，对于任意一个类(.class文件)，能够通过反射知道这个类的所有属性和方法；对于任意一个对象（实际new的对象），都能够调用它的任意一个方法和属性（包括私有的）。这种动态的获取类信息以及动态调用对象的方法的功能称为java反射机制    通过Java的反射机制使得我们可以在程序运行时动态的加载、探索以及使用编译期间完全未知的 .class文件。Ja">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java反射笔记">
+<meta property="og:url" content="http://yoursite.com/2018/12/05/java反射笔记/index.html">
+<meta property="og:site_name" content="胡思旺">
+<meta property="og:description" content="Java反射笔记  Java反射是指在程序运行时，对于任意一个类(.class文件)，能够通过反射知道这个类的所有属性和方法；对于任意一个对象（实际new的对象），都能够调用它的任意一个方法和属性（包括私有的）。这种动态的获取类信息以及动态调用对象的方法的功能称为java反射机制    通过Java的反射机制使得我们可以在程序运行时动态的加载、探索以及使用编译期间完全未知的 .class文件。Ja">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-12-05T03:23:17.106Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java反射笔记">
+<meta name="twitter:description" content="Java反射笔记  Java反射是指在程序运行时，对于任意一个类(.class文件)，能够通过反射知道这个类的所有属性和方法；对于任意一个对象（实际new的对象），都能够调用它的任意一个方法和属性（包括私有的）。这种动态的获取类信息以及动态调用对象的方法的功能称为java反射机制    通过Java的反射机制使得我们可以在程序运行时动态的加载、探索以及使用编译期间完全未知的 .class文件。Ja">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cben" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+
+</head>
+</html>
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/project/" rel="noopener noreferrer" target="_self">
+            项目
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+            搜索
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/about/" rel="noopener noreferrer" target="_self">
+            联系
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java反射笔记"><span class="toc-text">Java反射笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Class类"><span class="toc-text">Class类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建Class类对象的方式"><span class="toc-text">创建Class类对象的方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class类的常用API"><span class="toc-text">Class类的常用API</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#通过反射获取类的信息"><span class="toc-text">通过反射获取类的信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#为方便演示，自定义Father类与Son类，Son类继承Father类"><span class="toc-text">为方便演示，自定义Father类与Son类，Son类继承Father类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取类的所有变量信息"><span class="toc-text">获取类的所有变量信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取类的所有方法信息"><span class="toc-text">获取类的所有方法信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#访问对象私有方法与私有属性"><span class="toc-text">访问对象私有方法与私有属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通过反射操作数组"><span class="toc-text">通过反射操作数组</span></a></li></ol></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-java反射笔记" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">java反射笔记</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.12.05</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>siwang.hu</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/java基础/">java基础</a>
+  </span>
+
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://www.github.com/siwanghu/2018/12/05/java反射笔记/#disqus_thread"></a>
+        </span>
+      
+
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1 id="Java反射笔记"><a href="#Java反射笔记" class="headerlink" title="Java反射笔记"></a>Java反射笔记</h1><blockquote>
+<ul>
+<li><p>Java反射是指在程序运行时，对于任意一个类(<strong>.class文件</strong>)，能够通过反射知道这个类的所有属性和方法；对于任意一个对象（<strong>实际new的对象</strong>），都能够调用它的任意一个方法和属性（<strong>包括私有的</strong>）。这种动态的获取类信息以及动态调用对象的方法的功能称为java反射机制  </p>
+</li>
+<li><p>通过Java的反射机制使得我们可以在程序运行时动态的加载、探索以及使用编译期间完全未知的 .class文件。Java程序可以加载一个运行时才得知名称的.class 文件，然后获悉其完整构造，并生成其对象实体、或对其 fields（变量）设值、或调用其 methods（方法）  </p>
+</li>
+<li><p>Java的反射机制的实现要借助于：Class，Constructor，Field，Method，Array;</p>
+</li>
+</ul>
+</blockquote>
+<h2 id="Class类"><a href="#Class类" class="headerlink" title="Class类"></a>Class类</h2><blockquote>
+<ul>
+<li><p>在Java中，通过Class类获取到任何一个类中完整的信息  </p>
+</li>
+<li><p>在Java中，Object是所有类的超类，所有类的对象实际上也是java.lang.Class类的实例；因此，所有的对象都可以转变成Class类型表示  </p>
+</li>
+</ul>
+<h3 id="创建Class类对象的方式"><a href="#创建Class类对象的方式" class="headerlink" title="创建Class类对象的方式"></a>创建Class类对象的方式</h3><ul>
+<li><p>对象.getClass()  </p>
+</li>
+<li><p>类名.Class  </p>
+</li>
+<li><p>Class.forName(类名)<br><em>类名是指完整的类名称，包括类的包名</em>  </p>
+</li>
+</ul>
+<h3 id="Class类的常用API"><a href="#Class类的常用API" class="headerlink" title="Class类的常用API"></a>Class类的常用API</h3><ul>
+<li><p>forName(): 传入完整的”包.类”名称实例化Class对象  </p>
+</li>
+<li><p>getConstructors() : 得到一个类中的全部构造方法  </p>
+</li>
+<li><p>getConstructor(Class&lt;?&gt;…parameterTypes)：获取到指定参数类型的(public修饰的)构造方法  </p>
+</li>
+<li><p>getDeclaredConstructor(Class&lt;?&gt;… parameterTypes)：获取到指定参数类型的构造方法，包含private修饰和public修饰  </p>
+</li>
+<li><p>getDeclaredFields(): 获得某个类的单独定义全部的字段（即包括public、private和proteced等修饰符的全部属性），但是不包括父类的申明字段或者实现接口中的字段  </p>
+</li>
+<li><p>getFields(): 获得某个类的所有的公共（public）的字段，包括父类中的公共字段或者实现接口的公共属性和类本身定义的公共属性  </p>
+</li>
+<li><p>getMethods() : 获取到本类中全部public修饰的方法，包含父类中公共方法和覆盖重写的方法和自己本身定义的公共方法  </p>
+</li>
+<li><p>getMethod(String name,Class…parameterType): 获取到指定方法名字，指定方法参数类型的公共方法  </p>
+</li>
+<li><p>getSuperclass(): 获取到父类的Class  </p>
+</li>
+<li><p>getInterfaces() : 获取（实现的全部接口对应的）Class数组  </p>
+</li>
+<li><p>newInstance(): 实例化Class中定义类型的实例化对象  </p>
+</li>
+<li><p>getComponentType(): 获取数组类型的Class  </p>
+</li>
+<li><p>isArray(): 判断此Class是否是一个数组  </p>
+</li>
+<li><p>getName() : 获取到一个类完整”包.类”名称  </p>
+</li>
+</ul>
+</blockquote>
+<h2 id="通过反射获取类的信息"><a href="#通过反射获取类的信息" class="headerlink" title="通过反射获取类的信息"></a>通过反射获取类的信息</h2><blockquote>
+<h3 id="为方便演示，自定义Father类与Son类，Son类继承Father类"><a href="#为方便演示，自定义Father类与Son类，Son类继承Father类" class="headerlink" title="为方便演示，自定义Father类与Son类，Son类继承Father类"></a>为方便演示，自定义Father类与Son类，Son类继承Father类</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public class Father&#123;</span><br><span class="line">    public String FatherName;</span><br><span class="line">    public int FatherAge;</span><br><span class="line"></span><br><span class="line">    public void printFather()&#123;</span><br><span class="line">        System.out.println(&quot;from father message!&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public class Son extends Father&#123;</span><br><span class="line">    private String SonName;</span><br><span class="line">    protected int SonAge;</span><br><span class="line">    public String SonBirthday;</span><br><span class="line"></span><br><span class="line">    public void printSon()&#123;</span><br><span class="line">        System.out.println(&quot;from son message!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private void setSonName(String name)&#123;</span><br><span class="line">        SonName = name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<h3 id="获取类的所有变量信息"><a href="#获取类的所有变量信息" class="headerlink" title="获取类的所有变量信息"></a>获取类的所有变量信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">private static void printFields()&#123;</span><br><span class="line">    //1.获取并输出类的名称</span><br><span class="line">    Class mClass = Son.class;</span><br><span class="line">    System.out.println(&quot;类的名称：&quot; + mClass.getName());</span><br><span class="line"></span><br><span class="line">    //2.1 获取所有 public 访问权限的变量</span><br><span class="line">    // 包括本类声明的和从父类继承的</span><br><span class="line">    Field[] fields = mClass.getFields();</span><br><span class="line"></span><br><span class="line">    //2.2 获取所有本类(不包括父类的)声明的变量（不问访问权限）</span><br><span class="line">    //Field[] fields = mClass.getDeclaredFields();</span><br><span class="line"></span><br><span class="line">    //3. 遍历变量并输出变量信息</span><br><span class="line">    for (Field field : fields) &#123;</span><br><span class="line">        //获取访问权限并输出</span><br><span class="line">        int modifiers = field.getModifiers();</span><br><span class="line">        System.out.print(Modifier.toString(modifiers) + &quot; &quot;);</span><br><span class="line">        //输出变量的类型及变量名</span><br><span class="line">        System.out.println(field.getType().getName()+ &quot; &quot; + field.getName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<h3 id="获取类的所有方法信息"><a href="#获取类的所有方法信息" class="headerlink" title="获取类的所有方法信息"></a>获取类的所有方法信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">private static void printMethods()&#123;</span><br><span class="line">    //1.获取并输出类的名称</span><br><span class="line">    Class mClass = Son.class;</span><br><span class="line">    System.out.println(&quot;类的名称：&quot; + mClass.getName());</span><br><span class="line"></span><br><span class="line">    //2.1 获取所有 public 访问权限的方法</span><br><span class="line">    //包括自己声明和从父类继承的</span><br><span class="line">    Method[] mMethods = mClass.getMethods();</span><br><span class="line"></span><br><span class="line">    //2.2 获取所有本类(不包括父类)的方法（不问访问权限）</span><br><span class="line">    //Method[] mMethods = mClass.getDeclaredMethods();</span><br><span class="line"></span><br><span class="line">    //3.遍历所有方法</span><br><span class="line">    for (Method method : mMethods) &#123;</span><br><span class="line">        //获取并输出方法的访问权限（Modifiers：修饰符）</span><br><span class="line">        int modifiers = method.getModifiers();</span><br><span class="line">        System.out.print(Modifier.toString(modifiers) + &quot; &quot;);</span><br><span class="line"></span><br><span class="line">        //获取并输出方法的返回值类型</span><br><span class="line">        Class returnType = method.getReturnType();</span><br><span class="line">        System.out.println(returnType.getName() + &quot; &quot;+ method.getName());</span><br><span class="line"></span><br><span class="line">        //获取并输出方法的所有参数</span><br><span class="line">        Parameter[] parameters = method.getParameters();</span><br><span class="line">        for (Parameter parameter: parameters) &#123;</span><br><span class="line">            System.out.println(parameter.getType().getName()</span><br><span class="line">                    + &quot; &quot; + parameter.getName());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //获取并输出方法抛出的异常</span><br><span class="line">        Class[] exceptionTypes = method.getExceptionTypes();</span><br><span class="line">        if (exceptionTypes.length == 0)&#123;</span><br><span class="line">            System.out.println(&quot;方法无异常抛出&quot;);</span><br><span class="line">        &#125;else &#123;</span><br><span class="line">            for (Class c : exceptionTypes) &#123;</span><br><span class="line">                System.out.println(&quot;throws &quot;+ c.getName());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<h3 id="访问对象私有方法与私有属性"><a href="#访问对象私有方法与私有属性" class="headerlink" title="访问对象私有方法与私有属性"></a>访问对象私有方法与私有属性</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">public class Test&#123;</span><br><span class="line">    private String msg = &quot;hello world!&quot;;</span><br><span class="line"></span><br><span class="line">    private void privateMethod(String name , int age)&#123;</span><br><span class="line">        System.out.print(name + age);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getMsg()&#123;</span><br><span class="line">        return msg;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">private static void getPrivateMethod() throws Exception&#123;</span><br><span class="line">    //1. 获取 Class 类实例</span><br><span class="line">    Test test = new Test();</span><br><span class="line">    Class mClass = testClass.getClass();</span><br><span class="line"></span><br><span class="line">    //2. 获取私有方法</span><br><span class="line">    //第一个参数为要获取的私有方法的名称</span><br><span class="line">    //第二个为要获取方法的参数的类型，参数为 Class...，没有参数就是null</span><br><span class="line">    //方法参数也可这么写 ：new Class[]&#123;String.class , int.class&#125;</span><br><span class="line">    Method privateMethod =</span><br><span class="line">            mClass.getDeclaredMethod(&quot;privateMethod&quot;, String.class, int.class);</span><br><span class="line"></span><br><span class="line">    //3. 开始操作方法</span><br><span class="line">    if (privateMethod != null) &#123;</span><br><span class="line">        //获取私有方法的访问权</span><br><span class="line">        //只是临时获取访问权，并不是修改实际权限</span><br><span class="line">        privateMethod.setAccessible(true);</span><br><span class="line"></span><br><span class="line">        //使用 invoke 反射调用私有方法</span><br><span class="line">        //privateMethod 是获取到的私有方法</span><br><span class="line">        //testClass 要操作的对象</span><br><span class="line">        //后面两个参数传实参</span><br><span class="line">        privateMethod.invoke(test, &quot;Java Reflect&quot;, 666);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static void modifyPrivateFiled() throws Exception &#123;</span><br><span class="line">    //1. 获取 Class 类实例</span><br><span class="line">    TestClass test = new TestClass();</span><br><span class="line">    Class mClass = testClass.getClass();</span><br><span class="line"></span><br><span class="line">    //2. 获取私有变量</span><br><span class="line">    Field privateField = mClass.getDeclaredField(&quot;msg&quot;);</span><br><span class="line"></span><br><span class="line">    //3. 操作私有变量</span><br><span class="line">    if (privateField != null) &#123;</span><br><span class="line">        //临时获取私有变量的访问权</span><br><span class="line">        privateField.setAccessible(true);</span><br><span class="line"></span><br><span class="line">        //修改私有变量，并输出以测试</span><br><span class="line">        System.out.println(&quot;Before Modify：msg = &quot; + test.getMsg());</span><br><span class="line"></span><br><span class="line">        //调用 set(object , value) 修改变量的值</span><br><span class="line">        //privateField 是获取到的私有变量</span><br><span class="line">        //testClass 要操作的对象</span><br><span class="line">        //&quot;Modified&quot; 为要修改成的值</span><br><span class="line">        privateField.set(test, &quot;Modified&quot;);</span><br><span class="line">        System.out.println(&quot;After Modify：MSG = &quot; + test.getMsg());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<h3 id="通过反射操作数组"><a href="#通过反射操作数组" class="headerlink" title="通过反射操作数组"></a>通过反射操作数组</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public static void testArray() throws Exception &#123;</span><br><span class="line">    Class cls = Class.forName(&quot;java.lang.String&quot;);</span><br><span class="line">    Object array = Array.newInstance(cls,25);</span><br><span class="line">    //往数组里添加内容</span><br><span class="line">    Array.set(array,0,&quot;hello&quot;);</span><br><span class="line">    Array.set(array,1,&quot;Java&quot;);</span><br><span class="line">    Array.set(array,2,&quot;fuck&quot;);</span><br><span class="line">    Array.set(array,3,&quot;Scala&quot;);</span><br><span class="line">    Array.set(array,4,&quot;Clojure&quot;);</span><br><span class="line">    //获取某一项的内容</span><br><span class="line">    System.out.println(Array.get(array,3));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持胡思旺</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.jpg" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2018/11/30/看过认为好的书/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="hide pull-right" href="/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+
+   
+      <div class="git"></div>
+   
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/project/" rel="noopener noreferrer" target="_self">
+              项目
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+              搜索
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/about/" rel="noopener noreferrer" target="_self">
+              联系
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'forsigner';
+    
+    var disqus_url = 'http://yoursite.com/2018/12/05/java反射笔记/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <script id="dsq-count-scr" src="//forsigner.disqus.com/count.js" async></script>
+
+
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
