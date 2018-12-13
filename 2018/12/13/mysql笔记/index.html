@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>mysql笔记 | 胡思旺</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="全栈,微服务,Java,Netty,Vue,机器学习,Python">
+  
+
+  <meta name="description" content="mysql笔记数据库设计范式第一范式（1NF）  第一范式（1NF）是指关系型数据库表的每一列都是不可分割的基本数据项（不允许表中有表）    数据库表中不能出现重复记录，每个字段是原子性的不能再分    第一范式（1NF）是对关系模式的基本要求，不满足第一范式（1NF）的数据库就不是关系数据库      第二范式（2NF）  满足第二范式（2NF）必须先满足第一范式（1NF）    第二范式要求">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql笔记">
+<meta property="og:url" content="http://yoursite.com/2018/12/13/mysql笔记/index.html">
+<meta property="og:site_name" content="胡思旺">
+<meta property="og:description" content="mysql笔记数据库设计范式第一范式（1NF）  第一范式（1NF）是指关系型数据库表的每一列都是不可分割的基本数据项（不允许表中有表）    数据库表中不能出现重复记录，每个字段是原子性的不能再分    第一范式（1NF）是对关系模式的基本要求，不满足第一范式（1NF）的数据库就不是关系数据库      第二范式（2NF）  满足第二范式（2NF）必须先满足第一范式（1NF）    第二范式要求">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2018/12/13/mysql笔记/my2.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/13/mysql笔记/my3.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/13/mysql笔记/my4.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/13/mysql笔记/my5.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/13/mysql笔记/dy1.PNG">
+<meta property="og:image" content="http://yoursite.com/2018/12/13/mysql笔记/dy2.PNG">
+<meta property="og:image" content="http://yoursite.com/2018/12/13/mysql笔记/dy3.PNG">
+<meta property="og:image" content="http://yoursite.com/2018/12/13/mysql笔记/dy4.PNG">
+<meta property="og:updated_time" content="2018-12-13T04:18:09.443Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mysql笔记">
+<meta name="twitter:description" content="mysql笔记数据库设计范式第一范式（1NF）  第一范式（1NF）是指关系型数据库表的每一列都是不可分割的基本数据项（不允许表中有表）    数据库表中不能出现重复记录，每个字段是原子性的不能再分    第一范式（1NF）是对关系模式的基本要求，不满足第一范式（1NF）的数据库就不是关系数据库      第二范式（2NF）  满足第二范式（2NF）必须先满足第一范式（1NF）    第二范式要求">
+<meta name="twitter:image" content="http://yoursite.com/2018/12/13/mysql笔记/my2.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cben" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+
+</head>
+</html>
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/project/" rel="noopener noreferrer" target="_self">
+            项目
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+            搜索
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/about/" rel="noopener noreferrer" target="_self">
+            联系
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#mysql笔记"><span class="toc-text">mysql笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#数据库设计范式"><span class="toc-text">数据库设计范式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#第一范式（1NF）"><span class="toc-text">第一范式（1NF）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第二范式（2NF）"><span class="toc-text">第二范式（2NF）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第三范式（3NF）"><span class="toc-text">第三范式（3NF）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据库常见设计"><span class="toc-text">数据库常见设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一对一关系"><span class="toc-text">一对一关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一对多关系"><span class="toc-text">一对多关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多对多关系"><span class="toc-text">多对多关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实际场景设计建议"><span class="toc-text">实际场景设计建议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sql常见语句"><span class="toc-text">sql常见语句</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-mysql笔记" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">mysql笔记</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.12.13</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>siwang.hu</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
+  </span>
+
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://www.github.com/siwanghu/2018/12/13/mysql笔记/#disqus_thread"></a>
+        </span>
+      
+
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1 id="mysql笔记"><a href="#mysql笔记" class="headerlink" title="mysql笔记"></a>mysql笔记</h1><h2 id="数据库设计范式"><a href="#数据库设计范式" class="headerlink" title="数据库设计范式"></a>数据库设计范式</h2><h3 id="第一范式（1NF）"><a href="#第一范式（1NF）" class="headerlink" title="第一范式（1NF）"></a>第一范式（1NF）</h3><blockquote>
+<ul>
+<li><p>第一范式（1NF）是指关系型数据库表的每一列都是不可分割的基本数据项（不允许表中有表）  </p>
+</li>
+<li><p>数据库表中不能出现重复记录，每个字段是原子性的不能再分  </p>
+</li>
+<li><p>第一范式（1NF）是对关系模式的基本要求，不满足第一范式（1NF）的数据库就不是关系数据库  </p>
+</li>
+</ul>
+</blockquote>
+<h3 id="第二范式（2NF）"><a href="#第二范式（2NF）" class="headerlink" title="第二范式（2NF）"></a>第二范式（2NF）</h3><blockquote>
+<ul>
+<li><p>满足第二范式（2NF）必须先满足第一范式（1NF）  </p>
+</li>
+<li><p>第二范式要求所有非主键字段完全依赖主键，不能产生部分依赖  </p>
+</li>
+<li><p>所谓完全依赖是指不能存在仅依赖主关键字一部分的属性，如果存在，那么这个属性和主关键字的这一部分应该分离出来形成一个新的实体，新实体与原实体之间是一对多的关系  </p>
+</li>
+</ul>
+<p><strong>示例</strong><br><img src="my2.png" alt="图片"><br>上表中学生编号与教师编号一起组成主键，但此表会出现大量的冗余，主要涉及到的冗余字段为“学生姓名”和“教师姓名”，出现冗余的原因在于，学生姓名部分依赖了主键的一个字段学生编号，而没有依赖教师编号，而教师姓名部分依赖了主键的一个字段教师编号<br><strong>解决</strong><br><img src="my3.png" alt="图片"><br>如果一个表是单一主键，那么它就一定复合第二范式，部分依赖和表中主键设计复杂有关系</p>
+</blockquote>
+<h3 id="第三范式（3NF）"><a href="#第三范式（3NF）" class="headerlink" title="第三范式（3NF）"></a>第三范式（3NF）</h3><blockquote>
+<ul>
+<li><p>第三范式（3NF）必须先满足第二范式（2NF）  </p>
+</li>
+<li><p>第三范式（3NF）非主键字段不能传递依赖于主键字段（不要产生传递依赖）</p>
+</li>
+</ul>
+<p><strong>示例</strong><br><img src="my4.png" alt="图片"><br>上表中学生编号是主键，班级名称字段存在冗余，因为班级名称字段没有直接依赖于主键，班级名称字段依赖于班级编号，班级编号依赖于学生编号，这就是传递依赖，解决的办法就是将冗余字段单独拿出来建立表<br><strong>解决</strong><br><img src="my5.png" alt="图片">  </p>
+</blockquote>
+<h2 id="数据库常见设计"><a href="#数据库常见设计" class="headerlink" title="数据库常见设计"></a>数据库常见设计</h2><h3 id="一对一关系"><a href="#一对一关系" class="headerlink" title="一对一关系"></a>一对一关系</h3><blockquote>
+<ul>
+<li><p>第一种方案：分两张表存储，共享主键  </p>
+</li>
+<li><p>第二种方案：分两张表存储，外键唯一  </p>
+</li>
+</ul>
+<p><strong>示例</strong><br>假设NBA球队与所属地区是一对一关系，一个地区拥有一支球队，一支球队归属一个地区<br><strong>第一张方案设计:</strong><br><img src="dy1.PNG" alt="图片">  </p>
+<p><strong>第二种方案设计:</strong><br><img src="dy2.PNG" alt="图片">  </p>
+</blockquote>
+<h3 id="一对多关系"><a href="#一对多关系" class="headerlink" title="一对多关系"></a>一对多关系</h3><blockquote>
+<ul>
+<li>分两张表存储，在多的一方添加外键，这个外键字段引用一的一方中的主键字段  </li>
+</ul>
+<p><strong>示例</strong><br>假设NBA球队与球员是一对多的关系，NBA中一个球员只归属于一支球队，一支球队拥有多名球员<br><strong>方案设计</strong><br><img src="dy3.PNG" alt="图片">  </p>
+</blockquote>
+<h3 id="多对多关系"><a href="#多对多关系" class="headerlink" title="多对多关系"></a>多对多关系</h3><blockquote>
+<ul>
+<li>分三张表存储，两张表分别存储实体信息，另外一张表存储两个实体的对应关系  </li>
+</ul>
+<p><strong>示例</strong><br>假设学生与选修课之间的关系是多对多的关系，一个学生可以选择多门选修课，而每个选修课又可以被多名学生选择<br><strong>方案设计</strong><br><img src="dy4.PNG" alt="图片">  </p>
+</blockquote>
+<h2 id="实际场景设计建议"><a href="#实际场景设计建议" class="headerlink" title="实际场景设计建议"></a>实际场景设计建议</h2><blockquote>
+<ul>
+<li>实际应用场景中，尤其是OLTP型数据库。 第三范式也有缺点：查询时经常需要大量的Join，导致查询效率不高。 所以有时候为了性能的考虑，适度的违反第三范式，做适当的冗余设计  </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">OLTP，联机事务处理，可以理解为关系型数据库。</span><br><span class="line">OLAP，联机分析处理，可以理解为数据仓库。</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<ul>
+<li><p>适当建立索引<br>索引的字段必须是经常作为查询条件的字段，因为查询速度的提高是以更新、创建、删除的性能为代价的  </p>
+</li>
+<li><p>对表进行水平切分<br>比如数据条数很多，上千万级别，而且系统界面中只提供按月份进行查询，那么就可以考虑将大表水平拆分为12个表  </p>
+</li>
+<li><p>对表进行垂直切分<br>如果表的字段非常多，会占用大量的空间，检索表时需要执行大量I/O，影响性能。这时可以把一些字段切分到另一个表，新表和旧表是一对一映射。如果有些字段不常用又很长，那更应该拆分出去  </p>
+</li>
+<li><p>选择适当的字段类型<br>主键用自增，timestamp只用4字节而datetime用8字节。文件、图片存储在文件系统中，数据库中只保存路径。外键要表示清楚，这样可以方便建立索引  </p>
+</li>
+<li><p>选择合适的存储引擎<br>innodb、myisam、memory等<br><strong>MyISAM</strong><br>锁级别为表锁，表锁优点是开销小，加锁快；缺点是锁粒度大，发生锁冲动概率较高，容纳并发能力低，这个引擎适合查询为主的业务,此引擎不支持事务，也不支持外键,能够快速读取操作<br><strong>InnoDB</strong><br>锁级别为行锁，行锁优点是适用于高并发的频繁表修改，高并发是性能优于 MyISAM。缺点是系统消耗较大，索引不仅缓存自身，也缓存数据，相比 MyISAM 需要更大的内存</p>
+</li>
+<li><p>用集中批量操作代替频繁读写,这样可以减少IO  </p>
+</li>
+<li><p>读写分离<br>master-slave架构，从多台slave读数据，向一台master写入数据  </p>
+</li>
+<li><p>SQL语句优化<br>记录执行时间长的sql语句，便于后面分析，优化程序查询设计  </p>
+</li>
+</ul>
+</blockquote>
+<h2 id="sql常见语句"><a href="#sql常见语句" class="headerlink" title="sql常见语句"></a>sql常见语句</h2><blockquote>
+<p><a href="http://www.runoob.com/mysql/mysql-tutorial.html" target="_blank" rel="noopener">参考</a></p>
+<ul>
+<li><p>创建数据库并指定编码<br>create database voices character set utf8 collate utf8_general_ci;  </p>
+</li>
+<li><p>删除数据库<br>drop database voices  </p>
+</li>
+<li><p>备份数据库<br>mysqldump -u root -p –databases voices &gt; test.dump  </p>
+</li>
+<li><p>创建新表<br>create table tabname(col1 type1 [not null] [primary key],col2 type2 [not null],..)  </p>
+</li>
+<li><p>删除新表<br>drop table tabname  </p>
+</li>
+</ul>
+</blockquote>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持胡思旺</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.jpg" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2018/12/12/spring-aop笔记/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="hide pull-right" href="/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+
+   
+      <div class="git"></div>
+   
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/project/" rel="noopener noreferrer" target="_self">
+              项目
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+              搜索
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/about/" rel="noopener noreferrer" target="_self">
+              联系
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'forsigner';
+    
+    var disqus_url = 'http://yoursite.com/2018/12/13/mysql笔记/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <script id="dsq-count-scr" src="//forsigner.disqus.com/count.js" async></script>
+
+
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
