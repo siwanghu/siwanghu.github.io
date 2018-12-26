@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>负载均衡笔记 | 胡思旺</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="全栈,微服务,Java,Netty,Vue,机器学习,Python">
+  
+
+  <meta name="description" content="负载均衡笔记  在用户流量较小的场景下，我们通过设计一个单服务器就可以满足业务的负载需求    面对流量非常大、系统功能复杂的场景时，单台服务器就算将性能优化得再好，也不能支撑这么大用户量的访问压力，这个时候就需要使用多台机器，设计高性能的集群来应对    面对集群中服务器的负载分配，就需要引入负载均衡策略    负载均衡（Load balancing）是指把用户访问的流量，通过负载均衡器，根据某">
+<meta property="og:type" content="article">
+<meta property="og:title" content="负载均衡笔记">
+<meta property="og:url" content="http://yoursite.com/2018/12/26/负载均衡笔记/index.html">
+<meta property="og:site_name" content="胡思旺">
+<meta property="og:description" content="负载均衡笔记  在用户流量较小的场景下，我们通过设计一个单服务器就可以满足业务的负载需求    面对流量非常大、系统功能复杂的场景时，单台服务器就算将性能优化得再好，也不能支撑这么大用户量的访问压力，这个时候就需要使用多台机器，设计高性能的集群来应对    面对集群中服务器的负载分配，就需要引入负载均衡策略    负载均衡（Load balancing）是指把用户访问的流量，通过负载均衡器，根据某">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2018/12/26/负载均衡笔记/ld1.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/12/26/负载均衡笔记/ld2.PNG">
+<meta property="og:updated_time" content="2018-12-26T03:57:53.180Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="负载均衡笔记">
+<meta name="twitter:description" content="负载均衡笔记  在用户流量较小的场景下，我们通过设计一个单服务器就可以满足业务的负载需求    面对流量非常大、系统功能复杂的场景时，单台服务器就算将性能优化得再好，也不能支撑这么大用户量的访问压力，这个时候就需要使用多台机器，设计高性能的集群来应对    面对集群中服务器的负载分配，就需要引入负载均衡策略    负载均衡（Load balancing）是指把用户访问的流量，通过负载均衡器，根据某">
+<meta name="twitter:image" content="http://yoursite.com/2018/12/26/负载均衡笔记/ld1.jpg">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cben" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+
+</head>
+</html>
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/project/" rel="noopener noreferrer" target="_self">
+            项目
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+            搜索
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/about/" rel="noopener noreferrer" target="_self">
+            联系
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#负载均衡笔记"><span class="toc-text">负载均衡笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#负载均衡方案"><span class="toc-text">负载均衡方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基于DNS负载均衡"><span class="toc-text">基于DNS负载均衡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于硬件负载均衡"><span class="toc-text">基于硬件负载均衡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于软件负载均衡"><span class="toc-text">基于软件负载均衡</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#负载均衡算法"><span class="toc-text">负载均衡算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#负载均衡后的Session问题"><span class="toc-text">负载均衡后的Session问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Session"><span class="toc-text">Session</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Session问题解决方法"><span class="toc-text">Session问题解决方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Session保持"><span class="toc-text">Session保持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Session复制"><span class="toc-text">Session复制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Session共享"><span class="toc-text">Session共享</span></a></li></ol></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-负载均衡笔记" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">负载均衡笔记</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.12.26</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>siwang.hu</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/架构设计/">架构设计</a>
+  </span>
+
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://www.github.com/siwanghu/2018/12/26/负载均衡笔记/#disqus_thread"></a>
+        </span>
+      
+
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1 id="负载均衡笔记"><a href="#负载均衡笔记" class="headerlink" title="负载均衡笔记"></a>负载均衡笔记</h1><blockquote>
+<ul>
+<li><p>在用户流量较小的场景下，我们通过设计一个单服务器就可以满足业务的负载需求  </p>
+</li>
+<li><p>面对流量非常大、系统功能复杂的场景时，单台服务器就算将性能优化得再好，也不能支撑这么大用户量的访问压力，这个时候就需要使用多台机器，设计高性能的集群来应对  </p>
+</li>
+<li><p>面对集群中服务器的负载分配，就需要引入负载均衡策略  </p>
+</li>
+<li><p>负载均衡（Load balancing）是指把用户访问的流量，通过负载均衡器，根据某种转发的策略，均匀的分发到后端多台服务器上，后端的服务器可以独立的响应和处理请求，从而实现分散负载的效果  </p>
+</li>
+</ul>
+<p><img src="ld1.jpg" alt="图片">  </p>
+</blockquote>
+<h2 id="负载均衡方案"><a href="#负载均衡方案" class="headerlink" title="负载均衡方案"></a>负载均衡方案</h2><blockquote>
+<ul>
+<li><p>基于DNS负载均衡  </p>
+</li>
+<li><p>基于硬件负载均衡  </p>
+</li>
+<li><p>基于软件负载均衡</p>
+</li>
+</ul>
+</blockquote>
+<h3 id="基于DNS负载均衡"><a href="#基于DNS负载均衡" class="headerlink" title="基于DNS负载均衡"></a>基于DNS负载均衡</h3><blockquote>
+<p><strong>原理与优点</strong>  </p>
+<ul>
+<li>利用用户访问域名的时候，会先向DNS服务器去解析域名对应的IP地址，这个时候我们可以让DNS服务器根据不同地理位置的用户返回不同的IP,减轻了单个集群的负载压力，也提升了用户的访问速度，实现非常的简单  </li>
+</ul>
+<p><strong>缺点</strong>  </p>
+<ul>
+<li>当DNS配置修改后，生效不及时,这个是由于DNS自身的特性导致（DNS缓存）  </li>
+</ul>
+</blockquote>
+<h3 id="基于硬件负载均衡"><a href="#基于硬件负载均衡" class="headerlink" title="基于硬件负载均衡"></a>基于硬件负载均衡</h3><blockquote>
+<p><img src="ld2.PNG" alt="图片">  </p>
+<p><strong>原理与优点</strong>  </p>
+<ul>
+<li>硬件的负载均衡，它类似于是一个网络设备（与网络交换机相似）完全通过硬件来抗压力，性能是非常的好，每秒能处理的请求数达到百万级，即 几百万/秒 的负载  </li>
+</ul>
+<p><strong>缺点</strong>  </p>
+<ul>
+<li>硬件负载均衡器往往价格非常的贵  </li>
+</ul>
+</blockquote>
+<h3 id="基于软件负载均衡"><a href="#基于软件负载均衡" class="headerlink" title="基于软件负载均衡"></a>基于软件负载均衡</h3><blockquote>
+<ul>
+<li><p>软件负载均衡是指使用软件的方式来分发和均衡流量，网络分为7层协议，软件实现负载均衡一般可以在传输层或应用层来做流量分发，实现负载均衡，传输层上实现负载均衡效率好一点  </p>
+</li>
+<li><p>传输层——LVS(Linux虚拟服务器)，linux上的负载均衡策略  </p>
+</li>
+<li><p>应用层——Nginx，采用Nginx的负载均衡策略  </p>
+</li>
+</ul>
+</blockquote>
+<h2 id="负载均衡算法"><a href="#负载均衡算法" class="headerlink" title="负载均衡算法"></a>负载均衡算法</h2><blockquote>
+<ul>
+<li><p>轮询策略<br>将请求轮流的转发到后端不同的业务服务器上，无需关注后端服务的状态，有请求时，就往后端轮流转发，简单、实用  </p>
+</li>
+<li><p>负载度策略<br>先评估后端每台服务器的负载压力情况，对于压力比较大的后端服务器转发的请求少一些，对于压力比较小的后端服务器多转发一些请求给它 <strong>（负载度评判标准：连接数、请求数、CPU负载指标、IO负载指标）</strong>  </p>
+</li>
+<li><p>响应策略<br>当请求过来的时候，会优先将请求转发给当前时刻响应最快的后端服务器，用户体验更好 <strong>（这种算法需要负载均衡器去不停的统计后台每台服务器的响应速度，增加负载均衡器的负担）</strong>  </p>
+</li>
+<li><p>哈希策略<br>对请求中的某个信息进行hash计算，根据后端服务器台数取模，得到一个值，算出相同值的请求就被转发到同一台后端服务器中 <strong>（可以保证相同的源请求被分配到固定的后台服务器上，方便处理回话,缓存）</strong>  </p>
+</li>
+</ul>
+</blockquote>
+<h2 id="负载均衡后的Session问题"><a href="#负载均衡后的Session问题" class="headerlink" title="负载均衡后的Session问题"></a>负载均衡后的Session问题</h2><blockquote>
+<h3 id="Session"><a href="#Session" class="headerlink" title="Session"></a><strong>Session</strong></h3><p>浏览器获取Web服务器的服务，往往需要多次交互，http协议本身是无状态的，为了让服务器知道每个请求是来自那一个回话（session）,需要浏览器在请求服务器时带上sessionId，来区分这次请求属于那次回话。这个sessionId往往是第一次请求是服务器返回给浏览器存在cookie中的，如果浏览器禁用了cookie，就需要在每次请求是把sessionId放在URL参数中  </p>
+<p><strong>问题</strong><br>在使用了负载均衡策略后，我们的应用服务器有许多的台，如果不采取适当的措施，每次请求将落在不同的服务器上，服务器集群将会保存多份sessionId,明明是同一个浏览器发出的请求，后台集群确为此保存了多份sessionId,这将会对后面的业务处理造成很大的困扰  </p>
+</blockquote>
+<h2 id="Session问题解决方法"><a href="#Session问题解决方法" class="headerlink" title="Session问题解决方法"></a>Session问题解决方法</h2><blockquote>
+<ul>
+<li><p>Session保持  </p>
+</li>
+<li><p>Session复制  </p>
+</li>
+<li><p>Session共享  </p>
+</li>
+</ul>
+</blockquote>
+<h3 id="Session保持"><a href="#Session保持" class="headerlink" title="Session保持"></a>Session保持</h3><blockquote>
+<p>Session保持（Session Sticky），通过会话保持，负载均衡进行请求分发的时候保证每个客户端固定的访问到后端的同一台应用服务器。会话保持方案在所有的负载均衡都有对应的实现。而且这是<strong>在负载均衡这一层就可以解决Session问题</strong>  </p>
+<ul>
+<li>按访问ip的hash结果分配服务器  </li>
+<li>第一次访问插入一个Cookie，下一次访问的时候浏览器带上这个Cookie,按照这个Cookie分配固定的后台服务器  </li>
+</ul>
+<p><strong>缺点</strong><br>如果后端有服务器宕机，那么这台服务器的Session丢失，被分配到这台服务请求的用户还是需要重新登录，同时也无法保证负载的绝对均衡  </p>
+</blockquote>
+<h3 id="Session复制"><a href="#Session复制" class="headerlink" title="Session复制"></a>Session复制</h3><blockquote>
+<p>Session复制（Session Replication），集群中所有服务器上都要保持用户的Session，每个应用服务器中的Session信息复制到其它服务器节点上  </p>
+<p><strong>缺点</strong><br>同步集群中的Session将浪费大量的网络带宽开销，每台服务器需要保存所有集权中的Sesssion，浪费存储空间  </p>
+</blockquote>
+<h3 id="Session共享"><a href="#Session共享" class="headerlink" title="Session共享"></a>Session共享</h3><blockquote>
+<p>Session共享（Session集中存储），集群中的所有服务器都在一个地方进行Session的存取，当服务器数量大，Session数多时，集中存储优势非常的明显</p>
+</blockquote>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持胡思旺</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.jpg" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2018/12/21/java-jna笔记/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="hide pull-right" href="/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+
+   
+      <div class="git"></div>
+   
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/project/" rel="noopener noreferrer" target="_self">
+              项目
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+              搜索
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/about/" rel="noopener noreferrer" target="_self">
+              联系
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'forsigner';
+    
+    var disqus_url = 'http://yoursite.com/2018/12/26/负载均衡笔记/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <script id="dsq-count-scr" src="//forsigner.disqus.com/count.js" async></script>
+
+
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
